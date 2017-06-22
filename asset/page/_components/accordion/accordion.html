@@ -1,0 +1,56 @@
+<div id="demo-accordion" class='demo'>
+	<h2>初始化</h2>
+	<h3>从initData属性初始化</h3>
+	<code>html:</code>
+	<pre class='demo-code' v-pre>
+		<vaccordion :init-data="initData"></vaccordion>
+	</pre>
+	<code>js:</code>
+	<pre class='demo-code' v-pre>
+		data : {
+	    initData : [{
+	      title : "a1",
+	      children : [{
+	        title : "a1-1"
+	      },{
+	        title : "a1-2",
+	        iconCls : "glyphicon-text-height"
+	      }]
+	    },{
+	      title : "a2",
+	      children : [{
+	        title : "a2-1",iconCls : "glyphicon-text-height"
+	      },{
+	        title : "a2-2"
+	      }]
+	    },{
+	      title : "content",
+	      content : "<h1>testtest</h1>"
+	    }]
+	  }
+	</pre>
+	<code>结果:</code>
+	<vaccordion :init-data="initData"></vaccordion>
+	<h3>从html初始化</h3>
+	<code>html:</code>
+	<pre class='demo-code' v-pre>
+		<vaccordion>
+	    <div title='a1'><h2>testetst</h2></div>
+	    <div title='a2'><h2>f3f323e32e</h2><p>wfewwef</p><h3>fewg34h3</h3></div>
+	    <div title='a3'><h2>dfherhe</h2></div>
+	  </vaccordion>
+	</pre>
+	<code>结果:</code>
+	<vaccordion>
+		<div title='a1'><h2>testetst</h2></div>
+    <div title='a2'><h2>f3f323e32e</h2><p>wfewwef</p><h3>fewg34h3</h3></div>
+    <div title='a3'><h2>dfherhe</h2></div>
+	</vaccordion>
+	<!-- 
+	<h2>配置项说明</h2>
+	<xmp :widget="@$attr"></xmp>
+	<xmp :widget="@$attr_data"></xmp>
+	<xmp :widget="@$attr_data_children"></xmp> -->
+	<!-- <hr> -->
+	<!-- <xmp :widget="@$method"></xmp> -->
+</div>

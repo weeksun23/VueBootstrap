@@ -1,0 +1,28 @@
+.vue-accordion{border-bottom: 1px solid #ddd}
+.vue-accordion .panel{
+	border: 0;
+	margin-top: 0!important;border-radius: 0!important;
+}
+.vue-accordion .panel-heading{cursor: pointer;border-radius: 0;border:1px solid #ddd;border-bottom: 0}
+.vue-accordion .selected .panel-heading{border-bottom-width: 1px}
+.vue-accordion .panel-heading:hover,
+.vue-accordion .panel.selected .panel-heading{background-color: #337AB7;color: #fff;border-color:#337AB7;}
+.vue-accordion .panel.selected .panel-body{border-bottom:0;}
+.vue-accordion .panel-body{border:1px solid #ddd;}
+.vue-accordion-collapse{
+	-webkit-transition-duration: .35s;
+ 	-o-transition-duration: .35s;
+  transition-duration: .35s;
+}
+.vue-accordion .list-group{border-top: 0!important;border-left:1px solid #ddd;border-right: 1px solid #ddd}
+.vue-accordion .list-group-item{font-size: 16px;border-radius: 0!important;position: relative;}
+.vue-accordion .list-group-item.selected{background-color: #3E98EA;color: #fff}
+.vue-accordion .list-group-item .marrow{
+	position: absolute;
+	display: inline-block;
+	border-style: solid;
+	border-width: 10px 10px 10px 0;
+	border-color: transparent #fff transparent transparent;
+	right: -1px;top: 50%;margin-top: -10px;
+}
+.vue-accordion-i{margin-right: 5px}

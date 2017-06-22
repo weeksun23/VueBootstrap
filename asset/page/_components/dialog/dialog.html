@@ -1,0 +1,42 @@
+<div id="demo-dialog" class='demo'>
+	<h2>初始化</h2>
+	<code>html:</code>
+	<pre class='demo-code' v-pre>
+		<vdialog ref='htmlDialog' title="htmlDialog">
+	    <h1>wefwefwef</h1><h1>wefwefwef</h1><h1>wefwefwef</h1><h1>wefwefwef</h1>
+	  </vdialog>
+	  <vdialog ref='jsDialog' title='jsDialog' content='<h1>rr444rrr</h1><h2>regergrg</h2>' :buttons="buttons"></vdialog>
+	</pre>
+	<code>js:</code>
+	<pre class='demo-code'>
+		data : {
+			buttons : [{text : 'ok',close : true}]
+		},
+		methods : {
+			showHtmlDialog : function(){
+				this.$refs.htmlDialog.open();
+			},
+			showJsDialog : function(){
+				this.$refs.jsDialog.open();
+			}
+		}
+	</pre>
+	<code>结果:</code>
+	<vdialog ref='htmlDialog' title="htmlDialog">
+    <h1>wefwefwef</h1><h1>wefwefwef</h1><h1>wefwefwef</h1><h1>wefwefwef</h1>
+  </vdialog>
+  <vdialog ref='jsDialog' title='jsDialog' content='<h1>rr444rrr</h1><h2>regergrg</h2>' :buttons="buttons"></vdialog>
+	<button class='btn btn-default' @click="showHtmlDialog">从html初始化的dialog</button>
+	<button class='btn btn-default' @click="showJsDialog">从js初始化的dialog</button>
+	<!-- <xmp ms-widget='@$htmlconfig'>
+    <h1>wefwefwef</h1><h1>wefwefwef</h1><h1>wefwefwef</h1><h1>wefwefwef</h1>
+  </xmp>
+  <xmp ms-widget='@$jsconfig'></xmp>
+  <h2>配置项说明</h2>
+  <xmp :widget="@$attr"></xmp>
+  <xmp :widget="@$attr_buttons"></xmp>
+  <hr>
+  <xmp :widget="@$method"></xmp>
+  <hr>
+  <xmp :widget="@$eve"></xmp> -->
+</div>
