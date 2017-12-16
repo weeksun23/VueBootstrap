@@ -1,0 +1,154 @@
+<div id="demo-datetimepicker" class='demo'>
+	<h2>共享模式初始化</h2>
+	<code>html:</code>
+	<pre class='demo-code' v-pre>
+		<form class="form-horizontal">
+		  <div class="form-group">
+		    <label class="col-sm-2 control-label">共享时间组件1</label>
+		    <div class="col-sm-4">
+		    	<div class="input-group datetimepicker-container">
+					  <input type="text" class="form-control" @click="showDate($event,'sDate')" v-model='sDate' readonly>
+					  <span class="input-group-addon" @click='sDate = ""'>
+					  	<i class='glyphicon glyphicon-remove'></i>
+					  </span>
+					  <span class="input-group-addon" @click="showDate($event,'sDate')">
+					  	<i class='glyphicon glyphicon-calendar'></i>
+					  </span>
+					</div>
+		    </div>
+		    <label class="col-sm-2 control-label">共享时间组件2</label>
+		    <div class="col-sm-4">
+		      <div class="input-group datetimepicker-container">
+					  <input type="text" class="form-control" @click="showDate($event,'eDate')" v-model='eDate' readonly>
+					  <span class="input-group-addon" @click='eDate = ""'>
+					  	<i class='glyphicon glyphicon-remove'></i>
+					  </span>
+					  <span class="input-group-addon" @click="showDate($event,'eDate')">
+					  	<i class='glyphicon glyphicon-calendar'></i>
+					  </span>
+					</div>
+		    </div>
+		  </div>
+		</form>
+		....
+		<!-- 共享模式下datetimepicker的相对定位父元素必须是body -->
+		<!-- comp父元素就是body -->
+		<div id='comp'>
+			<v-datetimepicker ref='date' format='yyyy-MM-dd'></v-datetimepicker>
+		</div>
+	</pre>
+	<h2>单独模式初始化</h2>
+	<code>html:</code>
+	<pre class='demo-code' v-pre>
+		<form class="form-horizontal">
+		  <div class="form-group">
+		    <label class="col-sm-2 control-label">单独时间组件1</label>
+		    <div class="col-sm-4 posr">
+		    	<div class="input-group">
+					  <input type="text" class="form-control" @click="showSingleDate('sDate')" v-model='sDate' readonly>
+					  <span class="input-group-addon" @click='sDate = ""'>
+					  	<i class='glyphicon glyphicon-remove'></i>
+					  </span>
+					  <span class="input-group-addon" @click="showSingleDate('sDate')">
+					  	<i class='glyphicon glyphicon-calendar'></i>
+					  </span>
+					</div>
+					<v-datetimepicker ref='sDate' format='yyyy-MM-dd' init-left='15px'></v-datetimepicker>
+		    </div>
+		    <label class="col-sm-2 control-label">单独时间组件2</label>
+		    <div class="col-sm-4 posr">
+		      <div class="input-group">
+					  <input type="text" class="form-control" @click="showSingleDate('eDate')" v-model='eDate' readonly>
+					  <span class="input-group-addon" @click='eDate = ""'>
+					  	<i class='glyphicon glyphicon-remove'></i>
+					  </span>
+					  <span class="input-group-addon" @click="showSingleDate('eDate')">
+					  	<i class='glyphicon glyphicon-calendar'></i>
+					  </span>
+					</div>
+					<v-datetimepicker ref='eDate' format='yyyy-MM-dd' init-left='15px'></v-datetimepicker>
+		    </div>
+		  </div>
+		</form>
+	</pre>
+	<code>js:</code>
+	<pre class='demo-code'>
+		data : {
+			sDate : '',
+			eDate : ''
+		},
+		methods : {
+			showDate : function(e,key){
+				comp.$refs.date.open(e.target,this,key);
+			},
+			showSingleDate : function(key){
+				this.$refs[key].open(this,key);
+			}
+		}
+	</pre>
+	<code>结果:</code>
+	<div class='container-fluid'>
+		<form class="form-horizontal">
+		  <div class="form-group">
+		    <label class="col-sm-2 control-label">共享时间组件1</label>
+		    <div class="col-sm-4">
+		    	<div class="input-group datetimepicker-container">
+					  <input type="text" class="form-control" @click="showDate($event,'sDate')" v-model='sDate' readonly>
+					  <span class="input-group-addon" @click='sDate = ""'>
+					  	<i class='glyphicon glyphicon-remove'></i>
+					  </span>
+					  <span class="input-group-addon" @click="showDate($event,'sDate')">
+					  	<i class='glyphicon glyphicon-calendar'></i>
+					  </span>
+					</div>
+		    </div>
+		    <label class="col-sm-2 control-label">共享时间组件2</label>
+		    <div class="col-sm-4">
+		      <div class="input-group datetimepicker-container">
+					  <input type="text" class="form-control" @click="showDate($event,'eDate')" v-model='eDate' readonly>
+					  <span class="input-group-addon" @click='eDate = ""'>
+					  	<i class='glyphicon glyphicon-remove'></i>
+					  </span>
+					  <span class="input-group-addon" @click="showDate($event,'eDate')">
+					  	<i class='glyphicon glyphicon-calendar'></i>
+					  </span>
+					</div>
+		    </div>
+		  </div>
+		</form>
+		<form class="form-horizontal">
+		  <div class="form-group">
+		    <label class="col-sm-2 control-label">单独时间组件1</label>
+		    <div class="col-sm-4 posr">
+		    	<div class="input-group">
+					  <input type="text" class="form-control" @click="showSingleDate('sDate')" v-model='sDate' readonly>
+					  <span class="input-group-addon" @click='sDate = ""'>
+					  	<i class='glyphicon glyphicon-remove'></i>
+					  </span>
+					  <span class="input-group-addon" @click="showSingleDate('sDate')">
+					  	<i class='glyphicon glyphicon-calendar'></i>
+					  </span>
+					</div>
+					<v-datetimepicker ref='sDate' format='yyyy-MM-dd' init-left='15px'></v-datetimepicker>
+		    </div>
+		    <label class="col-sm-2 control-label">单独时间组件2</label>
+		    <div class="col-sm-4 posr">
+		      <div class="input-group">
+					  <input type="text" class="form-control" @click="showSingleDate('eDate')" v-model='eDate' readonly>
+					  <span class="input-group-addon" @click='eDate = ""'>
+					  	<i class='glyphicon glyphicon-remove'></i>
+					  </span>
+					  <span class="input-group-addon" @click="showSingleDate('eDate')">
+					  	<i class='glyphicon glyphicon-calendar'></i>
+					  </span>
+					</div>
+					<v-datetimepicker ref='eDate' format='yyyy-MM-dd' init-left='15px'></v-datetimepicker>
+		    </div>
+		  </div>
+		</form>
+	</div>
+	<h2>props</h2>
+	<v-table :columns="propColumns" :pagination='false' :init-front-page-data="propData"></v-table>
+	<h2>methods</h2>
+	<v-table :columns="methodsColumns" :pagination='false' :init-front-page-data="methodsData"></v-table>
+</div>

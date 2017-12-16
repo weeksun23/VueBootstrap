@@ -111,8 +111,13 @@ Vue.me = {
 					return el;
 				}
 			}else if(type == 'string'){
-		    if(el.classList.contains(vali)){
-		      return el;
+		    if(el.classList){
+		    	var clsArr = vali.split(",");
+		    	for(var i=0,ii;ii=clsArr[i++];){
+		    		if(el.classList.contains(ii)){
+		    			return el;
+		    		}
+		    	}
 		    }
 			}else{
 				throw new Error("vali参数非法");
@@ -132,5 +137,34 @@ Vue.me = {
 	    }
 	  }
 	  return target;
+	},
+	getElBox : function(el){
+		var offset = this.offsetEl(el);
+		return {
+			left : offset.left,
+			top : offset.top,
+			width : el.offsetWidth,
+			height : el.offsetHeight
+		}
 	}
 };
+(function(){
+	//获取元素的纵坐标 
+	function getTop(e){ 
+		var offset = e.offsetTop; 
+		if(e.offsetParent != null) offset += getTop(e.offsetParent); 
+		return offset; 
+	} 
+	//获取元素的横坐标 
+	function getLeft(e){ 
+		var offset = e.offsetLeft; 
+		if(e.offsetParent != null) offset += getLeft(e.offsetParent); 
+		return offset; 
+	}
+	Vue.me.offsetEl = function(el){
+		return {
+			left : getLeft(el),
+			top :getTop(el)
+		}
+	};
+})();

@@ -13,7 +13,8 @@ var navData = [{
     {title : 'accordion'},
     {title : "dialog"},
     {title : 'table'},
-    {title : 'loading'}
+    {title : 'loading'},
+    {title : 'datetimepicker'}
   ]
 }];
 var initDemoData = [];
@@ -72,6 +73,9 @@ function dealDemoHtml(html){
   }
   return div.innerHTML;
 }
+var comp = window.comp = new Vue({
+  el : "#comp"
+});
 var app = window.app = new Vue({
   el: '#app',
   data: {
