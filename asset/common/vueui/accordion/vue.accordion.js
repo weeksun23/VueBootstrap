@@ -30,6 +30,7 @@ function togglePanel(el,panel){
     el.selected = false;
     content.style.height = body.offsetHeight + 'px';
     content.classList.add('collapsing');
+    //reflow
     content.offsetHeight;
     content.style.height = '0px';
   }else{
@@ -39,7 +40,7 @@ function togglePanel(el,panel){
     content.style.height = body.offsetHeight + 'px';
   }
 }
-Vue.component('vaccordion', {
+Vue.component('v-accordion', {
   template: tpl,
   $lastSel : null,
   $lastSelPanel : null,
@@ -53,6 +54,14 @@ Vue.component('vaccordion', {
     multipleSel : {
       type : Boolean,
       default : false
+    },
+    onSelectPanel : {
+      type : Function,
+      default : function(){}
+    },
+    onUnSelectPanel : {
+      type : Function,
+      default : function(){}
     },
     onSelectItem : {
       type : Function,
@@ -78,11 +87,17 @@ Vue.component('vaccordion', {
         if(lastSel === el) {
           this.$options.$lastSel = null;
           this.$options.$lastSelPanel = null;
+          this.onUnSelectPanel(el);
           return;
         }
         togglePanel(el,panel);
         this.$options.$lastSel = el;
         this.$options.$lastSelPanel = panel;
+      }
+      if(el.selected){
+        this.onSelectPanel(el);
+      }else{
+        this.onUnSelectPanel(el);
       }
   	},
     transitionend : function(el,e){
@@ -129,9 +144,9 @@ Vue.component('vaccordion', {
       });
     },
     //根据text选取item
-    selectItemByText : function(text){
+    selectItemByTitle : function(title){
       return this.findItem(function(item,itemIndex,panel,panelIndex){
-        if(item.title === text){
+        if(item.title === title){
           this.curIndex = panelIndex;
           this.selectItem(item);
           return true;

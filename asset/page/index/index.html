@@ -18,7 +18,7 @@
 		</div>
 		<div class='posr' id='app'>
 			<div class='left'>
-				<vaccordion :init-data="initData" :on-select-item="onSelectItem" ref="nav"></vaccordion>
+				<v-accordion :init-data="initData" :on-select-item="onSelectItem" ref="nav"></v-accordion>
 			</div>
 			<div class='center' v-for="(demo,index) in demoData" v-html="demo.html" v-show="curIndex === index">
 			</div>

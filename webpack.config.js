@@ -9,7 +9,7 @@ var pageCss = new ExtractTextPlugin('[name].css');
 var commonCSS = new ExtractTextPlugin('common.css');
 // var businessPublicCss = new ExtractTextPlugin("[name].css");
 
-var entries = ["index",'ymqrcode'];
+var entries = ["index"];
 //是否发布
 var isRelease = process.env.NODE_ENV === 'production';
 var entryObj = {},
@@ -76,6 +76,7 @@ module.exports = {
   },
   plugins : webpackPlugins,
   devServer : {
+    disableHostCheck: true,
     port: 8083,
     // contentBase: './asset-release',
     hot: true,

@@ -1,0 +1,8 @@
+<div id="demo-table" class='demo'>
+	<p>
+		<button @click="addColumn" class='btn btn-default'>addColumn</button>
+		<button @click="removeColumn" class='btn btn-default'>removeColumn</button>
+	</p>
+	<v-table ref='table' :columns="columns" title="test" :init-front-page-data='frontPageData' :page-size-arr="pageSizeArr" 
+		:init-page-size="pageSize" :on-click-td-btn='onClickTdBtn'></v-table>
+</div>

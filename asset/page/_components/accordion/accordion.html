@@ -3,7 +3,7 @@
 	<h3>从initData属性初始化</h3>
 	<code>html:</code>
 	<pre class='demo-code' v-pre>
-		<vaccordion :init-data="initData"></vaccordion>
+		<v-accordion :init-data="initData"></v-accordion>
 	</pre>
 	<code>js:</code>
 	<pre class='demo-code' v-pre>
@@ -30,27 +30,24 @@
 	  }
 	</pre>
 	<code>结果:</code>
-	<vaccordion :init-data="initData"></vaccordion>
+	<v-accordion :init-data="initData" :on-select-panel="onSelectPanel"></v-accordion>
 	<h3>从html初始化</h3>
 	<code>html:</code>
 	<pre class='demo-code' v-pre>
-		<vaccordion>
+		<v-accordion>
 	    <div title='a1'><h2>testetst</h2></div>
 	    <div title='a2'><h2>f3f323e32e</h2><p>wfewwef</p><h3>fewg34h3</h3></div>
 	    <div title='a3'><h2>dfherhe</h2></div>
-	  </vaccordion>
+	  </v-accordion>
 	</pre>
 	<code>结果:</code>
-	<vaccordion>
+	<v-accordion>
 		<div title='a1'><h2>testetst</h2></div>
     <div title='a2'><h2>f3f323e32e</h2><p>wfewwef</p><h3>fewg34h3</h3></div>
     <div title='a3'><h2>dfherhe</h2></div>
-	</vaccordion>
-	<!-- 
-	<h2>配置项说明</h2>
-	<xmp :widget="@$attr"></xmp>
-	<xmp :widget="@$attr_data"></xmp>
-	<xmp :widget="@$attr_data_children"></xmp> -->
-	<!-- <hr> -->
-	<!-- <xmp :widget="@$method"></xmp> -->
+	</v-accordion>
+	<h2>props</h2>
+	<v-table :columns="propColumns" :pagination='false' :init-front-page-data="propData"></v-table>
+	<h2>methods</h2>
+	<v-table :columns="methodsColumns" :pagination='false' :init-front-page-data="methodsData"></v-table>
 </div>

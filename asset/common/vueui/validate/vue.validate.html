@@ -1,0 +1,4 @@
+<div :class="[{'has-error' : !isVali},cls]">
+	<slot></slot>
+	<div class='text-danger' v-show='!isVali'>{{message}}</div>
+</div>

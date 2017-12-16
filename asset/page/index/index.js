@@ -11,7 +11,9 @@ var navData = [{
   title : 'UI组件',
   children : [
     {title : 'accordion'},
-    {title : "dialog"}
+    {title : "dialog"},
+    {title : 'table'},
+    {title : 'loading'}
   ]
 }];
 var initDemoData = [];
@@ -70,12 +72,24 @@ function dealDemoHtml(html){
   }
   return div.innerHTML;
 }
-var app = new Vue({
+var app = window.app = new Vue({
   el: '#app',
   data: {
     initData : navData,
     demoData : initDemoData,
-    curIndex : -1
+    curIndex : -1,
+    attrColumns : [
+      {field : 'name',title : '名称'},
+      {field : 'type',title : '类型'},
+      {field : 'defaultVal',title : '默认值'},
+      {field : 'desc',title : '说明'}
+    ],
+    methodsColumns : [
+      {field : 'name',title : '名称'},
+      {field : 'params',title : '参数'},
+      {field : 'returnVal',title : '返回值'},
+      {field : 'desc',title : '说明'}
+    ]
   },
   methods : {
     dealHashChange : function(){

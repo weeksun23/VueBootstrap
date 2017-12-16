@@ -1,12 +1,5 @@
 var tpl = require("./vue.dialog.html");
-var defaultBtn = {
-  close : false,
-  theme : 'default',
-  handler : function(){},
-  text : "",
-  iconCls : ''
-};
-Vue.component('vdialog', {
+Vue.component('v-dialog', {
   template: tpl,
   computed : {
   	normalizedButtons : function(){
@@ -110,24 +103,31 @@ Vue.component('vdialog', {
 			this.isOpen = true;
 			modalBackDropVm.visible = true;
 			var vm = this;
-			//do reflow
-			// vm.$el.offsetWidth;
-			// modalBackDropVm.$el.offsetWidth;
-			setTimeout(function(){
-				vm.isIn = true;
-				modalBackDropVm.isIn = true;
-				//处理重叠窗口
-				var dgs = modalBackDropVm.$data.$curDialogs;
-				var len = dgs.length;
-				if(len > 0){
-					var last = dgs[len - 1];
-					last.zIndex = 1000;
-				}
-				dgs.push(vm);
-			},20);
+      Vue.nextTick(function(){
+        //do reflow
+        vm.$el.offsetWidth;
+        modalBackDropVm.$el.offsetWidth;
+        vm.isIn = true;
+        modalBackDropVm.isIn = true;
+        //处理重叠窗口
+        var dgs = modalBackDropVm.$data.$curDialogs;
+        var len = dgs.length;
+        if(len > 0){
+          var last = dgs[len - 1];
+          last.zIndex = 1000;
+        }
+        dgs.push(vm);
+      });
 		}
   }
 });
+var defaultBtn = Vue.component("v-dialog").defaultBtn = {
+  close : false,
+  theme : 'default',
+  handler : function(){},
+  text : "",
+  iconCls : ''
+};
 Vue.me.appendHTML(document.body,"<div id='modalBackDrop' class='modal-backdrop fade' "+
 	"v-bind:class='{in : isIn}' v-on:transitionend='transitionend' v-show='visible'></div>");
 var modalBackDropVm = new Vue({
