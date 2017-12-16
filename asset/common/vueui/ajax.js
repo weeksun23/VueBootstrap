@@ -15,24 +15,21 @@ function doAjax(url,param,callback,loadingVm,setting,method){
 		url : url,
 		data : param,
 		type : 'json',
-		error : function(){
+		error : function(req){
 			loadingVm && loadingVm.hide();
-			Vue.me.log('接收错误',url,arguments);
-			callback && callback({
-				code : -1,
-				desc : "服务器错误"
-			});
+			Vue.me.log('接收错误',url,req);
+			var text = req.responseText;
+			try{
+				var result = JSON.parse(text);
+				callback && callback(result);
+				return;
+			}catch(ex){}
+			callback && callback(req);
 		},
 		success : function(resp){
 			loadingVm && loadingVm.hide();
 			Vue.me.log("接收数据",url,resp);
-			try{
-				if(callback){
-					callback(resp);
-				}
-			}catch(ex){
-				Vue.me.log(ex);
-			}
+			callback && callback(null,resp);
 		}
 	},defaultSetting,setting);
 	setting.method = method;

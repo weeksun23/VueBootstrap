@@ -4,6 +4,7 @@
 	-moz-box-shadow: none;
 	-webkit-box-shadow:none;
 }
+.vue-table .table td{vertical-align: middle;}
 .vue-table.panel .panel-heading{border-width:1px 1px 0 1px;border-style: solid;}
 .vue-table .panel-body{padding:0;}
 .vue-table .table{margin-bottom:0}
@@ -24,11 +25,10 @@
 	width: 20px;height: 20px;
 }
 .vue-table-tr-parent > td:first-child{
-	position: relative;padding-left: 20px;cursor: pointer;
+	cursor: pointer;
 }
-.vue-table-ch-i{
-	display: block;position: absolute;left: 3px;top: 50%;
-	margin-top: -7px;
+.vue-table-ch-head>i,.vue-table-ch-head>span{
+	vertical-align: middle;
 }
 .vue-pagination{margin-top: 5px;}
 .vue-pagination>div>span{display: inline-block;}

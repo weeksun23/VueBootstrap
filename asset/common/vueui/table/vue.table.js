@@ -9,7 +9,7 @@ var defaultColumnObj = {
 	//标题
 	title : "",
 	//列宽度
-	width : '',
+	width : null,
 	//排序
 	sort : false,
 	checkbox : false,
@@ -115,30 +115,28 @@ function ajaxLoad(vmodel,page,obj){
 	Vue.me.mix(param,obj);
 	Vue.me.mix(vmodel.queryParams,param);
 	vmodel.queryParams[vmodel.pageNoKey]--;
-	Vue[vmodel.method.toUpperCase() === 'GET' ? 'ajaxGet' : 'ajaxPost'](vmodel.url,vmodel.queryParams,function(resp){
-		if(resp.code === 100){
-			var result = resp.result;
-			if(!result){
-				setEmptyData(vmodel);
-				return;
-			}
-			if(vmodel.loadFilter){
-				result = vmodel.loadFilter.call(vmodel,result);
-			}
-			var rowsData = result[vmodel.rowsKey];
-			initRowsData(rowsData);
-			vmodel.rows = rowsData;
-			vmodel.total = result[vmodel.totalKey];
-			vmodel.changeCurPage = vmodel.curPage = page;
-			updatePagination(vmodel);
-			vmodel.onLoadSuccess(result);	
-		}else{
-			Vue.me.toast("加载失败["+resp.desc+"]");
+	Vue[vmodel.method.toUpperCase() === 'GET' ? 'ajaxGet' : 'ajaxPost'](vmodel.url,vmodel.queryParams,function(err,resp){
+		if(err){
 			vmodel.rows = [];
 			vmodel.total = 0;
 			vmodel.changeCurPage = vmodel.curPage = 1;
 			updatePagination(vmodel);
-			vmodel.onLoadError(resp);
+			vmodel.onLoadError(err);
+		}else{
+			if(vmodel.loadFilter){
+				resp = vmodel.loadFilter.call(vmodel,resp);
+			}
+			vmodel.onLoadSuccess(resp);
+			if(!resp){
+				setEmptyData(vmodel);
+				return;
+			}
+			var rowsData = resp[vmodel.rowsKey];
+			initRowsData(rowsData);
+			vmodel.rows = rowsData;
+			vmodel.total = resp[vmodel.totalKey];
+			vmodel.changeCurPage = vmodel.curPage = page;
+			updatePagination(vmodel);
 		}
 	});
 }
@@ -210,16 +208,6 @@ Vue.component('v-table', {
 		}
 	},
 	methods : {
-		loadFrontPageData : function(data){
-			if(this.url){
-				throw new Error('table已定义url不能再加载前台分页数据');
-				return;
-			}
-			this.frontPageData = data;
-			this.total = data.length;
-			initRowsData(data);
-			dealFrontPageData(this,1);
-		},
 		clickTd : function(item,e,index,colIndex){
 			if(colIndex === 0 && item._parent){
 				var nextRow = this.rows[index + 1];
@@ -235,27 +223,9 @@ Vue.component('v-table', {
 					return true;
 				}
 			});
-
 		},
-		reload : function(){
-			loadDataByPage(this,this.curPage);
-		},
-		load : function(){
-			loadDataByPage(this,1);
-		},
-		toThePage : function(e){
+		toThePage : function(){
 			loadDataByPage(this,this.changeCurPage || 1);
-		},
-		toPage : function(e,p){
-			if(e.currentTarget.disabled) return;
-			if(typeof p == 'number'){
-				var page = this.curPage + p;
-			}else if(p == 'first'){
-				page = 1;
-			}else if(p == 'last'){
-				page = this.sumPage;
-			}
-			loadDataByPage(this,page);
 		},
 		sort : function(item){
 			if(item.sort){
@@ -312,11 +282,54 @@ Vue.component('v-table', {
 		hoverRow : function(e,action){
 			e.target.classList[action]("vue-table-tr-hover");
 		},
+		toPage : function(e,p){
+			if(e.currentTarget.disabled) return;
+			if(typeof p == 'number'){
+				var page = this.curPage + p;
+			}else if(p == 'first'){
+				page = 1;
+			}else if(p == 'last'){
+				page = this.sumPage;
+			}
+			loadDataByPage(this,page);
+		},
+		//******************方法
+		reload : function(){
+			loadDataByPage(this,this.curPage);
+		},
+		load : function(page){
+			loadDataByPage(this,page || 1);
+		},
 		getRow : function(index){
 			return this.rows[index];
 		},
 		getSelected : function(){
-			
+			var rows = this.rows;
+			for(var i=0,ii;ii=rows[i++];){
+				if(ii._selected){
+					return ii;
+				}
+			}
+			return null;
+		},
+		getSelections : function(){
+			var re = [];
+			for(var i=0,ii;ii=rows[i++];){
+				if(ii._selected){
+					re.push(ii);
+				}
+			}
+			return re;
+		},
+		loadFrontPageData : function(data){
+			if(this.url){
+				throw new Error('table已定义url不能再加载前台分页数据');
+				return;
+			}
+			this.frontPageData = data;
+			this.total = data.length;
+			initRowsData(data);
+			dealFrontPageData(this,1);
 		}
 	},
 	watch : {

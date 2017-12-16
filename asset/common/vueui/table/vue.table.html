@@ -23,10 +23,13 @@
 							<v-table :pagination='false' :init-front-page-data='item.children' :columns='columns' :title='item.title'></v-table>
 						</td>
 						<td v-if='!item.children || item.children.length === 0' v-for="(el,colIndex) in columns" :style='{width : el.width + "px"}' :title="showColumnTitle ? el.title : ''" :class="{'vue-table-checkbox' : el.checkbox}" @click="clickTd(item,$event,rowIndex,colIndex)">
-							<i v-if='item._parent && colIndex === 0' class='glyphicon vue-table-ch-i' :class="['glyphicon-chevron-' + (rows[rowIndex + 1]._show ? 'down' : 'right')]"></i>
 							<label v-if='el.checkbox'>
 								<input type='checkbox' v-model="item._selected">
 							</label>
+							<div v-else-if='item._parent && colIndex === 0' class='vue-table-ch-head'>
+								<i class='glyphicon' :class="['glyphicon-chevron-' + (rows[rowIndex + 1]._show ? 'down' : 'right')]"></i>
+								<span>{{item[el.field]}}</span>
+							</div>
 							<div v-else v-html="dealValue(item,el,rowIndex)" :style='el.style'></div>
 						</td>
 					</tr>
