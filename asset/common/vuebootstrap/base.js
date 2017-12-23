@@ -44,6 +44,8 @@ Vue.filter('date', function (value,format,unPaddingZero) {
     .replace("ss",unPaddingZero ? date.getSeconds() : paddingZero(date.getSeconds()));
 });
 Vue.me = {
+	//ajax请求数据处理函数
+	ajaxLoadFilter : null,
 	debug : true,
 	//空函数
 	noop : function(){},

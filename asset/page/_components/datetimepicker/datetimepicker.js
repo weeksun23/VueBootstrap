@@ -5,6 +5,8 @@ module.exports = {
 		new Vue({
 			el : "#demo-datetimepicker",
 			data : {
+				time1 : '',
+				time2 : '',
 				sDate : '',
 				eDate : '',
 				propColumns : app.attrColumns,
@@ -29,7 +31,7 @@ module.exports = {
 				},{
 					name : 'setToday',params : 'none',returnVal : 'none',desc : '将当前时间设置为时间组件的时间'
 				},{
-					name : 'open',params : 'HTMLElement,vmodel,key|vmodel,key',returnVal : 'none',desc : '打开时间组件'
+					name : 'open',params : 'HTMLElement(HTML元素，必须有一个class含datetimepicker-container的祖先元素，时间控件将相对该祖先元素定位显示，一般用于共享时间组件；若缺省该参数则控件直接显示，一般用于独享时间组件),vmodel,key|vmodel,key(vmodel[key]=格式化时间字符串)',returnVal : 'none',desc : '打开时间组件'
 				},{
 					name : 'setValue',params : 'date:时间对象',returnVal : 'none',desc : '设置指定时间'
 				},{
@@ -40,6 +42,13 @@ module.exports = {
 			},
 			methods : {
 				showDate : function(e,key){
+					if(key === 'time1'){
+						comp.format = 'yyyy-MM-dd hh:mm:ss';
+					}else if(key === 'time2'){
+						comp.format = 'yyyy-MM';
+					}else{
+						comp.format = 'yyyy-MM-dd';
+					}
 					comp.$refs.date.open(e.target,this,key);
 				},
 				showSingleDate : function(key){

@@ -9,7 +9,7 @@ var pageCss = new ExtractTextPlugin('[name].css');
 var commonCSS = new ExtractTextPlugin('common.css');
 // var businessPublicCss = new ExtractTextPlugin("[name].css");
 
-var entries = ["index"];
+var entries = ["index",'test'];
 //是否发布
 var isRelease = process.env.NODE_ENV === 'production';
 var entryObj = {},
@@ -22,7 +22,7 @@ entries.forEach(function(value){
     filename: value + '.html',    //生成的html存放路径，相对于 path
     template:'./asset/page/'+value+'/'+value+'.html',    //html模板路径
     inject:true,    //允许插件修改哪些内容，包括head与body
-    chunks:['common.js',value],
+    chunks:['vuebootstrap.js',value],
     minify : false
   }));
 });
@@ -33,7 +33,7 @@ webpackPlugins = webpackPlugins.concat([
   new webpack.HotModuleReplacementPlugin(),
   new CleanPlugin(['release',"build"]),
   new webpack.IgnorePlugin(/^xhr2$/),
-  new CommonsChunkPlugin("common.js")
+  new CommonsChunkPlugin("vuebootstrap.js")
 ]);
 if(isRelease){
   webpackPlugins = webpackPlugins.concat([
@@ -65,10 +65,10 @@ module.exports = {
     loaders: [
       { test : /(bootstrap)\.css$/,loader : commonCSS.extract('style', 'css')},
       { test : /(index|demo)\.css$/,loader : pageCss.extract('style', 'css')},
-      { test: /vueui.*\.css$/, loader: "style!css"},
+      { test: /vuebootstrap.*\.css$/, loader: "style!css"},
       // { test: /asset\/avalon\/.*\.css$/,loader: "style!css"},
       // { test: /\.css$/, loader: 'style!css'},
-      { test: /\.html$/,loader : 'html'},
+      { test: /\.html$/,loader : 'html',query : {minimize : false}},
       { test : /\.(woff|svg|eot|ttf)\??.*$/,loader:"url",query:{limit : 1,name : "fonts/[name].[ext]"}},
       { test : /\.(jpg|png|gif)\??.*$/,loader:"url",query:{limit : 1,name : "image/[name].[ext]"}},
       { test : /\.json$/,loader : "url",query:{limit : 1,name : "[name].json"}}

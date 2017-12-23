@@ -29,12 +29,38 @@
 					</div>
 		    </div>
 		  </div>
+		  <div class="form-group">
+		    <label class="col-sm-2 control-label">日期时间</label>
+		    <div class="col-sm-4 posr">
+		    	<div class="input-group datetimepicker-container">
+					  <input type="text" class="form-control" @click="showDate($event,'time1')" v-model='time1' readonly>
+					  <span class="input-group-addon" @click='time1 = ""'>
+					  	<i class='glyphicon glyphicon-remove'></i>
+					  </span>
+					  <span class="input-group-addon" @click="showDate($event,'time1')">
+					  	<i class='glyphicon glyphicon-calendar'></i>
+					  </span>
+					</div>
+		    </div>
+		    <label class="col-sm-2 control-label">只有年月</label>
+		    <div class="col-sm-4 posr">
+		      <div class="input-group datetimepicker-container">
+					  <input type="text" class="form-control" @click="showDate($event,'time2')" v-model='time2' readonly>
+					  <span class="input-group-addon" @click='time2 = ""'>
+					  	<i class='glyphicon glyphicon-remove'></i>
+					  </span>
+					  <span class="input-group-addon" @click="showDate($event,'time2')">
+					  	<i class='glyphicon glyphicon-calendar'></i>
+					  </span>
+					</div>
+		    </div>
+		  </div>
 		</form>
 		....
 		<!-- 共享模式下datetimepicker的相对定位父元素必须是body -->
 		<!-- comp父元素就是body -->
 		<div id='comp'>
-			<v-datetimepicker ref='date' format='yyyy-MM-dd'></v-datetimepicker>
+			<v-datetimepicker ref='date' :format='format'></v-datetimepicker>
 		</div>
 	</pre>
 	<h2>单独模式初始化</h2>
@@ -73,12 +99,29 @@
 	</pre>
 	<code>js:</code>
 	<pre class='demo-code'>
+		//index.js
+		var comp = window.comp = new Vue({
+		  el : "#comp",
+		  data : {
+		    format : 'yyyy-MM-dd'
+		  }
+		});
+		//
 		data : {
+			time1 : '',
+			time2 : '',
 			sDate : '',
 			eDate : ''
 		},
 		methods : {
 			showDate : function(e,key){
+				if(key === 'time1'){
+					comp.format = 'yyyy-MM-dd hh:mm:ss';
+				}else if(key === 'time2'){
+					comp.format = 'yyyy-MM';
+				}else{
+					comp.format = 'yyyy-MM-dd';
+				}
 				comp.$refs.date.open(e.target,this,key);
 			},
 			showSingleDate : function(key){
@@ -115,8 +158,32 @@
 					</div>
 		    </div>
 		  </div>
-		</form>
-		<form class="form-horizontal">
+		  <div class="form-group">
+		    <label class="col-sm-2 control-label">日期时间</label>
+		    <div class="col-sm-4 posr">
+		    	<div class="input-group datetimepicker-container">
+					  <input type="text" class="form-control" @click="showDate($event,'time1')" v-model='time1' readonly>
+					  <span class="input-group-addon" @click='time1 = ""'>
+					  	<i class='glyphicon glyphicon-remove'></i>
+					  </span>
+					  <span class="input-group-addon" @click="showDate($event,'time1')">
+					  	<i class='glyphicon glyphicon-calendar'></i>
+					  </span>
+					</div>
+		    </div>
+		    <label class="col-sm-2 control-label">只有年月</label>
+		    <div class="col-sm-4 posr">
+		      <div class="input-group datetimepicker-container">
+					  <input type="text" class="form-control" @click="showDate($event,'time2')" v-model='time2' readonly>
+					  <span class="input-group-addon" @click='time2 = ""'>
+					  	<i class='glyphicon glyphicon-remove'></i>
+					  </span>
+					  <span class="input-group-addon" @click="showDate($event,'time2')">
+					  	<i class='glyphicon glyphicon-calendar'></i>
+					  </span>
+					</div>
+		    </div>
+		  </div>
 		  <div class="form-group">
 		    <label class="col-sm-2 control-label">单独时间组件1</label>
 		    <div class="col-sm-4 posr">

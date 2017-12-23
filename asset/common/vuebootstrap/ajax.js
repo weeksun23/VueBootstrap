@@ -21,15 +21,26 @@ function doAjax(url,param,callback,loadingVm,setting,method){
 			var text = req.responseText;
 			try{
 				var result = JSON.parse(text);
+				if(Vue.me.ajaxLoadFilter){
+					result = Vue.me.ajaxLoadFilter(result);
+				}
 				callback && callback(result);
 				return;
 			}catch(ex){}
+			if(Vue.me.ajaxLoadFilter){
+				req = Vue.me.ajaxLoadFilter(req);
+			}
 			callback && callback(req);
 		},
 		success : function(resp){
 			loadingVm && loadingVm.hide();
 			Vue.me.log("接收数据",url,resp);
-			callback && callback(null,resp);
+			if(Vue.me.ajaxLoadFilter){
+				resp = Vue.me.ajaxLoadFilter(null,resp);
+				callback && callback(resp);
+			}else{
+				callback && callback(null,resp);
+			}
 		}
 	},defaultSetting,setting);
 	setting.method = method;

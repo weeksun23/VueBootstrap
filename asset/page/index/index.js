@@ -1,7 +1,7 @@
 require("../../lib/bootstrap/css/bootstrap.css");
 require("../../common/demo.css");
 require("./index.css");
-require("../../common/vueui/vueui");
+require("../../common/vuebootstrap/vuebootstrap");
 var navData = [{
   title : "起始",
   children : [
@@ -14,7 +14,8 @@ var navData = [{
     {title : "dialog"},
     {title : 'table'},
     {title : 'loading'},
-    {title : 'datetimepicker'}
+    {title : 'datetimepicker'},
+    {title : 'tree'}
   ]
 }];
 var initDemoData = [];
@@ -74,7 +75,10 @@ function dealDemoHtml(html){
   return div.innerHTML;
 }
 var comp = window.comp = new Vue({
-  el : "#comp"
+  el : "#comp",
+  data : {
+    format : 'yyyy-MM-dd'
+  }
 });
 var app = window.app = new Vue({
   el: '#app',
@@ -90,7 +94,14 @@ var app = window.app = new Vue({
     ],
     methodsColumns : [
       {field : 'name',title : '名称'},
-      {field : 'params',title : '参数'},
+      {field : 'params',title : '参数',formatter : function(v,r){
+        var arr = v.split("|");
+        var re = [];
+        for(var i=0,ii;ii=arr[i++];){
+          re.push("<p>"+ii+"</p>");
+        }
+        return re.join("");
+      }},
       {field : 'returnVal',title : '返回值'},
       {field : 'desc',title : '说明'}
     ]
