@@ -74,14 +74,15 @@ Vue.component("v-tree",{
 		}
 	},
 	methods : {
-		getRootNodeList : function(){
-			var result = this.nodeList;
+		getRoot : function(){
 			var target = this;
 			while(target.isRoot !== true){
 				target = target.$parent;
-				result = target.nodeList;
 			}
-			return result;
+			return target;
+		},
+		getRootNodeList : function(){
+			return this.getRoot().nodeList;
 		},
 		toggleOpenExpand : function(el){
 			if(!el.state) return;
@@ -97,11 +98,14 @@ Vue.component("v-tree",{
 		},
 		/****************************方法****************************/
 		toggleCheck : function(el,checked){
+			if(typeof el !== 'object'){
+				el = this.getNode(el).node;
+			}
 			toggleCheck(this,el,checked);
 		},
 		loadData : function(data){
 			eachNode(data);
-			this.nodeList = data;
+			Vue.set(this,'nodeList',data);
 		},
 		getNode : function(target){
 			var result = null;
@@ -132,6 +136,9 @@ Vue.component("v-tree",{
 		},
 		//展开或收缩
 		toggleState : function(state,el){
+			if(el !== undefined && typeof el !== 'object'){
+				el = this.getNode(el).node;
+			}
 			var vmodel = this;
 			if(el){
 				toggleElState(vmodel,el,state);
@@ -152,7 +159,7 @@ Vue.component("v-tree",{
 		},
 		//获取当前选中的节点
 		getSelected : function(){
-			return selectNode.curSelEl;
+			return this.getRoot().$options.curSelEl;
 		},
 		/*
 		移除指定节点
@@ -164,10 +171,10 @@ Vue.component("v-tree",{
 				if(item.loading) return;
 				var pArr = [];
 				getParents(vmodel.getRootNodeList(),item,pArr);
-				if(item === selectNode.curSelEl){
-					selectNode.curSelEl = null;
+				if(item === vmodel.$options.curSelEl){
+					vmodel.$options.curSelEl = null;
 				}
-				list.removeAt(i);
+				list.spice(i,1);
 				eachParentsCheck(pArr);
 			});
 		},
@@ -196,7 +203,8 @@ Vue.component("v-tree",{
 			}
 			if(target){
 				eachNode(data,null);
-				target.pushArray(data);
+				var params = [target.length,0].concat(data);
+				target.splice.apply(target,params);
 				if(el && !el.chLoaded){
 					el.chLoaded = true;
 				}
@@ -224,7 +232,7 @@ Vue.component('v-tree').loadFilter = defaultLoadFilter;
 //初始化节点属性
 function initNodeAttr(item){
 	if(!item.children){
-		item.children = [];
+		Vue.set(item,'children',[]);
 	}
 	//是否已加载子节点标志
 	Vue.set(item,'chLoaded',item.state === 'open');
@@ -325,7 +333,7 @@ function ajaxLoad(el,vmodel,func){
 		return;
 	}
 	el.loading = true;
-	Vue[this.method === 'GET' ? 'ajaxGet' : 'ajaxPost'](this.url,param,function(param1,param2){
+	Vue[vmodel.method === 'GET' ? 'ajaxGet' : 'ajaxPost'](vmodel.url,param,function(param1,param2){
 		var deal = function(ch){
 			if(callBackEl){
 				el.state = 'open';
@@ -338,13 +346,13 @@ function ajaxLoad(el,vmodel,func){
 				}else{
 					eachNode(ch);
 				}
-				el.children = ch;
+				Vue.set(el,'children',ch);
 				if(!el.chLoaded){
 					el.chLoaded = true;
 				}
 			}else{
 				eachNode(ch);
-				vmodel.nodeList = ch
+				Vue.set(vmodel,'nodeList',ch);
 				func && func();
 			}
 			vmodel.onLoadSuccess(ch,callBackEl);
@@ -460,8 +468,9 @@ function findNodeContent(target,func){
 	}
 }
 function selectNode(el,vmodel){
-	var curSelEl = selectNode.curSelEl;
-	if(vmodel.onBeforeSelect(el) === false){
+	var root = vmodel.getRoot();
+	var curSelEl = root.$options.curSelEl;
+	if(root.onBeforeSelect(el) === false){
 		return;
 	}
 	if(curSelEl){
@@ -469,5 +478,5 @@ function selectNode(el,vmodel){
 	}
 	if(curSelEl === el) return;
 	el.selected = true;
-	vmodel.onSelect(selectNode.curSelEl = el);
+	root.onSelect(root.$options.curSelEl = el);
 }

@@ -2,7 +2,7 @@
 	<h2>初始化</h2>
 	<code>html:</code>
 	<pre class='demo-code' v-pre>
-		<v-tree :node-list='nodeList' :checkbox='true'></v-tree>
+		<v-tree :node-list='nodeList' :checkbox='true' :on-select='onSelect' init-url='treedata.json'></v-tree>
 	</pre>
 	<code>js:</code>
 	<pre class='demo-code'>
@@ -11,8 +11,9 @@
 				el : "#demo-tree",
 				data : {
 					nodeList : [{
-						text : 'aaaaaa',
-						iconCls : 'glyphicon-euro'
+						text : '展开我异步加载数据',
+						//需要异步加载下一层数据的节点state必须为closed
+						state : 'closed'
 					},{
 						text : 'aaaaaa',
 						iconCls : 'glyphicon-euro'
@@ -53,7 +54,10 @@
 		}
 	</pre>
 	<code>结果:</code>
-	<v-tree :node-list='nodeList' :checkbox='true' :on-select='onSelect'></v-tree>
+	<p>
+		<button class='btn btn-default' @click="addNodes">添加节点</button>
+	</p>
+	<v-tree ref='tree' :node-list='nodeList' :checkbox='true' :on-select='onSelect' init-url='treedata.json'></v-tree>
 	<h2>props</h2>
 	<v-table :columns="propColumns" :pagination='false' :init-front-page-data="propData"></v-table>
 	<h2>methods</h2>

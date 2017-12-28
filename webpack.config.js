@@ -8,7 +8,7 @@ var CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
 var pageCss = new ExtractTextPlugin('[name].css');
 var commonCSS = new ExtractTextPlugin('common.css');
 // var businessPublicCss = new ExtractTextPlugin("[name].css");
-
+var copyWebpackPlugin = require('copy-webpack-plugin');
 var entries = ["index",'test'];
 //是否发布
 var isRelease = process.env.NODE_ENV === 'production';
@@ -19,6 +19,7 @@ entries.forEach(function(value){
   entryObj[value] = ["./asset/page/"+value+"/"+value+".js"];
   //入口html插件配置
   webpackPlugins.push(new HtmlWebpackPlugin({//根据模板插入css/js等生成最终HTML
+    favicon:'./asset/favicon.ico', //favicon存放路径
     filename: value + '.html',    //生成的html存放路径，相对于 path
     template:'./asset/page/'+value+'/'+value+'.html',    //html模板路径
     inject:true,    //允许插件修改哪些内容，包括head与body
@@ -33,7 +34,10 @@ webpackPlugins = webpackPlugins.concat([
   new webpack.HotModuleReplacementPlugin(),
   new CleanPlugin(['release',"build"]),
   new webpack.IgnorePlugin(/^xhr2$/),
-  new CommonsChunkPlugin("vuebootstrap.js")
+  new CommonsChunkPlugin("vuebootstrap.js"),
+  new copyWebpackPlugin([
+    { from: './asset/page/_components/tree/data.json',to : './treedata.json'}
+  ])
 ]);
 if(isRelease){
   webpackPlugins = webpackPlugins.concat([
