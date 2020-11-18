@@ -44,9 +44,9 @@ Vue.filter('date', function (value,format,unPaddingZero) {
     .replace("ss",unPaddingZero ? date.getSeconds() : paddingZero(date.getSeconds()));
 });
 Vue.me = {
+	debug : true,
 	//ajax请求数据处理函数
 	ajaxLoadFilter : null,
-	debug : true,
 	//空函数
 	noop : function(){},
 	//覆盖整个body的loadingVm，默认的加载效果展示
@@ -54,6 +54,7 @@ Vue.me = {
 	log : function(){
 		this.debug && console.log.apply(console,arguments);
 	},
+	//jquery extend
 	mix : function(){
 		var src, copy, name, options,
 	    target = arguments[0] || {},
@@ -156,7 +157,7 @@ Vue.me = {
 		var offset = e.offsetTop; 
 		if(e.offsetParent != null) offset += getTop(e.offsetParent); 
 		return offset; 
-	} 
+	}
 	//获取元素的横坐标 
 	function getLeft(e){ 
 		var offset = e.offsetLeft; 

@@ -1,45 +1,61 @@
-//webpack.config.js
-var webpack = require('webpack');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var OpenBrowserPlugin = require('open-browser-webpack-plugin');
-var CleanPlugin = require('clean-webpack-plugin');
-var CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
-var pageCss = new ExtractTextPlugin('[name].css');
-var commonCSS = new ExtractTextPlugin('common.css');
-// var businessPublicCss = new ExtractTextPlugin("[name].css");
-var copyWebpackPlugin = require('copy-webpack-plugin');
-var entries = ["index",'test'];
-//是否发布
+/*******************************是否发布/*******************************/
 var isRelease = process.env.NODE_ENV === 'production';
-var entryObj = {},
-  webpackPlugins = [];
-entries.forEach(function(value){
+/**********************************************************************/
+var webpack = require('webpack');
+var copyWebpackPlugin = require('copy-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const path = require('path');
+// var now = +new Date();
+var entries = [
+  
+];
+var entryObj = {
+  'vuebootstrap' : './src/index.js'
+},
+webpackPlugins = [],
+commonReactJsName = "commonReact",
+commonJsName = 'common';
+entries.forEach(function (value) {
   //入口JS
-  entryObj[value] = ["./asset/page/"+value+"/"+value+".js"];
+  entryObj[value] = ['./asset/business/' + value + '/' + value + '.js'];
   //入口html插件配置
-  webpackPlugins.push(new HtmlWebpackPlugin({//根据模板插入css/js等生成最终HTML
-    favicon:'./asset/favicon.ico', //favicon存放路径
-    filename: value + '.html',    //生成的html存放路径，相对于 path
-    template:'./asset/page/'+value+'/'+value+'.html',    //html模板路径
-    inject:true,    //允许插件修改哪些内容，包括head与body
-    chunks:['vuebootstrap.js',value],
-    minify : false
-  }));
+  webpackPlugins.push(
+    new HtmlWebpackPlugin({
+      //根据模板插入css/js等生成最终HTML
+      favicon: './asset/favicon.ico', //favicon存放路径
+      filename: value + '.html', //生成的html存放路径，相对于 path
+      template: './asset/business/' + value + '/' + value + '.html', //html模板路径
+      inject: true, //允许插件修改哪些内容，包括head与body
+      chunks: [commonJsName, value],
+      minify: false
+    })
+  );
 });
+// entryObj["react"] = ['./asset-react/index.js'];
+// webpackPlugins.push(
+//   new HtmlWebpackPlugin({
+//     favicon: './asset/favicon.ico', //favicon存放路径
+//     filename: "./react",
+//     template: "./asset-react/index.html",
+//     inject: true,
+//     chunks: [commonReactJsName, "react"],
+//     minify: false
+//   })
+// );
 webpackPlugins = webpackPlugins.concat([
-  commonCSS,
-  pageCss,
-   // 启动热替换
-  new webpack.HotModuleReplacementPlugin(),
-  new CleanPlugin(['release',"build"]),
-  new webpack.IgnorePlugin(/^xhr2$/),
-  new CommonsChunkPlugin("vuebootstrap.js"),
-  new copyWebpackPlugin([
-    { from: './asset/page/_components/tree/data.json',to : './treedata.json'}
-  ])
-]);
-if(isRelease){
+  // 启动热替换
+  // new webpack.HotModuleReplacementPlugin(),
+  new CleanWebpackPlugin(),
+  new webpack.IgnorePlugin(/^xhr2$/)
+  // new copyWebpackPlugin({
+  //   patterns: [
+  //     { from: './asset/music', to: './music' }
+  //   ]
+  // })
+])
+if (isRelease) {
   webpackPlugins = webpackPlugins.concat([
     new webpack.DefinePlugin({
       __DEV__: JSON.stringify(JSON.parse(process.env.DEBUG || 'false'))
@@ -50,48 +66,81 @@ if(isRelease){
       }
     }),
     new webpack.optimize.OccurenceOrderPlugin()
-  ]);
+  ])
 }
+// console.log(webpackPlugins);
 module.exports = {
-  resolve: {
-    alias: {
-      'vue': 'vue/dist/vue.js'
+  devtool: 'source-map',
+  mode: isRelease ? 'production' : 'development',
+  optimization: {
+    splitChunks: {
+      chunks: 'initial',
+      automaticNameDelimiter: '.',
+      cacheGroups: {
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          priority: 1
+        }
+      }
+    },
+    runtimeChunk: {
+      name: commonJsName
     }
   },
-  // devtool: 'source-map',
-  entry:  entryObj,
+  entry: entryObj,
   output: {
-    path : isRelease ? "./release" : "./build",
-    filename : "[name].js"
+    path: isRelease ? path.join(__dirname, './asset-release') : path.resolve(__dirname, 'asset-build'),
+    filename: '[name].build.js',
+    publicPath: '/'
     // chunkFilename : "/common/[name]/[name].[ext]"
   },
   module: {
-    loaders: [
-      { test : /(bootstrap)\.css$/,loader : commonCSS.extract('style', 'css')},
-      { test : /(index|demo)\.css$/,loader : pageCss.extract('style', 'css')},
-      { test: /vuebootstrap.*\.css$/, loader: "style!css"},
+    rules: [
+      {
+        test: /(base|bootstrap|antd)\.css$/,
+        use: [MiniCssExtractPlugin.loader, 'css-loader']
+      },
+      {
+        // test: /(asset[\\/]business|avalonui|asset[\\/]lib|business[\\/]common).*\.css$/, 
+        test: /\.css$/,
+        exclude: /(base|bootstrap|antd)\.css$/,
+        use: ['style-loader', 'css-loader']
+      },
+      {
+        test: /asset-react[\\/].*\.js$/,
+        use: ['babel-loader']
+      },
+      // {
+      //   test: /(avalonui|lib|business.{1}common).*\.css$/,
+      //   use : ['style-loader']
+      // },
+      // { test: /asset\/lib\/.*\.css$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader")},
       // { test: /asset\/avalon\/.*\.css$/,loader: "style!css"},
       // { test: /\.css$/, loader: 'style!css'},
-      { test: /\.html$/,loader : 'html',query : {minimize : false}},
-      { test : /\.(woff|svg|eot|ttf)\??.*$/,loader:"url",query:{limit : 1,name : "fonts/[name].[ext]"}},
-      { test : /\.(jpg|png|gif)\??.*$/,loader:"url",query:{limit : 1,name : "image/[name].[ext]"}},
-      { test : /\.json$/,loader : "url",query:{limit : 1,name : "[name].json"}}
-    ]
+      {
+        test: /\.html$/,
+        use: ['html-loader']
+      },
+      {
+        test: /\.(woff|svg|eot|ttf)\??.*$/,
+        use: ['file-loader?name=fonts/[name].[ext]']
+      },
+      {
+        test: /\.mp3$/,
+        use: ['file-loader?name=music/[name].[ext]']
+      },
+      {
+        test: /\.(jpg|png|gif)\??.*$/,
+        use: ['url-loader?limit=1&name=img/[name].[ext]']
+      }
+    ],
   },
-  plugins : webpackPlugins,
-  devServer : {
-    disableHostCheck: true,
-    port: 8083,
-    // contentBase: './asset-release',
-    hot: true,
-    host : "0.0.0.0",
-    historyApiFallback: true,
-    publicPath: "",
-    stats: {
-      colors: true
-    },
-    plugins: [
-      new webpack.HotModuleReplacementPlugin()
-    ]
+  plugins: webpackPlugins,
+  devServer: {
+    port: 8082,
+    contentBase: path.join(__dirname, './asset-build'),
+    hot: false,
+    host: '127.0.0.1',
+    open: false
   }
-};
+}

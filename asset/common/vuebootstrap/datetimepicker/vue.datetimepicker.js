@@ -230,9 +230,11 @@ Vue.component('v-datetimepicker',{
       this.isShow = false;
     },
     setToday : function(){
-      var now = new Date();
-      this.$options.$date = now;
-      this.setValue(now);
+      if(this.format.indexOf('dd') !== -1){
+        var now = new Date();
+        this.$options.$date = now;
+        this.setValue(now);
+      }
       var value = this.getValue();
       if(this.$options.$targetKey && this.$options.$target){
         this.$options.$target[this.$options.$targetKey] = value;

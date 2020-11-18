@@ -60,7 +60,9 @@
 	</div>
 	<div class='datetimepicker-btn text-right'>
 		<button type='button' class='btn btn-default btn-sm' @click="clear">清空</button>
-		<button type='button' class='btn btn-default btn-sm datetimepicker-btn-today' @click='setToday'>今天</button>
+		<button type='button' class='btn btn-default btn-sm datetimepicker-btn-today' @click='setToday'>
+			{{format.indexOf('dd') === -1 ? '确定' : '今天'}}
+		</button>
 		<button type='button' class='btn btn-default btn-sm' @click='isShow = false'>取消</button>
 	</div>
 </div>

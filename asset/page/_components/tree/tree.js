@@ -121,7 +121,7 @@ module.exports = {
 			},
 			methods : {
 				addNodes : function(){
-					this.$refs.tree.appendNodes([{text : '11'},{text : '22'}]);
+					this.$refs.tree.appendNodes([{text : 'test1'},{text : 'test2'}]);
 				},
 				onSelect : function(node){
 					console.log(node);
