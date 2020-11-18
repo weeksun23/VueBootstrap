@@ -12,7 +12,7 @@
 	      <div class='modal-body' v-bind:style="bodyStyle" v-html="content" v-if="content">
 	      </div>
 	      <div class="modal-footer" v-if='normalizedButtons && normalizedButtons.length > 0' v-bind:style="{'text-align' : btnAlign}">
-	        <button v-for='(btn,i) in normalizedButtons' type="button" class="btn" v-bind:class="'btn-' + btn.theme" v-on:click='clickBtn(btn)'>
+	        <button v-for='(btn,i) in normalizedButtons' :key='i' type="button" class="btn" :class="['btn-' + btn.theme]" v-on:click='clickBtn(btn)'>
 	          <i v-if='btn.iconCls' class='glyphicon ' v-bind:class='btn.iconCls'></i> {{btn.text}}
 	        </button>
 	      </div>
@@ -21,11 +21,15 @@
 	</div>
 </template>
 <script>
+	import {DomUtil} from 'vue-bootstrap/src/utils';
+	//所有dialog共享的遮罩层
+	let ModalBackDropVm = null;
 	export default {
-		name : 'VBDialog',
+		name : 'VbDialog',
 		computed : {
-	  	normalizedButtons : function(){
-	  		var buttons = this.buttons;
+	  	normalizedButtons(){
+				var buttons = this.buttons;
+			 	var defaultBtn = Vue.component(VBDialog.name).defaultBtn;
 	  		for(var i=0,ii;ii=buttons[i++];){
 					for(var j in defaultBtn){
 						if(ii[j] === undefined){
@@ -35,7 +39,7 @@
 	  		}
 	  		return buttons;
 	  	}
-	  },
+		},
 	  props : {
 	  	title : {
 	  		type : String,
@@ -75,8 +79,29 @@
 	  		type : String,
 	  		default : ''
 	  	}
-	  },
-	  data : function(){
+		},
+		beforeCreate(){
+			if(ModalBackDropVm === null){
+				DomUtil.appendHTML(document.body,"<div id='modalBackDrop' class='modal-backdrop fade' "+
+					"v-bind:class='{in : isIn}' v-on:transitionend='transitionend' v-show='visible'></div>");
+				ModalBackDropVm = new Vue({
+					el: '#modalBackDrop',
+					data: {
+						isIn : false,
+						visible : false,
+						$curDialogs : []
+					},
+					methods : {
+						transitionend : function(){
+							if(!this.isIn){
+								this.visible = false;
+							}
+						}
+					}
+				});
+			}
+		},
+	  data(){
 	  	return {
 	  		isOpen : false,
 		  	isIn : false,
@@ -92,14 +117,14 @@
 				if(this.onBeforeClose() === false || this.$isClosing) return;
 				this.isIn = false;
 				this.$isClosing = true;
-				var dgs = modalBackDropVm.$data.$curDialogs;
+				var dgs = ModalBackDropVm.$data.$curDialogs;
 				dgs.pop();
 				var len = dgs.length;
 				if(len > 0){
 					dgs[len - 1].zIndex = 1050;
 				}else{
 					document.body.classList.remove('modal-open');
-					modalBackDropVm.isIn = false;
+					ModalBackDropVm.isIn = false;
 				}
 				this.onClose();
 	  	},
@@ -123,16 +148,16 @@
 				if(this.onBeforeOpen() === false) return;
 				document.body.classList.add("modal-open");
 				this.isOpen = true;
-				modalBackDropVm.visible = true;
+				ModalBackDropVm.visible = true;
 				var vm = this;
 	      Vue.nextTick(function(){
 	        //do reflow
 	        vm.$el.offsetWidth;
-	        modalBackDropVm.$el.offsetWidth;
+	        ModalBackDropVm.$el.offsetWidth;
 	        vm.isIn = true;
-	        modalBackDropVm.isIn = true;
+	        ModalBackDropVm.isIn = true;
 	        //处理重叠窗口
-	        var dgs = modalBackDropVm.$data.$curDialogs;
+	        var dgs = ModalBackDropVm.$data.$curDialogs;
 	        var len = dgs.length;
 	        if(len > 0){
 	          var last = dgs[len - 1];

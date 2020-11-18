@@ -1,4 +1,16 @@
-//dom相关操作帮助类
+//dom相关操作工具类
+//获取元素的纵坐标 
+function getTop(e){ 
+	var offset = e.offsetTop; 
+	if(e.offsetParent != null) offset += getTop(e.offsetParent); 
+	return offset; 
+}
+//获取元素的横坐标 
+function getLeft(e){ 
+	var offset = e.offsetLeft; 
+	if(e.offsetParent != null) offset += getLeft(e.offsetParent); 
+	return offset; 
+}
 export default {
 	appendHTML(el,htmlStr){
 		var div = document.createElement("div");
@@ -17,7 +29,7 @@ export default {
 	  return first;
 	},
 	//向上遍历目标元素的所有祖先元素 直到找到class含vali或者vali()返回true并返回
-	findParentByCls(el,vali){
+	findTargetParent(el,vali){
 		var type = typeof vali;
 		while(el){
 			if(type == 'function'){
@@ -42,5 +54,20 @@ export default {
 	    el = el.parentNode;
 	  }
 	  return null;
+	},
+	offsetEl(el){
+		return {
+			left : getLeft(el),
+			top :getTop(el)
+		}
+	},
+	getElBox(el){
+		var offset = this.offsetEl(el);
+		return {
+			left : offset.left,
+			top : offset.top,
+			width : el.offsetWidth,
+			height : el.offsetHeight
+		}
 	}
 }

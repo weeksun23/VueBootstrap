@@ -1,5 +1,5 @@
 {
-  "name": "vuebootstrap",
+  "name": "vue-bootstrap",
   "version": "1.0.0",
   "description": "vue bootstrap",
   "main": "index.js",
@@ -26,17 +26,16 @@
     "html-webpack-skip-assets-plugin": "0.0.2",
     "mini-css-extract-plugin": "^0.10.0",
     "style-loader": "^1.2.1",
+    "terser-webpack-plugin": "^5.0.3",
     "url-loader": "^4.1.0",
     "vue-loader": "^15.9.5",
-    "webpack": "^4.44.1",
+    "vue-template-compiler": "^2.6.12",
+    "webpack": "^4.44.2",
     "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.11.0",
-    "vue-loader": "^15.9.5"
+    "webpack-dev-server": "^3.11.0"
   },
   "scripts": {
-    "dev": "webpack-dev-server",
-    "build": "webpack",
-    "deploy": "set NODE_ENV=production&&webpack -p --progress --colors"
+    "dist": "webpack --config build/webpack.conf.js"
   },
   "repository": {
     "type": "git",
