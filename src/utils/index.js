@@ -1,2 +1,4 @@
-import dom from './dom';
-export const DomUtil = dom;
+import DomUtil from './dom';
+export {
+	DomUtil
+}

@@ -35,7 +35,8 @@
     "webpack-dev-server": "^3.11.0"
   },
   "scripts": {
-    "dist": "webpack --config build/webpack.conf.js"
+    "dist": "webpack --config build/webpack.conf.js",
+    "dev": "webpack-dev-server --config build/webpack.conf.examples.js"
   },
   "repository": {
     "type": "git",

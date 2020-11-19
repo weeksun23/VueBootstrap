@@ -24,12 +24,12 @@
 	import {DomUtil} from 'vue-bootstrap/src/utils';
 	//所有dialog共享的遮罩层
 	let ModalBackDropVm = null;
-	export default {
+	let Dialog = {
 		name : 'VbDialog',
 		computed : {
 	  	normalizedButtons(){
 				var buttons = this.buttons;
-			 	var defaultBtn = Vue.component(VBDialog.name).defaultBtn;
+			 	var defaultBtn = Dialog.Vue.component(Dialog.name).defaultBtn;
 	  		for(var i=0,ii;ii=buttons[i++];){
 					for(var j in defaultBtn){
 						if(ii[j] === undefined){
@@ -84,7 +84,7 @@
 			if(ModalBackDropVm === null){
 				DomUtil.appendHTML(document.body,"<div id='modalBackDrop' class='modal-backdrop fade' "+
 					"v-bind:class='{in : isIn}' v-on:transitionend='transitionend' v-show='visible'></div>");
-				ModalBackDropVm = new Vue({
+				ModalBackDropVm = new Dialog.Vue({
 					el: '#modalBackDrop',
 					data: {
 						isIn : false,
@@ -150,7 +150,7 @@
 				this.isOpen = true;
 				ModalBackDropVm.visible = true;
 				var vm = this;
-	      Vue.nextTick(function(){
+	      this.$nextTick(function(){
 	        //do reflow
 	        vm.$el.offsetWidth;
 	        ModalBackDropVm.$el.offsetWidth;
@@ -167,5 +167,6 @@
 	      });
 			}
 	  }
-	}
+	};
+	export default Dialog;
 </script>
