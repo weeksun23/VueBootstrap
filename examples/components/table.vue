@@ -123,7 +123,7 @@ methods : {
 					children : [{
 						name : 'title',type : 'String',defaultVal : "''",desc : '列标题'
 					},{
-						name : 'title',type : 'String',defaultVal : "''",desc : '字段名'
+						name : 'field',type : 'String',defaultVal : "''",desc : '字段名'
 					},{
 						name : 'formatter',type : 'String|Function',defaultVal : "空函数",desc : '字段值格式化函数'
 					},{
