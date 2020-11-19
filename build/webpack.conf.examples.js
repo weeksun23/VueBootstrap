@@ -15,13 +15,15 @@ const config = require('./config');
 var entryObj = {},
   webpackPlugins = [],
   commonJsName = 'common';
-
 webpackPlugins.push(
   new HtmlWebpackPlugin({
     //根据模板插入css/js等生成最终HTML
-    filename: 'index.html', //生成的html存放路径，相对于 path
-    template: path.join(rootPath, './examples/index.html'), //html模板路径
-    inject: true, //允许插件修改哪些内容，包括head与body
+    favicon: path.join(rootPath, './examples/favicon.ico'),
+    //生成的html存放路径，相对于 path
+    filename: 'index.html', 
+    template: path.join(rootPath, './examples/index.html'),
+    //允许插件修改哪些内容，包括head与body
+    inject: true, 
     chunks: [commonJsName, 'index'],
     minify: false
   })

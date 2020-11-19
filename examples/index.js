@@ -13,23 +13,36 @@ hljs.registerLanguage('xml', xml);
 Vue.use(hljs.vuePlugin);
 //examples
 import Dialog from './components/dialog';
+import Table from './components/table';
 Vue.use(VueBootstrap);
 Vue.use(VueRouter);
 const routes = [
-	{path : "/component/about",component : {template : `<div>VueBootstrap,基于Bootstrap的Vue Ui框架</div>`}},
-	{path : "/component/dialog",component : Dialog}
+	{name : 'about',path : "/component/about",component : {template : `<div>VueBootstrap,基于Bootstrap的Vue Ui框架</div>`}},
+	{name : 'dialog',path : "/component/dialog",component : Dialog},
+	{name : 'table',path : "/component/table",component : Table},
 ];
 const router = new VueRouter({
   routes
 });
-window.formatCode = function(str){
-	return str.replace(/\t/g,'  ');
-};
-new Vue({
+router.beforeEach((to, from, next) => {
+  if(to.name === null){
+  	next({ name: 'about' })
+  }else{
+  	next();
+  }
+});
+const app = new Vue({
 	router,
 	el : "#app",
 	data : {
+		curPage : ''
 	},
 	methods : {
+	},
+	mounted(){
+		this.curPage = this.$route.name;
 	}
+});
+router.afterEach((to, from) => {
+	app.curPage = to.name;
 });

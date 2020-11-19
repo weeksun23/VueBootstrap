@@ -19,22 +19,23 @@
 		<button class='btn btn-default' @click="showHtmlDialog">从html初始化的dialog</button>
 		<button class='btn btn-default' @click="showJsDialog">从js初始化的dialog</button>
 		<h2>props</h2>
-		<!-- 
-		<v-table :columns="propColumns" :pagination='false' :init-front-page-data="propData"></v-table>-->
+		<vb-table :columns="propColumns" :pagination='false' :init-front-page-data="propData"></vb-table>
 		<h2>methods</h2>
-		<!-- 
-		<v-table :columns="methodsColumns" :pagination='false' :init-front-page-data="methodsData"></v-table>-->
+		<vb-table :columns="methodsColumns" :pagination='false' :init-front-page-data="methodsData"></vb-table>
 	</div>
 </template>
 <script>
+	import Util from '../util';
 	export default{
 		data(){
 			return {
 				htmlCode : 
-formatCode(`<vb-dialog ref='htmlDialog' title="htmlDialog">
+Util.formatCode(`<vb-dialog ref='htmlDialog' title="htmlDialog">
   <h1>wefwefwef</h1><h1>wefwefwef</h1><h1>wefwefwef</h1><h1>wefwefwef</h1>
   <p>
-  	<button class='btn btn-primary' v-on:click='$refs.insideDialog.open()'>打开新的dialog</button>
+  	<button class='btn btn-primary' v-on:click='$refs.insideDialog.open()'>
+  		打开新的dialog
+  	</button>
   </p>
 </vb-dialog>
 <vb-dialog ref='insideDialog' title='嵌套dialog' :buttons="insideDialogBtns">
@@ -42,7 +43,7 @@ formatCode(`<vb-dialog ref='htmlDialog' title="htmlDialog">
 </vb-dialog>
 <vb-dialog ref='jsDialog' title='jsDialog' content='<h1>rr444rrr</h1><h2>regergrg</h2>' :buttons="buttons"></vb-dialog>`),
 			  jsCode : 
-formatCode(`data : {
+Util.formatCode(`data : {
 	buttons : [{text : 'ok',close : true}],
 	insideDialogBtns : [{
 		text : '取消',
@@ -76,7 +77,7 @@ methods : {
 						this.close();
 					}
 				}],
-				propColumns : app.attrColumns,
+				propColumns : Util.getAttrColumns(),
 				propData : [{
 					name : 'title',type : 'String',defaultVal : "''",desc : '表格标题'
 				},{
@@ -108,7 +109,7 @@ methods : {
 				},{
 					name : 'onOpen',type : 'Function',defaultVal : "空函数",desc : '打开窗口事件，打开动画结束后触发'
 				}],
-				methodsColumns : app.methodsColumns,
+				methodsColumns : Util.getMethodsColumns(),
 				methodsData : [{
 					name : 'open',params : 'none',returnVal : 'none',desc : '打开窗口'
 				},{

@@ -20,7 +20,7 @@
 				<tbody>
 					<tr v-for="(item,rowIndex) in rows" :class="{'vue-table-tr-selected':item._selected,'vue-table-tr-parent' : item._parent}" @click='toggleSelect(item,$event,rowIndex)' @mouseenter="hoverRow($event,'add')" @mouseleave="hoverRow($event,'remove')" v-show='!item.children || item.children.length === 0 || item._show'>
 						<td v-if='item.children && item.children.length > 0' :colspan="columns.length">
-							<v-table :pagination='false' :init-front-page-data='item.children' :columns='columns' :title='item.title'></v-table>
+							<vb-table :pagination='false' :init-front-page-data='item.children' :columns='columns' :title='item.title'></vb-table>
 						</td>
 						<td v-if='!item.children || item.children.length === 0' v-for="(el,colIndex) in columns" :style='{width : el.width + "px"}' :title="showColumnTitle ? el.title : ''" :class="{'vue-table-checkbox' : el.checkbox}" @click="clickTd(item,$event,rowIndex,colIndex)">
 							<label v-if='el.checkbox'>

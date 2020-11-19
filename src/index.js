@@ -1,7 +1,7 @@
 import Dialog from './components/dialog';
 import Table from './components/table';
 const components = [
-  Dialog
+  Dialog,Table
 ];
 const install = function(Vue) {
   components.forEach(component => {
@@ -14,5 +14,6 @@ if (typeof window !== 'undefined' && window.Vue) {
 export default {
   version : '1.0.0',
   install,
-  Dialog
+  Dialog,
+  Table
 }
