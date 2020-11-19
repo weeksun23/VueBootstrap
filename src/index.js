@@ -1,4 +1,5 @@
 import Dialog from './components/dialog';
+import Table from './components/table';
 const components = [
   Dialog
 ];

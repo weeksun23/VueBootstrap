@@ -1,0 +1,46 @@
+.vue-table.panel{
+	border: 0;position: relative;
+	box-shadow:none;margin-bottom: 0;
+	-moz-box-shadow: none;
+	-webkit-box-shadow:none;
+}
+.vue-table .table td{vertical-align: middle;}
+.vue-table.panel .panel-heading{border-width:1px 1px 0 1px;border-style: solid;}
+.vue-table .panel-body{padding:0;}
+.vue-table .table{margin-bottom:0}
+.vue-table .thead{background-color: #fff;}
+.vue-table .table-responsive{margin-bottom: 0;position: relative;}
+.vue-table .table-responsive th{padding: 0;}
+.vue-table .table-responsive th>div{padding: 8px;position: relative;}
+.vue-table .table-responsive.vue-table-nowrap{white-space: nowrap;}
+.vue-table h2{margin:0;padding:20px 0;border:1px solid #ddd;border-top:0}
+.vue-table .table-responsive .vue-table-tr-hover{background-color: #eee}
+.vue-table .table-responsive .vue-table-th-hover{background-color: #e2e2e2}
+.vue-table .table-responsive .vue-table-tr-selected{background-color: #FAF5B4}
+.vue-table-checkbox{width: 50px;text-align: center;}
+.vue-table-checkbox label{
+	display: block;
+}
+.vue-table-checkbox input{
+	width: 20px;height: 20px;
+}
+.vue-table-tr-parent > td:first-child{
+	cursor: pointer;
+}
+.vue-table-ch-head>i,.vue-table-ch-head>span{
+	vertical-align: middle;
+}
+.vue-pagination{margin-top: 5px;}
+.vue-pagination>div>span{display: inline-block;}
+.vue-pagination .form-control{display: inline-block;width: auto;}
+.vue-pagination input.form-control{vertical-align: middle;}
+.vue-pagination .glyphicon:hover{background-color: #e2e2e2}
+.vue-pagination .page{width: 80px}
+@media (max-width: 570px) {
+	.vue-pagination .pull-right{display: none;}
+}
+@media (max-width: 340px) {
+	.vue-pagination .vue-pagination-first,
+	.vue-pagination .vue-pagination-last{display: none;}
+}
+.thead-fix{position: fixed;top: 0;}

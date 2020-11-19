@@ -17,6 +17,9 @@ module.exports = {
     extensions: ['.js', '.vue', '.json'],
     alias: config.alias
   },
+  externals : {
+    vue : config.vueExternals
+  },
   module: {
     rules: [
       {
@@ -26,6 +29,10 @@ module.exports = {
       {
         test: /\.js$/,
         use: ['babel-loader']
+      },
+      {
+        test: /\.html$/,
+        use: ['html-loader']
       },
       {
         test: /\.vue$/,

@@ -85,12 +85,12 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /(base|bootstrap)\.css$/,
+        test: /(base|bootstrap|index)\.css$/,
         use: [MiniCssExtractPlugin.loader, 'css-loader']
       },
       {
         test: /\.css$/,
-        exclude: /(base|bootstrap)\.css$/,
+        exclude: /(base|bootstrap|index)\.css$/,
         use: ['style-loader', 'css-loader']
       },
       {

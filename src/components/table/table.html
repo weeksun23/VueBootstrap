@@ -1,0 +1,65 @@
+<div class='panel panel-default vue-table'>
+	<div class="panel-heading" v-if='title'>
+		<h3 class="panel-title" v-html="title"></h3>
+	</div>
+	<div class="panel-body">
+		<div class='table-responsive' :class='{"vue-table-nowrap" : nowrap}'>
+			<table class="table" :class='{"table-striped" : striped,"table-bordered" : border}'>
+				<thead>
+					<tr>
+						<th v-for="el in columns" :style="{width:el.width + 'px'}" @click='sort(el)' @mouseenter="hoverTh($event,'add')" @mouseleave="hoverTh($event,'remove')">
+							<div>
+								{{el.title}}
+								<span class='pull-right' v-if='el.sort' v-show='el.sortOrder'>
+									<i class='glyphicon' :class="['glyphicon-triangle-' + el.sortOrder]"></i>
+								</span>
+							</div>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="(item,rowIndex) in rows" :class="{'vue-table-tr-selected':item._selected,'vue-table-tr-parent' : item._parent}" @click='toggleSelect(item,$event,rowIndex)' @mouseenter="hoverRow($event,'add')" @mouseleave="hoverRow($event,'remove')" v-show='!item.children || item.children.length === 0 || item._show'>
+						<td v-if='item.children && item.children.length > 0' :colspan="columns.length">
+							<v-table :pagination='false' :init-front-page-data='item.children' :columns='columns' :title='item.title'></v-table>
+						</td>
+						<td v-if='!item.children || item.children.length === 0' v-for="(el,colIndex) in columns" :style='{width : el.width + "px"}' :title="showColumnTitle ? el.title : ''" :class="{'vue-table-checkbox' : el.checkbox}" @click="clickTd(item,$event,rowIndex,colIndex)">
+							<label v-if='el.checkbox'>
+								<input type='checkbox' v-model="item._selected">
+							</label>
+							<div v-else-if='item._parent && colIndex === 0' class='vue-table-ch-head'>
+								<i class='glyphicon' :class="['glyphicon-chevron-' + (rows[rowIndex + 1]._show ? 'down' : 'right')]"></i>
+								<span>{{item[el.field]}}</span>
+							</div>
+							<div v-else v-html="dealValue(item,el,rowIndex)" :style='el.style'></div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<h2 v-show='!rows || total === 0 || rows.length === 0' class="text-muted text-center">暂无数据</h2>
+	</div>
+	<div v-if='pagination' class='vue-pagination clearfix'>
+		<div class='pull-left' onselectstart='return false'>
+			<button class='btn btn-default vue-pagination-first' type='button' :disabled="curPage <= 1" @click="toPage($event,'first')">
+				<i class='glyphicon glyphicon-backward'></i>
+			</button>
+			<button class='btn btn-default' type='button' :disabled="curPage <= 1" @click='toPage($event,-1)'>
+				<i class='glyphicon glyphicon-chevron-left'></i>
+			</button>
+			<input class='form-control page' placeholder='页数' v-model.number='changeCurPage' @keydown.enter='toThePage'>
+			<span>共{{sumPage}}页</span>
+			<button class='btn btn-default' type='button' :disabled="curPage >= sumPage" @click='toPage($event,1)'>
+				<i class='glyphicon glyphicon-chevron-right'></i>
+			</button>
+			<button class='btn btn-default vue-pagination-last' type='button' :disabled="curPage >= sumPage" @click="toPage($event,'last')">
+				<i class='glyphicon glyphicon-forward'></i>
+			</button>
+		</div>
+		<div class='pull-right'>
+			<span>当前第{{curPage}}页,{{start}}~{{end}}条,共{{total}}条</span>
+			<select class='form-control' v-model='pageSize'>
+				<option v-for='el in pageSizeArr' :value='el'>{{el}}</option>
+			</select>
+		</div>
+	</div>
+</div>
