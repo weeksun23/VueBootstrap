@@ -25,12 +25,20 @@
 	import Vue from 'vue';
 	//所有dialog共享的遮罩层
 	let ModalBackDropVm = null;
-	let Dialog = {
+	const defaultBtnOptions = {
+		close : false,
+    theme : 'default',
+    handler : function(){},
+    text : "",
+    iconCls : ''
+	};
+	export default {
 		name : 'VbDialog',
+		defaultBtnOptions,
 		computed : {
 	  	normalizedButtons(){
 				var buttons = this.buttons;
-			 	var defaultBtn = Vue.component(Dialog.name).defaultBtn;
+			 	var defaultBtn = this.$options.defaultBtnOptions;
 	  		for(var i=0,ii;ii=buttons[i++];){
 					for(var j in defaultBtn){
 						if(ii[j] === undefined){
@@ -168,6 +176,5 @@
 	      });
 			}
 	  }
-	};
-	export default Dialog;
+	}
 </script>

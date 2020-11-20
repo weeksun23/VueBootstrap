@@ -6,7 +6,7 @@
 		<code>js:</code>
 		<highlightjs language='javascript' :code="jsCode"/>
 		<code>结果:</code>
-		<vb-dialog ref='htmlDialog' title="htmlDialog">
+		<vb-dialog ref='htmlDialog' title="htmlDialog" @on-before-open="onBeforeOpen">
 	    <h1>wefwefwef</h1><h1>wefwefwef</h1><h1>wefwefwef</h1><h1>wefwefwef</h1>
 	    <p>
 	    	<button class='btn btn-primary' @click='$refs.insideDialog.open()'>打开新的dialog</button>
@@ -22,6 +22,8 @@
 		<vb-table :columns="propColumns" :pagination='false' :init-front-page-data="propData"></vb-table>
 		<h2>methods</h2>
 		<vb-table :columns="methodsColumns" :pagination='false' :init-front-page-data="methodsData"></vb-table>
+		<h2>其它</h2>
+		
 	</div>
 </template>
 <script>
@@ -81,7 +83,7 @@ methods : {
 				propData : [{
 					name : 'title',type : 'String',defaultVal : "''",desc : '表格标题'
 				},{
-					name : 'buttons',type : 'Array',defaultVal : '[]',desc : '按钮数组',
+					name : 'buttons',type : 'Array',defaultVal : '[]',desc : '对话框按钮组',
 					children_title : '按钮项说明',
 					children : [{
 						name : 'close',type : 'boolean',defaultVal : 'false',desc : '点击按钮后是否自动关闭窗口'
@@ -123,6 +125,10 @@ methods : {
 			},
 			showJsDialog : function(){
 				this.$refs.jsDialog.open();
+			},
+			onBeforeOpen : function(e){
+				console.log(e);
+				return false;
 			}
 		}
 	}

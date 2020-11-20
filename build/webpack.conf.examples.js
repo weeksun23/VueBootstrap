@@ -18,7 +18,7 @@ var entryObj = {},
 webpackPlugins.push(
   new HtmlWebpackPlugin({
     //根据模板插入css/js等生成最终HTML
-    favicon: path.join(rootPath, './examples/favicon.ico'),
+    // favicon: path.join(rootPath, './examples/favicon.ico'),
     //生成的html存放路径，相对于 path
     filename: 'index.html', 
     template: path.join(rootPath, './examples/index.html'),
