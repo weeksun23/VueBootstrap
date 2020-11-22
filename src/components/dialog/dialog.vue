@@ -22,9 +22,8 @@
 </template>
 <script>
 	import {DomUtil} from 'vue-bootstrap/src/utils';
+	import Modal from 'vue-bootstrap/src/components/modal';
 	import Vue from 'vue';
-	//所有dialog共享的遮罩层
-	let ModalBackDropVm = null;
 	const defaultBtnOptions = {
 		close : false,
     theme : 'default',
@@ -50,9 +49,13 @@
 	  	}
 		},
 	  props : {
-	  	title : {
+	  	initTitle : {
 	  		type : String,
 	  		default : ""
+	  	},
+	  	initContent : {
+	  		type : String,
+	  		default : ''
 	  	},
 	  	onBeforeClose : {
 	  		type : Function,
@@ -76,10 +79,6 @@
 	  			return [];
 	  		}
 	  	},
-	  	content : {
-	  		type : String,
-	  		default : ''
-	  	},
 	  	bodyStyle : {
 	  		type : String,
 	  		default : ''
@@ -90,32 +89,16 @@
 	  	}
 		},
 		beforeCreate(){
-			if(ModalBackDropVm === null){
-				DomUtil.appendHTML(document.body,"<div id='modalBackDrop' class='modal-backdrop fade' "+
-					"v-bind:class='{in : isIn}' v-on:transitionend='transitionend' v-show='visible'></div>");
-				ModalBackDropVm = new Vue({
-					el: '#modalBackDrop',
-					data: {
-						isIn : false,
-						visible : false,
-						$curDialogs : []
-					},
-					methods : {
-						transitionend : function(){
-							if(!this.isIn){
-								this.visible = false;
-							}
-						}
-					}
-				});
-			}
+			Modal.init();
 		},
 	  data(){
 	  	return {
 	  		isOpen : false,
 		  	isIn : false,
 		  	zIndex : null,
-		 		$isClosing : false
+				$isClosing : false,
+				title : this.initTitle,
+				content : this.initContent
 			};
 	  },
 	  methods : {
@@ -126,16 +109,8 @@
 				if(this.onBeforeClose() === false || this.$isClosing) return;
 				this.isIn = false;
 				this.$isClosing = true;
-				var dgs = ModalBackDropVm.$data.$curDialogs;
-				dgs.pop();
-				var len = dgs.length;
-				if(len > 0){
-					dgs[len - 1].zIndex = 1050;
-				}else{
-					document.body.classList.remove('modal-open');
-					ModalBackDropVm.isIn = false;
-				}
 				this.onClose();
+				Modal.pop();
 	  	},
 	  	transitionend : function(e){
 	  		//窗口打开或结束后事件
@@ -155,24 +130,12 @@
 	  	},
 	  	open : function(){
 				if(this.onBeforeOpen() === false) return;
-				document.body.classList.add("modal-open");
+				Modal.push(this);
 				this.isOpen = true;
-				ModalBackDropVm.visible = true;
-				var vm = this;
-	      this.$nextTick(function(){
+	      this.$nextTick(() => {
 	        //do reflow
-	        vm.$el.offsetWidth;
-	        ModalBackDropVm.$el.offsetWidth;
-	        vm.isIn = true;
-	        ModalBackDropVm.isIn = true;
-	        //处理重叠窗口
-	        var dgs = ModalBackDropVm.$data.$curDialogs;
-	        var len = dgs.length;
-	        if(len > 0){
-	          var last = dgs[len - 1];
-	          last.zIndex = 1000;
-	        }
-	        dgs.push(vm);
+	        this.$el.offsetWidth;
+	        this.isIn = true;
 	      });
 			}
 	  }

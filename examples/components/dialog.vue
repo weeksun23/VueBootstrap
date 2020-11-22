@@ -6,16 +6,16 @@
 		<code>js:</code>
 		<highlightjs language='javascript' :code="jsCode"/>
 		<code>结果:</code>
-		<vb-dialog ref='htmlDialog' title="htmlDialog" @on-before-open="onBeforeOpen">
+		<vb-dialog ref='htmlDialog' init-title="htmlDialog" @on-before-open="onBeforeOpen">
 	    <h1>wefwefwef</h1><h1>wefwefwef</h1><h1>wefwefwef</h1><h1>wefwefwef</h1>
 	    <p>
 	    	<button class='btn btn-primary' @click='$refs.insideDialog.open()'>打开新的dialog</button>
 	    </p>
 	  </vb-dialog>
-	  <vb-dialog ref='insideDialog' title='嵌套dialog' :buttons="insideDialogBtns">
+	  <vb-dialog ref='insideDialog' init-title='嵌套dialog' :buttons="insideDialogBtns">
 	  	<h1>这是一个嵌套的dialog</h1>
 		</vb-dialog>
-	  <vb-dialog ref='jsDialog' title='jsDialog' content='<h1>rr444rrr</h1><h2>regergrg</h2>' :buttons="buttons"></vb-dialog>
+	  <vb-dialog ref='jsDialog' init-title='jsDialog' init-content='<h1>rr444rrr</h1><h2>regergrg</h2>' :buttons="buttons"></vb-dialog>
 		<button class='btn btn-default' @click="showHtmlDialog">从html初始化的dialog</button>
 		<button class='btn btn-default' @click="showJsDialog">从js初始化的dialog</button>
 		<h2>props</h2>
