@@ -1,6 +1,9 @@
 <template>
-	<div class='modal fade' v-bind:class="{'in' : isIn}" v-bind:style="{zIndex : zIndex,display : isOpen ? 'block' : 'none'}" v-on:click='close'>
-	  <div class="modal-dialog" v-on:transitionend="transitionend">
+	<div class='modal fade' :class="{'in' : isIn}" 
+		:style="{zIndex : zIndex,left : left,top : top,right : right,width : width,
+		overflow : modal ? 'hidden' : 'visible',
+		bottom : bottom,display: isOpen ? 'block' : 'none'}" @click='close'>
+	  <div class="modal-dialog" @transitionend="transitionend" :style="!modal && {width : 'auto',margin : 0}">
 	    <div class="modal-content">
 	      <div class="modal-header" v-if='title'>
 	        <button type="button" class="close" v-on:click='close(null)'><span>&times;</span></button>
@@ -24,6 +27,7 @@
 	import {DomUtil} from 'vue-bootstrap/src/utils';
 	import Modal from 'vue-bootstrap/src/components/modal';
 	import Vue from 'vue';
+	const DefaultWidth = 600;
 	const defaultBtnOptions = {
 		close : false,
     theme : 'default',
@@ -49,22 +53,10 @@
 	  	}
 		},
 	  props : {
-	  	initTitle : {
-	  		type : String,
-	  		default : ""
-	  	},
-	  	initContent : {
-	  		type : String,
-	  		default : ''
-	  	},
-	  	onBeforeClose : {
-	  		type : Function,
-	  		default : function(){}
-	  	},
-	  	onClose : {
-	  		type : Function,
-	  		default : function(){}
-	  	},
+	  	initTitle : {type : String,default : ""},
+	  	initContent : {type : String,default : ''},
+	  	onBeforeClose : {type : Function,default : function(){}},
+	  	onClose : {type : Function,default : function(){}},
 	  	onBeforeOpen : {
 	  		type : Function,
 	  		default : function(){}
@@ -86,10 +78,28 @@
 	  	btnAlign : {
 	  		type : String,
 	  		default : ''
-	  	}
+			},
+			modal : {type : Boolean,default : true}
 		},
 		beforeCreate(){
 			Modal.init();
+		},
+		created(){
+			if(!this.modal){
+				this.right = 'auto';
+				this.bottom = 'auto';
+				this.top = '30px';
+				this.doResize();
+				DomUtil.addReisze(this);
+			}
+		},
+		beforeDestroy(){
+			console.log('beforeDestroy');
+			if(this.modal){
+				Modal.remove(this);
+			}else{
+				DomUtil.removeResize(this);
+			}
 		},
 	  data(){
 	  	return {
@@ -98,7 +108,12 @@
 		  	zIndex : null,
 				$isClosing : false,
 				title : this.initTitle,
-				content : this.initContent
+				content : this.initContent,
+				left : 0,
+				top : 0,
+				right : 0,
+				bottom : 0,
+				width : 'auto'
 			};
 	  },
 	  methods : {
@@ -110,7 +125,9 @@
 				this.isIn = false;
 				this.$isClosing = true;
 				this.onClose();
-				Modal.pop();
+				if(this.modal){
+					Modal.pop();
+				}
 	  	},
 	  	transitionend : function(e){
 	  		//窗口打开或结束后事件
@@ -130,14 +147,37 @@
 	  	},
 	  	open : function(){
 				if(this.onBeforeOpen() === false) return;
-				Modal.push(this);
+				if(this.modal){
+					Modal.push(this);
+				}else{
+					this.doResize();
+				}
 				this.isOpen = true;
 	      this.$nextTick(() => {
 	        //do reflow
 	        this.$el.offsetWidth;
 	        this.isIn = true;
 	      });
+			},
+			doResize : function(){
+				let dw = document.body.offsetWidth;
+				if(dw > DefaultWidth){
+					this.left = (dw - DefaultWidth) / 2 + 'px';
+					this.right = 'auto';
+					this.width = DefaultWidth + 'px';
+				}else{
+					this.left = 0;
+					this.right = 0;
+					this.width = 'auto';
+				}
+			},
+			resize : function(){
+				if(this.modal || !this.isOpen) return;
+				this.doResize();
 			}
 	  }
 	}
 </script>
+<style>
+
+</style>

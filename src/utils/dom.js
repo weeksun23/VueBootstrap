@@ -11,6 +11,31 @@ function getLeft(e){
 	if(e.offsetParent != null) offset += getLeft(e.offsetParent); 
 	return offset; 
 }
+//window resize vm
+let resizeVms = [];
+function doResize(){
+	console.log('doResize',resizeVms.length);
+	for(var i=0,ii;ii=resizeVms[i++];){
+		ii.resize();
+	}
+}
+function addResizeVm(vm){
+	if(resizeVms.length === 0){
+		window.addEventListener("resize",doResize);
+	}
+	resizeVms.push(vm);
+}
+function removeReiszeVm(vm){
+	for(var i=0;i<resizeVms.length;i++){
+		if(resizeVms[i] === vm){
+			resizeVms.splice(i,1);
+			break;
+		}
+	}
+	if(resizeVms.length === 0){
+		window.removeEventListener('resize',doResize);
+	}
+}
 export default {
 	appendHTML(el,htmlStr){
 		var div = document.createElement("div");
@@ -69,5 +94,11 @@ export default {
 			width : el.offsetWidth,
 			height : el.offsetHeight
 		}
+	},
+	addReisze(vm){
+		addResizeVm(vm);
+	},
+	removeResize(vm){
+		removeReiszeVm(vm);
 	}
 }

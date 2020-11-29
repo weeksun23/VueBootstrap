@@ -60,10 +60,25 @@ const Modal = {
     items.pop();
     let len = items.length;
     if(len > 0){
+      //最后一个zindex为1050 其它都是1000
       items[len - 1].zIndex = 1050;
     }else{
       document.body.classList.remove('modal-open');
       this.vm.isIn = false;
+    }
+  },
+  //当vm destroy的时候，必须调用该方法移除相应vm
+  remove(vm){
+    let items = this.items;
+    if(vm === items[items.length - 1]){
+      this.pop();
+    }else{
+      for(var i=0;i<items.length - 1;i++){
+        if(items[i] === vm){
+          items.splice(i,1);
+          break;
+        }
+      }
     }
   }
 };

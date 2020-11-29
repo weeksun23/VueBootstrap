@@ -6,7 +6,7 @@
 		<code>js:</code>
 		<highlightjs language='javascript' :code="jsCode"/>
 		<code>结果:</code>
-		<vb-dialog ref='htmlDialog' init-title="htmlDialog" @on-before-open="onBeforeOpen">
+		<vb-dialog ref='htmlDialog' init-title="htmlDialog" @on-before-open="onBeforeOpen" :modal="false">
 	    <h1>wefwefwef</h1><h1>wefwefwef</h1><h1>wefwefwef</h1><h1>wefwefwef</h1>
 	    <p>
 	    	<button class='btn btn-primary' @click='$refs.insideDialog.open()'>打开新的dialog</button>
@@ -15,7 +15,8 @@
 	  <vb-dialog ref='insideDialog' init-title='嵌套dialog' :buttons="insideDialogBtns">
 	  	<h1>这是一个嵌套的dialog</h1>
 		</vb-dialog>
-	  <vb-dialog ref='jsDialog' init-title='jsDialog' init-content='<h1>rr444rrr</h1><h2>regergrg</h2>' :buttons="buttons"></vb-dialog>
+	  <vb-dialog ref='jsDialog' init-title='jsDialog' :buttons="buttons" content='<h1>rr444rrr</h1><h2>regergrg</h2>'>
+		</vb-dialog>
 		<button class='btn btn-default' @click="showHtmlDialog">从html初始化的dialog</button>
 		<button class='btn btn-default' @click="showJsDialog">从js初始化的dialog</button>
 		<h2>props</h2>
@@ -116,7 +117,8 @@ methods : {
 					name : 'open',params : 'none',returnVal : 'none',desc : '打开窗口'
 				},{
 					name : 'close',params : 'none',returnVal : 'none',desc : '关闭窗口'
-				}]
+				}],
+				content : ``
 			}
 		},
 		methods : {
