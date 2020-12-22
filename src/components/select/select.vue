@@ -4,7 +4,13 @@
 <script>
 export default {
   data(){
-    
+    return {
+      data : []
+    }
+  },
+  props : {
+    cls : {type : String,default : ''},
+    placeholder : {type : String,default : ''}
   }
 }
 </script>
