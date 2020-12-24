@@ -1,0 +1,6 @@
+.vb-select{
+  position:absolute;z-index:9999;overflow: auto;
+}
+.vb-select .dropdown-menu{
+  float:none;position:static;left:auto;top:auto;display:block
+}

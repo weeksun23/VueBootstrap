@@ -14,12 +14,14 @@ Vue.use(hljs.vuePlugin);
 //examples
 import Dialog from './components/dialog';
 import Table from './components/table';
+import Select from './components/select';
 Vue.use(VueBootstrap);
 Vue.use(VueRouter);
 const routes = [
 	{name : 'about',path : "/component/about",component : {template : `<div>VueBootstrap,基于Bootstrap的Vue Ui框架</div>`}},
 	{name : 'dialog',path : "/component/dialog",component : Dialog},
 	{name : 'table',path : "/component/table",component : Table},
+	{name : 'select',path : "/component/select",component : Select},
 ];
 const router = new VueRouter({
   routes

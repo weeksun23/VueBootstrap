@@ -94,7 +94,6 @@
 			}
 		},
 		beforeDestroy(){
-			console.log('beforeDestroy');
 			if(this.modal){
 				Modal.remove(this);
 			}else{
