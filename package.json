@@ -4,7 +4,7 @@
   "description": "vue bootstrap",
   "main": "index.js",
   "dependencies": {
-    "highlight.js": "^10.4.0",
+    "highlight.js": ">=10.4.1",
     "vue": "^2.6.12",
     "vue-router": "^3.4.9"
   },
