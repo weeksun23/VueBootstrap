@@ -1,52 +1,44 @@
 <template>
-  <input type='text' class="form-control" :class="cls" :placeholder="placeholder" 
-    @focus="focus" @blur="blur">
+  <input type='text' class="form-control" :class="cls" :placeholder="placeholder"
+    @focus="focus" :readonly="!editable" v-model="text">
 </template>
 <script>
-import Dropdown from 'vue-bootstrap/src/components/dropdown';
+import Listgroup from 'vue-bootstrap/src/components/listgroup';
 import {DomUtil} from 'vue-bootstrap/src/utils';
 export default {
   name : "VbSelect",
   data(){
     return {
-      data : [
-        {text : '121222'},{text : '22323r'},
-        {text : '121222'},{text : '22323r'},
-        {text : '121222'},{text : '22323r'},
-        {text : '121222'},{text : '22323r'},
-        {text : '121222'},{text : '22323r'},
-        {text : '121222'},{text : '22323r'},
-        {text : '121222'},{text : '22323r'},
-        {text : '121222'},{text : '22323r'},
-        {text : '121222'},{text : '22323r'},
-        {text : '121222'},{text : '22323r'},
-        {text : '121222'},{text : '22323r'},
-        {text : '121222'},{text : '22323r'}
-      ]
+      text : ''
     }
   },
   props : {
     cls : {type : String,default : ''},
-    placeholder : {type : String,default : ''}
+    placeholder : {type : String,default : ''},
+    editable : {type : Boolean,default : false},
+    data : {type : Array,default : []}
   },
   created(){
-    this.$options.dropdownVm = Dropdown.init(this.data);
+    let listgroupVm = Listgroup.init(this.data);
+    listgroupVm.$options.selectVm = this;
+    this.$options.listgroupVm = listgroupVm;
   },
   beforeDestroy(){
-    this.$options.dropdownVm.destroy();
+    this.$options.listgroupVm.destroy();
   },
   methods : {
     focus(){
-      let dropdown = this.$options.dropdownVm;
-      dropdown.show = true;
+      if(this.data.length === 0) return;
+      let listgroupVm = this.$options.listgroupVm;
+      listgroupVm.show = true;
       let el = this.$el;
       let box = DomUtil.getElBox(el);
-      dropdown.left = box.left;
-      dropdown.top = box.height + box.top;
-      dropdown.width = box.width + 'px';
+      listgroupVm.left = box.left;
+      listgroupVm.top = box.height + box.top;
+      listgroupVm.width = box.width + 'px';
     },
-    blur(){
-      this.$options.dropdownVm.show = false;
+    setItem(item){
+      this.text = item.text;
     }
   }
 }
