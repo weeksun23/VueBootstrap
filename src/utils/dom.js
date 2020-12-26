@@ -37,6 +37,11 @@ function removeReiszeVm(vm){
 	}
 }
 export default {
+	keyCode : Object.freeze({
+		up : 38,
+		down : 40,
+		enter : 13
+	}),
 	appendHTML(el,htmlStr){
 		var div = document.createElement("div");
 		var fragment = document.createDocumentFragment();

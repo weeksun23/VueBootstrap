@@ -1,6 +1,6 @@
 <template>
-  <input type='text' class="form-control" :class="cls" :placeholder="placeholder"
-    @focus="focus" :readonly="!editable" v-model="text">
+  <input type='text' class="form-control" :class="cls" :placeholder="placeholder" @keydown="keydown"
+    @focus="focus" :readonly="!editable" v-model="text" @blur="blur">
 </template>
 <script>
 import Listgroup from 'vue-bootstrap/src/components/listgroup';
@@ -9,7 +9,8 @@ export default {
   name : "VbSelect",
   data(){
     return {
-      text : ''
+      text : '',
+      canBlur : true
     }
   },
   //绑定的列表项组vm
@@ -29,6 +30,26 @@ export default {
   beforeDestroy(){
     this.removeBodyClick();
     this.$options.listgroupVm.destroy();
+  },
+  watch : {
+    text(val){
+      if(!this.editable) return;
+      let listgroupVm = this.$options.listgroupVm;
+      if(!val){
+        listgroupVm.setData(this.data);
+        return;
+      }
+      let newData = [];
+      for(let i=0,ii;ii=this.data[i++];){
+        if(ii.text === val){
+          listgroupVm.clickItem(ii,true);
+        }
+        if(ii.text.indexOf(val) !== -1){
+          newData.push(ii);
+        }
+      }
+      listgroupVm.setData(newData);
+    }
   },
   methods : {
     removeBodyClick(){
@@ -61,6 +82,35 @@ export default {
     },
     setItem(item){
       this.text = item.text;
+    },
+    blur(){
+      if(!this.canBlur) return;
+      let listgroupVm = this.$options.listgroupVm;
+      if(this.text === ''){
+        listgroupVm.clearSelect();
+        return;
+      }
+      let item = listgroupVm.$options.lastSelectItem;
+      if(item && this.text !== item.text){
+        this.setItem(item);
+      }else if(!item){
+        this.text = '';
+      }
+    },
+    keydown(e){
+      if(!this.editable) return;
+      let listgroupVm = this.$options.listgroupVm;
+      switch(e.keyCode){
+        case DomUtil.keyCode.up:
+          listgroupVm.preSelect(-1);
+          break;
+        case DomUtil.keyCode.down:
+          listgroupVm.preSelect(1);
+          break;
+        case DomUtil.keyCode.enter:
+          listgroupVm.setPreSelect();
+          break;
+      }
     }
   }
 }

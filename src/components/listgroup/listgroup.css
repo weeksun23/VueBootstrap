@@ -1,6 +1,6 @@
 .vb-list-group{
   position:absolute;z-index:9999;overflow: auto;
-  border-radius: 4px;margin: 1px 0 0;border:1px solid #ddd;
+  border-radius: 4px;margin: 0;border:1px solid #ddd;
 }
 .vb-list-group .list-group-item{
   border-left: 0;border-right: 0;
@@ -10,4 +10,7 @@
 }
 .vb-list-group .list-group-item:last-child{
   border-radius: 0;border-bottom: 0;
+}
+.vb-list-group .list-group-item.vb-pre-select{
+  background-color: #f5f5f5;
 }
