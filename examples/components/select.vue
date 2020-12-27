@@ -7,18 +7,8 @@
 		<highlightjs language='javascript' :code="jsCode"/>
 		<code>结果:</code>
 		<form class="form-horizontal">
-      <div class="form-group">
-				<label class="col-sm-2 control-label">可写</label>
-				<div class="col-sm-10">
-					<vb-select :data="data1" :editable='true'></vb-select>
-				</div>
-      </div>
-			<div class="form-group">
-				<label class="col-sm-2 control-label">不可写</label>
-				<div class='col-sm-10'>
-					<vb-select :data="data2"></vb-select>
-				</div>
-      </div>
+			<vb-select :data="data1" :editable='true' label-text="可写" col-cls='sm'></vb-select>
+			<vb-select :data="data2" label-text="不可写"></vb-select>
     </form>
 		<!-- -->
 		<h2>props</h2>

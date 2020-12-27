@@ -1,12 +1,12 @@
-<template>
-  <input type='text' class="form-control" :class="cls" :placeholder="placeholder" @keydown="keydown"
-    @focus="focus" :readonly="!editable" v-model="text" @blur="blur">
-</template>
-<script>
 import Listgroup from 'vue-bootstrap/src/components/listgroup';
 import {DomUtil} from 'vue-bootstrap/src/utils';
+import template from './select.html';
+import './select.css';
+let tplArr = template.split("SPLIT");
+const targetTpl = tplArr[2].replace(/INPUT/g,tplArr[0]).replace(/ICON/g,tplArr[1]);
 export default {
   name : "VbSelect",
+  template : targetTpl,
   data(){
     return {
       text : '',
@@ -17,15 +17,26 @@ export default {
   listgroupVm : null,
   bodyClickHandler : null,
   props : {
+    //应用在input上的class
     cls : {type : String,default : ''},
     placeholder : {type : String,default : ''},
     editable : {type : Boolean,default : false},
-    data : {type : Array,default : []}
+    data : {type : Array,default : []},
+    //栅格类前缀 col-{{colCls}}-x
+    colCls : {type : String,default : ''},
+    //col-xx-2
+    labelColSize : {type : Number,default : 2},
+    //col-xx-10
+    inputColSize : {type : Number,default : 10},
+    labelText : {type : String,default : ''}
   },
   created(){
     let listgroupVm = Listgroup.init(this.data);
     listgroupVm.$options.selectVm = this;
     this.$options.listgroupVm = listgroupVm;
+  },
+  mounted(){
+    
   },
   beforeDestroy(){
     this.removeBodyClick();
@@ -52,6 +63,9 @@ export default {
     }
   },
   methods : {
+    getInputEl(){
+      return this.$el.querySelector("input");
+    },
     removeBodyClick(){
       if(this.$options.bodyClickHandler){
         document.body.removeEventListener('click',this.$options.bodyClickHandler);
@@ -62,14 +76,14 @@ export default {
       if(this.data.length === 0) return;
       let listgroupVm = this.$options.listgroupVm;
       listgroupVm.show = true;
-      let el = this.$el;
-      let box = DomUtil.getElBox(el);
-      listgroupVm.left = box.left;
-      listgroupVm.top = box.height + box.top;
+      let inputEl = this.getInputEl();
+      let box = DomUtil.getElBox(inputEl);
       listgroupVm.width = box.width + 'px';
+      listgroupVm.top = (box.top + box.height) + 'px';
+      listgroupVm.left = box.left + 'px';
       this.removeBodyClick();
       this.$options.bodyClickHandler = (e) => {
-        if(e.target === el) return;
+        if(e.target === inputEl) return;
         let result = DomUtil.findTargetParent(e.target,(node) => {
           if(node === listgroupVm.$el) return true;
         });
@@ -80,9 +94,6 @@ export default {
       };
       document.body.addEventListener('click',this.$options.bodyClickHandler);
     },
-    setItem(item){
-      this.text = item.text;
-    },
     blur(){
       if(!this.canBlur) return;
       let listgroupVm = this.$options.listgroupVm;
@@ -92,7 +103,7 @@ export default {
       }
       let item = listgroupVm.$options.lastSelectItem;
       if(item && this.text !== item.text){
-        this.setItem(item);
+        this.text = item.text;
       }else if(!item){
         this.text = '';
       }
@@ -114,4 +125,3 @@ export default {
     }
   }
 }
-</script>

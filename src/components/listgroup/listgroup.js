@@ -1,7 +1,10 @@
 import Vue from 'vue';
 import './listgroup.css';
 const tpl = `<div class='list-group vb-list-group' v-show='show'
-  :style="{left : left + 'px',top : top + 'px',width : width,'max-height' : maxHeight + 'px'}">
+  :style="{left : left,top : top,width : width,'max-height' : maxHeight + 'px'}">
+  <div class='vb-empty text-muted' v-show='data.length === 0'>
+    暂无数据
+  </div>
   <a v-for="(el,i) in data" href="javascript:void(0)" class="list-group-item" @click="clickItem(el)"
     :class="{active : el.selected,'vb-pre-select' : i === preSelIndex && !el.selected}">
     {{el.text}}
@@ -23,7 +26,8 @@ function initData(data){
   }
 }
 const Listgroup = {
-  init(data){
+  init(data,pNode){
+    pNode = pNode || document.body;
     initData(data);
     let comp = Vue.extend({
       template: tpl,
@@ -36,7 +40,7 @@ const Listgroup = {
           preSelIndex : -1,
           data : data,
           left : 0,
-          top : 0,
+          top : '100%',
           show : false,
           width : 'auto',
           //最大高度，列表项总高度超过该高度则自动滚动
@@ -45,7 +49,7 @@ const Listgroup = {
       },
       methods : {
         destroy(){
-          document.body.removeChild(this.$el);
+          pNode.removeChild(this.$el);
           this.$destroy();
         },
         setData(data){
@@ -79,7 +83,7 @@ const Listgroup = {
             }
             el.selected = true;
             this.$options.lastSelectItem = el;
-            selectVm.setItem(el);
+            selectVm.text = el.text;
           }
           selectVm.canBlur = true;
         },
@@ -114,7 +118,7 @@ const Listgroup = {
       }
     });
     var component = new comp().$mount();
-    document.body.appendChild(component.$el);
+    pNode.appendChild(component.$el);
     return component;
   }
 };

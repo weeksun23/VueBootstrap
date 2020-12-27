@@ -1,14 +1,16 @@
 //dom相关操作工具类
 //获取元素的纵坐标 
-function getTop(e){ 
-	var offset = e.offsetTop; 
-	if(e.offsetParent != null) offset += getTop(e.offsetParent); 
-	return offset; 
+function getTop(e,pNode){ 
+	var offset = e.offsetTop;
+	if(pNode && e.offsetParent === pNode) return offset;
+	if(e.offsetParent != null) offset += getTop(e.offsetParent,pNode); 
+	return offset;
 }
 //获取元素的横坐标 
-function getLeft(e){ 
-	var offset = e.offsetLeft; 
-	if(e.offsetParent != null) offset += getLeft(e.offsetParent); 
+function getLeft(e,pNode){ 
+	var offset = e.offsetLeft;
+	if(pNode && e.offsetParent === pNode) return offset;
+	if(e.offsetParent != null) offset += getLeft(e.offsetParent,pNode); 
 	return offset; 
 }
 //window resize vm
@@ -85,10 +87,10 @@ export default {
 	  }
 	  return null;
 	},
-	offsetEl(el){
+	offsetEl(el,pNode){
 		return {
-			left : getLeft(el),
-			top :getTop(el)
+			left : getLeft(el,pNode),
+			top : getTop(el,pNode)
 		}
 	},
 	getElBox(el){
