@@ -1,14 +1,14 @@
-<input type='text' class="form-control" :class="cls" :placeholder="placeholder" @keydown="keydown"
-  @focus="focus" :readonly="!editable" v-model="text" @blur="blur">
-SPLIT
-<div class='vb-select-icon'>
-  <i class='glyphicon glyphicon-chevron-down'></i>
+<div class='vb-select-input'>
+  <input type='text' class="form-control" :class="cls" :placeholder="placeholder" @keydown="keydown"
+    @focus="focus" :readonly="!editable" v-model="text" @blur="blur">
+  <div class='vb-select-icon'>
+    <i class='glyphicon' :class="['glyphicon-chevron-' + (showItems ? 'up' : 'down')]" @click="doFocus"></i>
+  </div>
 </div>
 SPLIT
 <div class="form-group vb-select" v-if="!colCls">
   <label v-show="labelText">{{labelText}}</label>
   INPUT
-  ICON
 </div>
 <div class="form-group vb-select" v-else>
   <label v-show="labelText" :class="[['col',colCls,labelColSize].join('-')]" class="control-label">
@@ -16,6 +16,5 @@ SPLIT
   </label>
   <div class='vb-select-content' :class="[['col',colCls,inputColSize].join('-')]">
     INPUT
-    ICON
   </div>
 </div>

@@ -3,14 +3,16 @@ import {DomUtil} from 'vue-bootstrap/src/utils';
 import template from './select.html';
 import './select.css';
 let tplArr = template.split("SPLIT");
-const targetTpl = tplArr[2].replace(/INPUT/g,tplArr[0]).replace(/ICON/g,tplArr[1]);
+const targetTpl = tplArr[1].replace(/INPUT/g,tplArr[0]);
 export default {
   name : "VbSelect",
   template : targetTpl,
   data(){
     return {
       text : '',
-      canBlur : true
+      canBlur : true,
+      showItems : false,
+      canShowItemsWhileTextChange : false
     }
   },
   //绑定的列表项组vm
@@ -31,12 +33,12 @@ export default {
     labelText : {type : String,default : ''}
   },
   created(){
-    let listgroupVm = Listgroup.init(this.data);
-    listgroupVm.$options.selectVm = this;
-    this.$options.listgroupVm = listgroupVm;
+    
   },
   mounted(){
-    
+    let listgroupVm = Listgroup.init(this.data,this.$el.querySelector('div.vb-select-input'));
+    listgroupVm.$options.selectVm = this;
+    this.$options.listgroupVm = listgroupVm;
   },
   beforeDestroy(){
     this.removeBodyClick();
@@ -46,6 +48,9 @@ export default {
     text(val){
       if(!this.editable) return;
       let listgroupVm = this.$options.listgroupVm;
+      if(!this.showItems && this.canShowItemsWhileTextChange){
+        this.showItems = true;
+      }
       if(!val){
         listgroupVm.setData(this.data);
         return;
@@ -60,6 +65,10 @@ export default {
         }
       }
       listgroupVm.setData(newData);
+    },
+    showItems(val){
+      let listgroupVm = this.$options.listgroupVm;
+      listgroupVm.show = val;
     }
   },
   methods : {
@@ -72,23 +81,21 @@ export default {
         this.$options.bodyClickHandler = null;
       }
     },
+    doFocus(){
+      let input = this.getInputEl();
+      input.focus();
+    },
     focus(){
       if(this.data.length === 0) return;
-      let listgroupVm = this.$options.listgroupVm;
-      listgroupVm.show = true;
-      let inputEl = this.getInputEl();
-      let box = DomUtil.getElBox(inputEl);
-      listgroupVm.width = box.width + 'px';
-      listgroupVm.top = (box.top + box.height) + 'px';
-      listgroupVm.left = box.left + 'px';
+      this.showItems = true;
       this.removeBodyClick();
       this.$options.bodyClickHandler = (e) => {
-        if(e.target === inputEl) return;
+        let inputAreaEl = this.$el.querySelector("div.vb-select-input");
         let result = DomUtil.findTargetParent(e.target,(node) => {
-          if(node === listgroupVm.$el) return true;
+          return node === inputAreaEl;
         });
         if(!result){
-          listgroupVm.show = false;
+          this.showItems = false;
           this.removeBodyClick();
         }
       };

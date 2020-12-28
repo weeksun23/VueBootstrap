@@ -1,6 +1,7 @@
 .vb-list-group{
   position:absolute;z-index:9999;overflow: auto;
   border-radius: 4px;margin: 0;border:1px solid #ddd;
+  left :0;right: 0;top: 100%;
 }
 .vb-list-group .list-group-item{
   border-left: 0;border-right: 0;

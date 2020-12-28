@@ -1,7 +1,11 @@
 .vb-select{position: relative;}
-.vb-select input.form-control{padding-right: 20px;}
+.vb-select input.form-control{padding-right: 24px;}
+.vb-select-input{position: relative;}
 .vb-select-content{position: relative;}
 .vb-select-icon{
-  position: absolute;right: 0;top : 50%;
+	font-size: 0;
+  position: absolute;right: 5px;top : 50%;
   transform: translate(0,-50%);
+  -webkit-transform: translate(0,-50%);
 }
+.vb-select-icon i{font-size: 14px;}

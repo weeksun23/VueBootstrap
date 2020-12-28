@@ -74,8 +74,9 @@ const Listgroup = {
         clickItem(el,unHide){
           let {lastSelectItem,selectVm} = this.$options;
           selectVm.canBlur = false;
+          selectVm.canShowItemsWhileTextChange = false;
           if(!unHide){
-            this.show = false;
+            selectVm.showItems = false;
           }
           if(lastSelectItem !== el){
             if(lastSelectItem){
@@ -85,7 +86,10 @@ const Listgroup = {
             this.$options.lastSelectItem = el;
             selectVm.text = el.text;
           }
-          selectVm.canBlur = true;
+          selectVm.$nextTick(() => {
+            selectVm.canBlur = true;
+            selectVm.canShowItemsWhileTextChange = true;
+          });
         },
         clearSelect(){
           let {lastSelectItem} = this.$options;
@@ -111,7 +115,7 @@ const Listgroup = {
           if(this.preSelIndex === -1) return;
           let target = this.data[this.preSelIndex];
           if(target){
-            this.clickItem(target,true);
+            this.clickItem(target);
             this.resetPreSelect();
           }
         }
