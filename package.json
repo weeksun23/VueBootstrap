@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "highlight.js": ">=10.4.1",
+    "js-beautify": "^1.13.0",
     "vue": "^2.6.12",
     "vue-router": "^3.4.9"
   },

@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import tpl from './tree.html';
 import './tree.css';
+import {CommonUtil} from 'vue-bootstrap/src/utils';
 var props = {
 	nodeList : {type : Array,default : function(){return [];}},
 	//节点是否带图标
@@ -19,16 +20,15 @@ var props = {
 	queryParams : {type : Object,default : function(){return {};}},
 	isRoot : {type : Boolean,default : true},
 	//事件
-	// onContextMenu : {type : Function,default : Vue.me.noop},
-	onBeforeSelect : {type : Function,default : Vue.me.noop},
-	onSelect : {type : Function,default : Vue.me.noop},
-	onBeforeExpand : {type : Function,default : Vue.me.noop},
-	onExpand : {type : Function,default : Vue.me.noop},
-	onBeforeCollapse : {type : Function,default : Vue.me.noop},
-	onCollapse : {type : Function,default : Vue.me.noop},
-	onBeforeLoad : {type : Function,default : Vue.me.noop},
-	onLoadSuccess : {type : Function,default : Vue.me.noop},
-	onLoadError : {type : Function,default : Vue.me.noop}
+	onBeforeSelect : {type : Function,default : CommonUtil.noop},
+	onSelect : {type : Function,default : CommonUtil.noop},
+	onBeforeExpand : {type : Function,default : CommonUtil.noop},
+	onExpand : {type : Function,default : CommonUtil.noop},
+	onBeforeCollapse : {type : Function,default : CommonUtil.noop},
+	onCollapse : {type : Function,default : CommonUtil.noop},
+	onBeforeLoad : {type : Function,default : CommonUtil.noop},
+	onLoadSuccess : {type : Function,default : CommonUtil.noop},
+	onLoadError : {type : Function,default : CommonUtil.noop}
 };
 tpl = (function(){
 	function change(str){
@@ -65,10 +65,6 @@ var nodeAttr = {
 	state : '',
 	children : []
 };
-var defaultLoadFilter = function(resp){
-	return resp;
-};
-Vue.component('v-tree').loadFilter = defaultLoadFilter;
 //初始化节点属性
 function initNodeAttr(item){
 	if(!item.children){
@@ -85,7 +81,7 @@ function initNodeAttr(item){
 			Vue.set(item,'state','');
 		}
 	}
-	Vue.me.setObjDefaultAttrs(item,nodeAttr);
+	CommonUtil.setObjDefaultAttrs(item,nodeAttr);
 }
 //遍历list中的所有节点，若传入回调则执行回调，否则初始化节点属性
 function eachNode(list,func){
@@ -161,62 +157,48 @@ function eachParentsCheck(pArr){
 function ajaxLoad(el,vmodel,func){
 	var callBackEl = el;
 	if(!el){
-		//如果节点为空 则说明树节点还没创建加载根数据
+		//如果节点为空 则说明树节点还没创建 加载根数据
 		callBackEl = null;
 		el = {
 			id : null
 		};
 	}
-	var param = {id : el.id};
-	Vue.me.mix(param,vmodel.queryParams);
+  var param = {id : el.id};
+  Object.assign(param,vmodel.queryParams);
 	if(vmodel.onBeforeLoad(param,callBackEl) === false){
 		return;
 	}
-	el.loading = true;
-	Vue[vmodel.method === 'GET' ? 'ajaxGet' : 'ajaxPost'](vmodel.url,param,function(param1,param2){
-		var deal = function(ch){
-			if(callBackEl){
-				el.state = 'open';
-				if(vmodel.checkbox && vmodel.cascadeCheck){
-					//如果存在勾选框且有级联检查
-					eachNode(ch,function(item){
-						initNodeAttr(item);
-						item.checked = el.checked === 2 ? 0 : el.checked;
-					},el);
-				}else{
-					eachNode(ch);
-				}
-				Vue.set(el,'children',ch);
-				if(!el.chLoaded){
-					el.chLoaded = true;
-				}
-			}else{
-				eachNode(ch);
-				Vue.set(vmodel,'nodeList',ch);
-				func && func();
-			}
-			vmodel.onLoadSuccess(ch,callBackEl);
-		};
+  el.loading = true;
+  if(typeof Tree.loadHandler != 'function'){
+    return console.error("loadHandler必须为函数");
+  }
+  Tree.loadHandler(vmodel.url,param,function(err,data){
 		el.loading = false;
-		if(Vue.me.ajaxLoadFilter){
-			if(Vue.component('v-tree').loadFilter === defaultLoadFilter){
-				throw new Error("若定义了Vue.me.ajaxLoadFilter，则必须同时重写Vue.component('v-tree').loadFilter");
-			}
-			var resp = vmodel.loadFilter(param1);
-			if(resp.error){
-				vmodel.onLoadError(resp.error,callBackEl);
+		if(err){
+			return vmodel.onLoadError(err,callBackEl);
+		}
+		if(callBackEl){
+			el.state = 'open';
+			if(vmodel.checkbox && vmodel.cascadeCheck){
+				//如果存在勾选框且有级联检查
+				eachNode(data,function(item){
+					initNodeAttr(item);
+					item.checked = el.checked === 2 ? 0 : el.checked;
+				},el);
 			}else{
-				deal(resp.data);
+				eachNode(data);
+			}
+			Vue.set(el,'children',data);
+			if(!el.chLoaded){
+				el.chLoaded = true;
 			}
 		}else{
-			if(param1){
-				vmodel.onLoadError(param1,callBackEl);
-			}else{
-				param2 = vmodel.loadFilter(param2);
-				deal(param2);
-			}
+			eachNode(data);
+			Vue.set(vmodel,'nodeList',data);
+			func && func();
 		}
-	},null);
+		vmodel.onLoadSuccess(data,callBackEl);
+	});
 }
 function expandNode(vmodel,el){
 	if(vmodel.onBeforeExpand(el) === false){
@@ -320,8 +302,9 @@ function selectNode(el,vmodel){
 	el.selected = true;
 	root.onSelect(root.$options.curSelEl = el);
 }
-export default {
+const Tree = {
   template : tpl,
+  loadHandler : null,
   name : 'VbTree',
   beforeCreate : function(){
 		var propsData = this.$options.propsData;
@@ -464,7 +447,7 @@ export default {
 					});
 				}
 				if(!el){
-					return Vue.me.log("找不到目标节点,appendNodes失败");
+					return console.log("找不到目标节点,appendNodes失败");
 				}
 				el.state = 'open';
 				target = el.children;
@@ -481,4 +464,5 @@ export default {
 			}
 		}
 	}
-}
+};
+export default Tree;

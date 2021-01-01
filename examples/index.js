@@ -11,10 +11,19 @@ import xml from 'highlight.js/lib/languages/xml';
 hljs.registerLanguage('javascript', javascript);
 hljs.registerLanguage('xml', xml);
 Vue.use(hljs.vuePlugin);
+//beautify
+let {js,html} = require('js-beautify');
+window.JS = (code) => {
+	return js(code,{indent_size : 2});
+};
+window.HTML = (code) => {
+	return html(code,{indent_size : 2});
+};
 //examples
 import Dialog from './components/dialog';
 import Table from './components/table';
 import Select from './components/select';
+import Tree from './components/tree';
 Vue.use(VueBootstrap);
 Vue.use(VueRouter);
 const routes = [
@@ -22,6 +31,7 @@ const routes = [
 	{name : 'dialog',path : "/component/dialog",component : Dialog},
 	{name : 'table',path : "/component/table",component : Table},
 	{name : 'select',path : "/component/select",component : Select},
+	{name : 'tree',path : "/component/tree",component : Tree}
 ];
 const router = new VueRouter({
   routes

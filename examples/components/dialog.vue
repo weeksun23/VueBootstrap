@@ -23,51 +23,53 @@
 		<vb-table :columns="propColumns" :pagination='false' :init-front-page-data="propData"></vb-table>
 		<h2>methods</h2>
 		<vb-table :columns="methodsColumns" :pagination='false' :init-front-page-data="methodsData"></vb-table>
-		<h2>其它</h2>
-		
 	</div>
 </template>
 <script>
 	import Util from '../util';
 	export default{
+		beforeCreate(){
+			console.log(this.$options);
+		},
 		data(){
 			return {
-				htmlCode : 
-Util.formatCode(`<vb-dialog ref='htmlDialog' title="htmlDialog">
-  <h1>wefwefwef</h1><h1>wefwefwef</h1><h1>wefwefwef</h1><h1>wefwefwef</h1>
-  <p>
-  	<button class='btn btn-primary' v-on:click='$refs.insideDialog.open()'>
-  		打开新的dialog
-  	</button>
-  </p>
-</vb-dialog>
-<vb-dialog ref='insideDialog' title='嵌套dialog' :buttons="insideDialogBtns">
-	<h1>这是一个嵌套的dialog</h1>
-</vb-dialog>
-<vb-dialog ref='jsDialog' title='jsDialog' content='<h1>rr444rrr</h1><h2>regergrg</h2>' :buttons="buttons"></vb-dialog>`),
-			  jsCode : 
-Util.formatCode(`data : {
-	buttons : [{text : 'ok',close : true}],
-	insideDialogBtns : [{
-		text : '取消',
-		close : true
-	},{
-		text : '确定',
-		theme : 'primary',
-		handler : function(){
-			alert("aaa");
-			this.close();
-		}
-	}]
-},
-methods : {
-	showHtmlDialog : function(){
-		this.$refs.htmlDialog.open();
-	},
-	showJsDialog : function(){
-		this.$refs.jsDialog.open();
-	}
-}`),
+				htmlCode : HTML(`<vb-dialog ref='htmlDialog' title="htmlDialog">
+					<h1>wefwefwef</h1><h1>wefwefwef</h1><h1>wefwefwef</h1><h1>wefwefwef</h1>
+					<p>
+						<button class='btn btn-primary' v-on:click='$refs.insideDialog.open()'>
+							打开新的dialog
+						</button>
+					</p>
+				</vb-dialog>
+				<vb-dialog ref='insideDialog' title='嵌套dialog' :buttons="insideDialogBtns">
+					<h1>这是一个嵌套的dialog</h1>
+				</vb-dialog>
+				<vb-dialog ref='jsDialog' title='jsDialog' content='<h1>rr444rrr</h1><h2>regergrg</h2>' :buttons="buttons">
+				</vb-dialog>`),
+			  jsCode : JS(`{
+					data : {
+						buttons : [{text : 'ok',close : true}],
+						insideDialogBtns : [{
+							text : '取消',
+							close : true
+						},{
+							text : '确定',
+							theme : 'primary',
+							handler : function(){
+								alert("aaa");
+								this.close();
+							}
+						}]
+					},
+					methods : {
+						showHtmlDialog : function(){
+							this.$refs.htmlDialog.open();
+						},
+						showJsDialog : function(){
+							this.$refs.jsDialog.open();
+						}
+					}
+				}`),
 				buttons : [{text : 'ok',close : true}],
 				insideDialogBtns : [{
 					text : '取消',
