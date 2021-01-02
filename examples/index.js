@@ -3,6 +3,7 @@ import './index.css';
 import Vue from 'vue';
 import VueRouter from 'vue-router'
 import VueBootstrap from '../src/index';
+import Demo from './components/demo';
 //set highlightjs
 import 'highlight.js/styles/github.css';
 import hljs from 'highlight.js/lib/core';
@@ -26,6 +27,7 @@ import Select from './components/select';
 import Tree from './components/tree';
 Vue.use(VueBootstrap);
 Vue.use(VueRouter);
+Vue.component(Demo.name,Demo);
 const routes = [
 	{name : 'about',path : "/component/about",component : {template : `<div>VueBootstrap,基于Bootstrap的Vue Ui框架</div>`}},
 	{name : 'dialog',path : "/component/dialog",component : Dialog},

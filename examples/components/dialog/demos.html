@@ -1,0 +1,19 @@
+<vb-dialog ref='dialog1' init-title="dialog1" :buttons="buttons1">
+  <h1>dialog1</h1>
+  <h1>dialog1</h1>
+  <h1>dialog1</h1>
+</vb-dialog>
+<button class='btn btn-default' @click="showDialog1">dialog1</button>
+SPLIT
+<vb-dialog ref='dialog2' init-title="dialog2" :buttons="buttons2">
+  <h1>dialog2</h1>
+  <h1>dialog2</h1>
+  <h1>dialog2</h1>
+  <button class='btn btn-primary' @click='showDialog3'>打开嵌套dialog3</button>
+</vb-dialog>
+<vb-dialog ref='dialog3' init-title="dialog3">
+  <h1>dialog3</h1>
+  <h1>dialog3</h1>
+  <h1>dialog3</h1>
+</vb-dialog>
+<button class='btn btn-default' @click="showDialog2">dialog2</button>

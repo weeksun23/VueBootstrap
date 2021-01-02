@@ -11,7 +11,8 @@
 .fz1{font-size:1.5em}
 .notallowed{cursor: not-allowed !important;}
 
-.demo{padding-bottom: 20px}
-.demo code{font-size: 100%}
-.demo h2:first-child{margin-top: 0}
-.demo textarea{width: 100%;}
+.doc{padding-bottom: 15px;}
+.demo>.panel{margin-bottom: 0;}
+.demo .panel-footer{cursor: pointer;}
+.demo-code pre{padding:0;margin:0}
+.doc .demo:first-child h2{margin-top: 0}
