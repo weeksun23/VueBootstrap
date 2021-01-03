@@ -12,7 +12,8 @@ export default {
       text : '',
       canBlur : true,
       showItems : false,
-      canShowItemsWhileTextChange : false
+      canShowItemsWhileTextChange : false,
+      value : this.initValue
     }
   },
   //绑定的列表项组vm
@@ -30,7 +31,8 @@ export default {
     labelColSize : {type : Number,default : 2},
     //col-xx-10
     inputColSize : {type : Number,default : 10},
-    labelText : {type : String,default : ''}
+    labelText : {type : String,default : ''},
+    initValue : [String,Number]
   },
   created(){
     
@@ -39,6 +41,9 @@ export default {
     let listgroupVm = Listgroup.init(this.data,this.$el.querySelector('div.vb-select-input'));
     listgroupVm.$options.selectVm = this;
     this.$options.listgroupVm = listgroupVm;
+    if(this.value){
+      this.setValue(this.value);
+    }
   },
   beforeDestroy(){
     this.removeBodyClick();
@@ -48,12 +53,12 @@ export default {
     text(val){
       if(!this.editable) return;
       let listgroupVm = this.$options.listgroupVm;
-      if(!this.showItems && this.canShowItemsWhileTextChange){
-        this.showItems = true;
-      }
       if(!val){
         listgroupVm.setData(this.data);
         return;
+      }
+      if(!this.showItems && this.canShowItemsWhileTextChange){
+        this.showItems = true;
       }
       let newData = [];
       for(let i=0,ii;ii=this.data[i++];){
@@ -69,9 +74,23 @@ export default {
     showItems(val){
       let listgroupVm = this.$options.listgroupVm;
       listgroupVm.show = val;
+    },
+    value(val){
+      this.setValue(val);
     }
   },
   methods : {
+    setValue(val){
+      let listgroupVm = this.$options.listgroupVm;
+      if(this.editable){
+        //可写下 group可能只有部分数据，要先设置所有数据
+        listgroupVm.setData(this.data);
+      }
+      listgroupVm.setValue(val);
+      if(val === null){
+        this.text = '';
+      }
+    },
     getInputEl(){
       return this.$el.querySelector("input");
     },

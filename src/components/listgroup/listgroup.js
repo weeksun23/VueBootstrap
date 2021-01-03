@@ -52,7 +52,8 @@ const Listgroup = {
           pNode.removeChild(this.$el);
           this.$destroy();
         },
-        setData(data){
+        setData(data,forceUpdate){
+          if(this.data.length === data.length && !forceUpdate) return;
           initData(data);
           this.data = data;
           let existIndex = null;
@@ -85,6 +86,7 @@ const Listgroup = {
             el.selected = true;
             this.$options.lastSelectItem = el;
             selectVm.text = el.text;
+            selectVm.value = el.value;
           }
           selectVm.$nextTick(() => {
             selectVm.canBlur = true;
@@ -118,6 +120,19 @@ const Listgroup = {
             this.clickItem(target);
             this.resetPreSelect();
           }
+        },
+        setValue(v){
+          if(v === null){
+            //清空
+            this.clearSelect();
+            return;
+          }
+          this.data.forEach((el) => {
+            if(el.value === v){
+              this.clickItem(el);
+              return false;
+            }
+          });
         }
       }
     });
