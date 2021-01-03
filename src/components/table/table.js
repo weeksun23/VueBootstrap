@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import {DomUtil,CommonUtil,DateUtil} from 'vue-bootstrap/src/utils';
+import Setting from 'vue-bootstrap/src/setting';
 var tpl = require("./table.html");
 require("./table.css");
 var defaultColumnObj = {
@@ -117,7 +118,10 @@ function ajaxLoad(vmodel,page,obj){
 	Object.assign(param,obj);
 	Object.assign(vmodel.queryParams,param);
 	vmodel.queryParams[vmodel.pageNoKey]--;
-	Vue[vmodel.method.toUpperCase() === 'GET' ? 'ajaxGet' : 'ajaxPost'](vmodel.url,vmodel.queryParams,function(err,resp){
+	if(typeof Setting.ajaxHandler != 'function'){
+    return console.error("Setting.ajaxHandler必须为函数");
+	}
+	Setting.ajaxHandler(vmodel.method,vmodel.url,vmodel.queryParams,function(err,resp){
 		if(err){
 			vmodel.rows = [];
 			vmodel.total = 0;

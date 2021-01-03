@@ -2,6 +2,7 @@ import Vue from 'vue';
 import tpl from './tree.html';
 import './tree.css';
 import {CommonUtil} from 'vue-bootstrap/src/utils';
+import Setting from 'vue-bootstrap/src/setting';
 var props = {
 	nodeList : {type : Array,default : function(){return [];}},
 	//节点是否带图标
@@ -12,7 +13,7 @@ var props = {
 	cascadeCheck : {type : Boolean,default : true},
 	//
 	loadFilter : {type : Function,default : function(resp){
-		return Vue.component('v-tree').loadFilter(resp);
+		return resp;
 	}},
 	//异步获取数据的url
 	initUrl : {type : String,default : ''},
@@ -169,13 +170,16 @@ function ajaxLoad(el,vmodel,func){
 		return;
 	}
   el.loading = true;
-  if(typeof Tree.loadHandler != 'function'){
-    return console.error("loadHandler必须为函数");
+  if(typeof Setting.ajaxHandler != 'function'){
+    return console.error("Setting.ajaxHandler必须为函数");
   }
-  Tree.loadHandler(vmodel.url,param,function(err,data){
+  Setting.ajaxHandler(vmodel.method,vmodel.url,param,function(err,data){
 		el.loading = false;
 		if(err){
 			return vmodel.onLoadError(err,callBackEl);
+		}
+		if(vmodel.loadFilter){
+			data = vmodel.loadFilter.call(vmodel,data);
 		}
 		if(callBackEl){
 			el.state = 'open';
@@ -302,7 +306,7 @@ function selectNode(el,vmodel){
 	el.selected = true;
 	root.onSelect(root.$options.curSelEl = el);
 }
-const Tree = {
+export default {
   template : tpl,
   loadHandler : null,
   name : 'VbTree',
@@ -465,4 +469,3 @@ const Tree = {
 		}
 	}
 };
-export default Tree;

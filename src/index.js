@@ -1,6 +1,7 @@
 import Dialog from './components/dialog';
 import Table from './components/table';
 import Select from './components/select';
+import Setting from './setting';
 const components = [
   Dialog,Table,Select
 ];
@@ -17,5 +18,6 @@ export default {
   install,
   Dialog,
   Table,
-  Select
+  Select,
+  Setting
 }
