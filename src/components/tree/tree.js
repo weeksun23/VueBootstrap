@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import tpl from './tree.html';
+import template from './tree.html';
 import './tree.css';
 import {CommonUtil} from 'vue-bootstrap/src/utils';
 import Setting from 'vue-bootstrap/src/setting';
@@ -31,7 +31,7 @@ var props = {
 	onLoadSuccess : {type : Function,default : CommonUtil.noop},
 	onLoadError : {type : Function,default : CommonUtil.noop}
 };
-tpl = (function(){
+let tpl = (function(){
 	function change(str){
 		var re = [];
 		for(var i=0,ii=str.length;i<ii;i++){
@@ -51,7 +51,7 @@ tpl = (function(){
 		}
 		arr.push(":" + change(i) + "='"+i+"'");
 	}
-	return tpl.replace("REPLACE",arr.join(" "));
+	return template.replace("REPLACE",arr.join(" "));
 })();
 var nodeAttr = {
 	id : null,

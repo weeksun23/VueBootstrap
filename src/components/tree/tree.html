@@ -19,7 +19,7 @@
       </i>
       <span class='tree-title'>{{el.text}}</span>
     </span>
-    <v-tree v-if='el.chLoaded && el.children && el.children.length' v-show="el.state === 'open'" 
-      :node-list='el.children' :is-root='false' REPLACE></v-tree>
+    <vb-tree v-if='el.chLoaded && el.children && el.children.length' v-show="el.state === 'open'" 
+      :node-list='el.children' :is-root='false' REPLACE></vb-tree>
   </li>
 </ul>
