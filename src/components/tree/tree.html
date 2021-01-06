@@ -1,12 +1,12 @@
-<ul :class='{tree : isRoot}'>
-  <li v-for='(el,index) in nodeList' :key="index" class='tree-node'>
-    <i @click='toggleOpenExpand(el)' class='glyphicon tree-toggle'
+<ul :class='{"vb-tree" : isRoot}'>
+  <li v-for='(el,index) in nodeList' :key="index" class='vb-tree-node'>
+    <i @click='toggleOpenExpand(el)' class='glyphicon vb-tree-toggle'
       :class="{'glyphicon-menu-right':el.state === 'closed',
-      'glyphicon-menu-down':el.state === 'open' || !el.state,'tree-hidden':!el.state}">
+      'glyphicon-menu-down':el.state === 'open' || !el.state,'vb-tree-hidden':!el.state}">
     </i>
-    <i @click='toggleCheck(el)' v-if='checkbox' class='glyphicon glyphicon-ok-circle tree-checkbox' 
-      :class="['tree-checkbox' + el.checked]"></i>
-    <span @click='clickContent(el)' class='tree-node-content' :class="{'tree-node-select':el.selected}">
+    <i @click='toggleCheck(el)' v-if='checkbox' class='glyphicon glyphicon-ok-circle vb-tree-checkbox' 
+      :class="['vb-tree-checkbox' + el.checked]"></i>
+    <span @click='clickContent(el)' class='vb-tree-node-content' :class="{'vb-tree-node-select':el.selected}">
       <i v-if='icon && el.iconCls !== false' class='glyphicon' :class="[
         (el.iconCls && (!el.state || el.state === 'closed' || (el.state === 'open' && !el.openIconCls))) ? el.iconCls : '',
         (el.openIconCls && el.state === 'open') ? el.openIconCls : '',
@@ -17,7 +17,7 @@
           'glyphicon-refresh':el.loading
         }]">
       </i>
-      <span class='tree-title'>{{el.text}}</span>
+      <span class='vb-tree-title' :style="{marginLeft : icon && el.iconCls !== false ? '3px' : 0}">{{el.text}}</span>
     </span>
     <vb-tree v-if='el.chLoaded && el.children && el.children.length' v-show="el.state === 'open'" 
       :node-list='el.children' :is-root='false' REPLACE></vb-tree>

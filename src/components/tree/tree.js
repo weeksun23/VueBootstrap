@@ -171,6 +171,8 @@ function ajaxLoad(el,vmodel,func){
 	}
   el.loading = true;
   if(typeof Setting.ajaxHandler != 'function'){
+		el.loading = false;
+		el.state = null;
     return console.error("Setting.ajaxHandler必须为函数");
   }
   Setting.ajaxHandler(vmodel.method,vmodel.url,param,function(err,data){
@@ -217,6 +219,8 @@ function expandNode(vmodel,el){
 		}
 	}else if(vmodel.url){
 		ajaxLoad(el,vmodel);
+	}else{
+		el.state = null;
 	}
 	vmodel.onExpand(el);
 }

@@ -1,3 +1,13 @@
 <div>
-  <vb-tree :node-list="treeData1"></vb-tree>
+  <vb-tree :node-list="treeData1" :checkbox="checkbox" :cascade-check="cascadeCheck" 
+    :icon='icon' init-url="www.baidu.com"></vb-tree>
+  <button class='btn btn-primary' :class="{active : checkbox}" @click="checkbox = !checkbox">
+    checkbox
+  </button>
+  <button class='btn btn-primary' :class="{active : cascadeCheck}" @click="cascadeCheck = !cascadeCheck">
+    cascadeCheck
+  </button>
+  <button class='btn btn-primary' :class="{active : icon}" @click="icon = !icon">
+    icon
+  </button>
 </div>

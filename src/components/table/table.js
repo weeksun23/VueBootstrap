@@ -246,7 +246,7 @@ export default {
 			var target = e.target;
 			//findParentByCls
 			var me = this;
-			var el = DomUtil.findTargetParent(target,'vue-table-checkbox');
+			var el = DomUtil.findTargetParent(target,'vb-table-checkbox');
 			if(el){
 				if(item._selected){
 					this.onSelect(item);
@@ -283,10 +283,10 @@ export default {
 			return value;
 		},
 		hoverTh : function(e,action){
-			e.target.classList[action]("vue-table-th-hover");
+			e.target.classList[action]("vb-table-th-hover");
 		},
 		hoverRow : function(e,action){
-			e.target.classList[action]("vue-table-tr-hover");
+			e.target.classList[action]("vb-table-tr-hover");
 		},
 		toPage : function(e,p){
 			if(e.currentTarget.disabled) return;

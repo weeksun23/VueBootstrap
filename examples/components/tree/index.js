@@ -5,12 +5,15 @@ function getMixin1(){
   return {
     data(){
       return {
+        icon : true,
+        checkbox : false,
+        cascadeCheck : true,
         treeData1 : [
           {id : 1,text : 'test1',children : [
             {id : 11,text : 'aaaa'},
             {id : 12,text : 'aaaa1'},
             {id : 13,text : 'aaaa2'},
-            {id : 14,text : 'aaaa3'}
+            {id : 14,text : 'aaaa3',state : 'closed'}
           ]},
           {id : 2,text : 'test2'},
           {id : 3,text : 'test3'},
