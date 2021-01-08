@@ -25,6 +25,7 @@ import Dialog from './components/dialog';
 import Table from './components/table';
 import Select from './components/select';
 import Tree from './components/tree';
+import Tooltip from './components/tooltip';
 Vue.use(VueBootstrap);
 Vue.use(VueRouter);
 Vue.component(Demo.name,Demo);
@@ -33,7 +34,8 @@ const routes = [
 	{name : 'dialog',path : "/component/dialog",component : Dialog},
 	{name : 'table',path : "/component/table",component : Table},
 	{name : 'select',path : "/component/select",component : Select},
-	{name : 'tree',path : "/component/tree",component : Tree}
+	{name : 'tree',path : "/component/tree",component : Tree},
+	{name : 'tooltip',path : "/component/tooltip",component : Tooltip}
 ];
 const router = new VueRouter({
   routes

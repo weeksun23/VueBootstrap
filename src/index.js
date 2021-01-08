@@ -2,9 +2,10 @@ import Dialog from './components/dialog';
 import Table from './components/table';
 import Select from './components/select';
 import Tree from './components/tree';
+import Tooltip from './components/tooltip';
 import Setting from './setting';
 const components = [
-  Dialog,Table,Select,Tree
+  Dialog,Table,Select,Tree,Tooltip
 ];
 const install = function(Vue) {
   components.forEach(component => {
@@ -21,5 +22,6 @@ export default {
   Table,
   Select,
   Tree,
+  Tooltip,
   Setting
 }
