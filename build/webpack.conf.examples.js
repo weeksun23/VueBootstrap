@@ -81,7 +81,7 @@ module.exports = {
   output: {
     path: isRelease ? path.join(rootPath, './examples-release') : path.resolve(rootPath, 'examples-build'),
     filename: '[name].build.js',
-    publicPath: '/'
+    publicPath: ''
     // chunkFilename : "/common/[name]/[name].[ext]"
   },
   module: {
