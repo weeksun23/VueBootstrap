@@ -15,7 +15,8 @@
 	      <div class='modal-body' v-bind:style="bodyStyle" v-html="content" v-if="content">
 	      </div>
 	      <div class="modal-footer" v-if='normalizedButtons && normalizedButtons.length > 0' v-bind:style="{'text-align' : btnAlign}">
-	        <button v-for='(btn,i) in normalizedButtons' :key='i' type="button" class="btn" :class="['btn-' + btn.theme]" v-on:click='clickBtn(btn)'>
+	        <button v-for='(btn,i) in normalizedButtons' :key='i' type="button" class="btn" :class="['btn-' + btn.theme]" 
+	        	v-on:click='clickBtn(btn)'>
 	          <i v-if='btn.iconCls' class='glyphicon ' v-bind:class='btn.iconCls'></i> {{btn.text}}
 	        </button>
 	      </div>
@@ -26,7 +27,7 @@
 <script>
 	import {DomUtil} from 'vue-bootstrap/src/utils';
 	import Modal from 'vue-bootstrap/src/components/modal';
-	import Vue from 'vue';
+	import {defineComponent} from 'vue';
 	const DefaultWidth = 600;
 	const defaultBtnOptions = {
 		close : false,
@@ -35,7 +36,7 @@
     text : "",
     iconCls : ''
 	};
-	export default {
+	export default defineComponent({
 		name : 'VbDialog',
 		defaultBtnOptions,
 		computed : {
@@ -93,7 +94,7 @@
 				DomUtil.addReisze(this);
 			}
 		},
-		beforeDestroy(){
+		beforeUnmount(){
 			if(this.modal){
 				Modal.remove(this);
 			}else{
@@ -175,8 +176,5 @@
 				this.doResize();
 			}
 	  }
-	}
+	});
 </script>
-<style>
-
-</style>

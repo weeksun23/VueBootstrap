@@ -1,18 +1,19 @@
 //全局唯一模态层
 import {DomUtil} from 'vue-bootstrap/src/utils';
-import Vue from 'vue';
+import {createApp} from 'vue';
 const Modal = {
   items : [],
   vm : null,
   init(){
     if(this.vm) return;
     DomUtil.appendHTML(document.body,`<div id='vbModalBackDrop' class='modal-backdrop fade' 
-      v-bind:class='{in : isIn}' v-on:transitionend='transitionend' v-show='visible'></div>`);
-    this.vm = new Vue({
-      el: '#vbModalBackDrop',
-      data: {
-        isIn : false,
-        visible : false
+      :class='{in : isIn}' @transitionend='transitionend' v-show='visible'></div>`);
+    this.vm = createApp({
+      data(){
+        return {
+          isIn : false,
+          visible : false
+        };
       },
       methods : {
         transitionend : function(){
@@ -22,6 +23,7 @@ const Modal = {
         }
       }
     });
+    this.vm.mount("#vbModalBackDrop");
   },
   _check(){
     if(!this.vm){

@@ -1,5 +1,6 @@
 import Util from '../../util';
 import demoHtmls from './demos.html';
+import {defineComponent} from 'vue';
 let templates = demoHtmls.split("SPLIT");
 function getMixin1(){
   return {
@@ -39,14 +40,18 @@ const data = [{
   title : '嵌套dialog',htmlCode : templates[1],
   jsCode : getMixin2.toString()
 }];
-export default{
+/*
+<vb-table :columns="propColumns" :pagination='false' :init-front-page-data="propData"></vb-table>
+<vb-table :columns="methodsColumns" :pagination='false' :init-front-page-data="methodsData"></vb-table>
+*/
+export default defineComponent({
   template : `<div class='doc'>
     <demo :title='data[0].title' :html-code="data[0].htmlCode" :js-code="data[0].jsCode">${templates[0]}</demo>
     <demo :title='data[1].title' :html-code="data[1].htmlCode" :js-code="data[1].jsCode">${templates[1]}</demo>
     <h2>props</h2>
-		<vb-table :columns="propColumns" :pagination='false' :init-front-page-data="propData"></vb-table>
+		
 		<h2>methods</h2>
-		<vb-table :columns="methodsColumns" :pagination='false' :init-front-page-data="methodsData"></vb-table>
+		
   </div>`,
   mixins : [getMixin1(),getMixin2(),Util.getColumnsMixin()],
   data(){
@@ -92,4 +97,4 @@ export default{
   },
   methods : {
   }
-}
+});

@@ -1,16 +1,3 @@
-.h100{height: 100%;}
-.w100{width: 100%}
-.posr{position: relative;}
-.mgt10{margin-top: 10px;}
-.mgtb10{margin-top:10px;margin-bottom:10px;}
-.mgb0{margin-bottom: 0}
-.pad0{padding: 0!important}
-.padr0{padding-right: 0!important}
-.padl0{padding-left: 0!important}
-.cpointer{cursor:pointer}
-.fz1{font-size:1.5em}
-.notallowed{cursor: not-allowed !important;}
-
 .doc{padding-bottom: 15px;}
 .demo>.panel{margin-bottom: 0;}
 .demo .panel-footer{cursor: pointer;}
