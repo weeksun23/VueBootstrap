@@ -10,8 +10,11 @@ import xml from 'highlight.js/lib/languages/xml';
 hljs.registerLanguage('javascript', javascript);
 hljs.registerLanguage('xml', xml);
 window.hljs = hljs;
+//demo components
 import Demo from './components/demo';
+import About from './components/about';
 import Dialog from './components/dialog';
+//VueBootstrap
 import VueBootstrap from '../src/index';
 // Vue.use(hljs.vuePlugin);
 //beautify
@@ -23,7 +26,7 @@ window.HTML = (code) => {
 	return html(code,{indent_size : 2});
 };
 const routes = [
-	{name : 'about',path : "/component/about",component : {template : `<div>VueBootstrap,基于Bootstrap的Vue Ui框架</div>`}},
+	{name : 'about',path : "/component/about",component : About},
 	{name : 'dialog',path : "/component/dialog",component : Dialog}
 ];
 const router = createRouter({

@@ -72,7 +72,7 @@ module.exports = {
     }
   },
   resolve: {
-    extensions: ['.js', '.vue', '.json'],
+    extensions: ['.js', '.vue', '.json','.ts'],
     alias: config.alias
   },
   entry: {

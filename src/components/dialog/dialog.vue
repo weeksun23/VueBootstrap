@@ -1,37 +1,42 @@
 <template>
-	<div class='modal fade' :class="{'in' : isIn}" 
-		:style="{zIndex : zIndex,left : left,top : top,right : right,width : width,
-		overflow : modal ? 'hidden' : 'visible',
-		bottom : bottom,display: isOpen ? 'block' : 'none'}" @click='close'>
-	  <div class="modal-dialog" @transitionend="transitionend" :style="!modal && {width : 'auto',margin : 0}">
-	    <div class="modal-content">
-	      <div class="modal-header" v-if='title'>
-	        <button type="button" class="close" v-on:click='close(null)'><span>&times;</span></button>
-	        <h4 class="modal-title">{{title}}</h4>
-	      </div>
-	      <div class="modal-body" v-bind:style="bodyStyle" v-if="!content">
-	        <slot></slot>
-	      </div>
-	      <div class='modal-body' v-bind:style="bodyStyle" v-html="content" v-if="content">
-	      </div>
-	      <div class="modal-footer" v-if='normalizedButtons && normalizedButtons.length > 0' v-bind:style="{'text-align' : btnAlign}">
-	        <button v-for='(btn,i) in normalizedButtons' :key='i' type="button" class="btn" :class="['btn-' + btn.theme]" 
-	        	v-on:click='clickBtn(btn)'>
-	          <i v-if='btn.iconCls' class='glyphicon ' v-bind:class='btn.iconCls'></i> {{btn.text}}
-	        </button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
+	<teleport to="body">
+		<transition enter-active-class='fade' enter-to-class='show' leave-from-class='show' leave-active-class='fade'
+			@after-enter="afterEnter" @after-leave="afterLeave" :duration="300">
+			<div class='vb-dialog modal' v-show="show"
+				:style="{zIndex : zIndex,left : left,top : top,right : right,width : width,
+				overflow : modal ? 'hidden' : 'visible',
+				bottom : bottom}" @click='close'>
+				<div class="modal-dialog" :style="!modal && {width : 'auto',margin : 0}">
+					<div class="modal-content">
+						<div class="modal-header" v-if='title'>
+							<h5 class="modal-title">{{title}}</h5>
+							<button type="button" class="btn-close" v-on:click='close(null)'></button>
+						</div>
+						<div class="modal-body" v-bind:style="bodyStyle" v-if="!content">
+							<slot></slot>
+						</div>
+						<div class='modal-body' v-bind:style="bodyStyle" v-html="content" v-if="content">
+						</div>
+						<div class="modal-footer" v-if='normalizedButtons && normalizedButtons.length > 0' v-bind:style="{'text-align' : btnAlign}">
+							<button v-for='(btn,i) in normalizedButtons' :key='i' type="button" class="btn" :class="['btn-' + btn.theme]" 
+								v-on:click='clickBtn(btn)'>
+								<i v-if='btn.iconCls' class='glyphicon ' v-bind:class='btn.iconCls'></i> {{btn.text}}
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</transition>
+	</teleport>
 </template>
 <script>
 	import {DomUtil} from 'vue-bootstrap/src/utils';
 	import Modal from 'vue-bootstrap/src/components/modal';
-	import {defineComponent} from 'vue';
+	import {defineComponent,nextTick} from 'vue';
 	const DefaultWidth = 600;
 	const defaultBtnOptions = {
 		close : false,
-    theme : 'default',
+    theme : 'secondary',
     handler : function(){},
     text : "",
     iconCls : ''
@@ -103,8 +108,7 @@
 		},
 	  data(){
 	  	return {
-	  		isOpen : false,
-		  	isIn : false,
+	  		show : false,
 		  	zIndex : null,
 				$isClosing : false,
 				title : this.initTitle,
@@ -117,25 +121,22 @@
 			};
 	  },
 	  methods : {
+			afterEnter(){
+				this.onOpen();
+			},
+			afterLeave(){
+				this.$isClosing = false;
+			},
 	  	close : function(e){
 				if(e && !e.target.classList.contains("modal")){
 					return;
 				}
 				if(this.onBeforeClose() === false || this.$isClosing) return;
-				this.isIn = false;
+				this.show = false;
 				this.$isClosing = true;
 				this.onClose();
 				if(this.modal){
 					Modal.pop();
-				}
-	  	},
-	  	transitionend : function(e){
-	  		//窗口打开或结束后事件
-				if(this.isIn){
-					this.onOpen();
-				}else{
-					this.isOpen = false;
-					this.$isClosing = false;
 				}
 	  	},
 	  	clickBtn : function(btn){
@@ -152,12 +153,7 @@
 				}else{
 					this.doResize();
 				}
-				this.isOpen = true;
-	      this.$nextTick(() => {
-	        //do reflow
-	        this.$el.offsetWidth;
-	        this.isIn = true;
-	      });
+				this.show = true;
 			},
 			doResize : function(){
 				let dw = document.body.offsetWidth;
@@ -172,9 +168,13 @@
 				}
 			},
 			resize : function(){
-				if(this.modal || !this.isOpen) return;
+				if(this.modal || !this.show) return;
 				this.doResize();
 			}
 	  }
 	});
 </script>
+<style>
+	/*modal样式默认是display:none,解决无法用v-show控制显示的问题*/
+	.vb-dialog{display: block;}
+</style>
