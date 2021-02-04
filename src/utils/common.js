@@ -1,12 +1,11 @@
-import Vue from 'vue';
 export default{
 	//组件共享的ajax加载方法
 	ajaxLoad : null,
 	noop : function(){},
-	setObjDefaultAttrs(target,defaultObj){
+	setObjDefaultAttrs(comp,target,defaultObj){
 		for(var j in defaultObj){
 	    if(target[j] === undefined){
-	      Vue.set(target,j,defaultObj[j]);
+	      comp.$set(target,j,defaultObj[j]);
 	    }
 	  }
 	},

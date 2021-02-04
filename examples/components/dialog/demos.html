@@ -1,19 +1,26 @@
-<vb-dialog ref='dialog1' init-title="dialog1" :buttons="buttons1">
+<vb-dialog ref='dialog1' init-title="普通dialog" :buttons="buttons1">
   <h1>dialog1</h1>
   <h1>dialog1</h1>
   <h1>dialog1</h1>
 </vb-dialog>
-<button class='btn btn-default' @click="showDialog1">dialog1</button>
+<button class='btn btn-primary' @click="showDialog1">dialog1</button>
 SPLIT
-<vb-dialog ref='dialog2' init-title="dialog2" :buttons="buttons2">
+<vb-dialog ref='dialog2' init-title="嵌套dialog" :buttons="buttons2">
   <h1>dialog2</h1>
   <h1>dialog2</h1>
   <h1>dialog2</h1>
-  <button class='btn btn-primary' @click='showDialog3'>打开嵌套dialog3</button>
+  <button class='btn btn-primary' @click='showDialog3'>嵌套dialog3</button>
 </vb-dialog>
 <vb-dialog ref='dialog3' init-title="dialog3">
   <h1>dialog3</h1>
   <h1>dialog3</h1>
   <h1>dialog3</h1>
 </vb-dialog>
-<button class='btn btn-default' @click="showDialog2">dialog2</button>
+<button class='btn btn-primary' @click="showDialog2">dialog2</button>
+SPLIT
+<vb-dialog ref='dialog4' init-title="静态dialog" :buttons="buttons3" :static="true">
+  <h1>dialog4</h1>
+  <h1>dialog4</h1>
+  <h1>dialog4</h1>
+</vb-dialog>
+<button class='btn btn-primary' @click="showDialog4">静态dialog</button>
