@@ -1,5 +1,5 @@
 <template>
-	<div class='demo'>
+	<div class='demo mb-3'>
 		<h2>{{title}}</h2>
     <div class="card">
       <div class="card-body">

@@ -2,11 +2,9 @@
 	<teleport to="body">
 		<transition enter-active-class='fade' enter-to-class='show' leave-from-class='show' leave-active-class='fade'
 			@after-enter="afterEnter" @after-leave="afterLeave" :duration="300">
-			<div class='vb-dialog modal' v-show="show"
-				:style="{zIndex : zIndex,left : left,top : top,right : right,width : width,
-				overflow : modal ? 'hidden' : 'visible',
-				bottom : bottom}" @click='close'>
-				<div class="modal-dialog" :style="!modal && {width : 'auto',margin : 0}">
+			<div class='vb-dialog modal' v-show="show" :class="{'fade' : preShowStatic,'show' : preShowStatic,'modal-static' : showStatic}"
+				:style="{zIndex : zIndex}" @click='close'>
+				<div class="modal-dialog" @transitionend="transitionend">
 					<div class="modal-content">
 						<div class="modal-header" v-if='title'>
 							<h5 class="modal-title">{{title}}</h5>
@@ -30,10 +28,8 @@
 	</teleport>
 </template>
 <script>
-	import {DomUtil} from 'vue-bootstrap/src/utils';
 	import Modal from 'vue-bootstrap/src/components/modal';
-	import {defineComponent,nextTick} from 'vue';
-	const DefaultWidth = 600;
+	import {defineComponent} from 'vue';
 	const defaultBtnOptions = {
 		close : false,
     theme : 'secondary',
@@ -85,26 +81,13 @@
 	  		type : String,
 	  		default : ''
 			},
-			modal : {type : Boolean,default : true}
+			static : {type : Boolean,default : false}
 		},
 		beforeCreate(){
 			Modal.init();
 		},
-		created(){
-			if(!this.modal){
-				this.right = 'auto';
-				this.bottom = 'auto';
-				this.top = '30px';
-				this.doResize();
-				DomUtil.addReisze(this);
-			}
-		},
 		beforeUnmount(){
-			if(this.modal){
-				Modal.remove(this);
-			}else{
-				DomUtil.removeResize(this);
-			}
+			Modal.remove(this);
 		},
 	  data(){
 	  	return {
@@ -117,7 +100,9 @@
 				top : 0,
 				right : 0,
 				bottom : 0,
-				width : 'auto'
+				width : 'auto',
+				preShowStatic : false,
+				showStatic : false
 			};
 	  },
 	  methods : {
@@ -127,17 +112,27 @@
 			afterLeave(){
 				this.$isClosing = false;
 			},
+			transitionend(){
+				if(this.showStatic){
+					this.showStatic = false;
+				}else{
+					this.preShowStatic = false;
+				}
+			},
 	  	close : function(e){
 				if(e && !e.target.classList.contains("modal")){
 					return;
 				}
 				if(this.onBeforeClose() === false || this.$isClosing) return;
+				if(this.static && e){
+					this.preShowStatic = true;
+					this.showStatic = true;
+					return;
+				}
 				this.show = false;
 				this.$isClosing = true;
 				this.onClose();
-				if(this.modal){
-					Modal.pop();
-				}
+				Modal.pop();
 	  	},
 	  	clickBtn : function(btn){
 	  		var handler = btn.handler;
@@ -148,28 +143,8 @@
 	  	},
 	  	open : function(){
 				if(this.onBeforeOpen() === false) return;
-				if(this.modal){
-					Modal.push(this);
-				}else{
-					this.doResize();
-				}
+				Modal.push(this);
 				this.show = true;
-			},
-			doResize : function(){
-				let dw = document.body.offsetWidth;
-				if(dw > DefaultWidth){
-					this.left = (dw - DefaultWidth) / 2 + 'px';
-					this.right = 'auto';
-					this.width = DefaultWidth + 'px';
-				}else{
-					this.left = 0;
-					this.right = 0;
-					this.width = 'auto';
-				}
-			},
-			resize : function(){
-				if(this.modal || !this.show) return;
-				this.doResize();
 			}
 	  }
 	});
