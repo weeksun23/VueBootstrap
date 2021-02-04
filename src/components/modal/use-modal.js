@@ -1,6 +1,6 @@
 //全局唯一模态层
 import ModalConstructor from './modal';
-import { h, render,nextTick } from 'vue'
+import { h, render,nextTick,createApp} from 'vue'
 const Modal = {
   items : [],
   vm : null,

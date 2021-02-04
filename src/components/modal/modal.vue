@@ -1,22 +1,19 @@
 <template>
-  <div class='modal-backdrop fade' :class='{show : show}' @transitionend='transitionend' v-show='visible' :style="{display : visible ? 'block' : 'none'}"></div>
+  <transition enter-active-class='fade' enter-to-class='show' leave-from-class='show' leave-active-class='fade'>
+    <div class='modal-backdrop vb-modal-backdrop' v-show='show'></div>
+  </transition>
 </template>
 <script>
 import {defineComponent,ref} from 'vue';
 export default defineComponent({
   setup(){
     let show = ref(false);
-    let visible = ref(false);
-    let transitionend = () => {
-      if(!show.value){
-        visible.value = false;
-      }
-    };
     return {
-      show,
-      visible,
-      transitionend
+      show
     }
   }
 })
 </script>
+<style>
+  .vb-modal-backdrop{display: block;opacity: .5;}
+</style>
