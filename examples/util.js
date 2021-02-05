@@ -14,7 +14,7 @@ function getColumnsMixin(){
 						var arr = v.split("|");
 						var re = [];
 						for(var i=0,ii;ii=arr[i++];){
-							re.push("<p>"+ii+"</p>");
+							re.push("<div>"+ii+"</pidv>");
 						}
 						return re.join("");
 					}},

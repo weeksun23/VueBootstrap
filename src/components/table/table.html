@@ -6,7 +6,7 @@
 			<table class="table" :class='{"table-striped" : striped,"table-bordered" : border}'>
 				<thead>
 					<tr>
-						<th v-for="el in columns" :style="{width:el.width + 'px'}" @click='sort(el)' @mouseenter="hoverTh($event,'add')" @mouseleave="hoverTh($event,'remove')">
+						<th v-for="el in columns" class='vb-table-th' :style="{width:el.width + 'px'}" @click='sort(el)'>
 							<div>
 								{{el.title}}
 								<span class='pull-right' v-if='el.sort' v-show='el.sortOrder'>
@@ -17,17 +17,20 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr v-for="(item,rowIndex) in rows" :class="{'vb-table-tr-selected':item._selected,'vb-table-tr-parent' : item._parent}" @click='toggleSelect(item,$event,rowIndex)' @mouseenter="hoverRow($event,'add')" @mouseleave="hoverRow($event,'remove')" v-show='!item.children || item.children.length === 0 || item._show'>
+					<tr v-for="(item,rowIndex) in rows" class="vb-table-tr" :class="{'vb-table-tr-selected':item._selected,'vb-table-tr-parent' : item._parent}" 
+						@click='toggleSelect(item,$event,rowIndex)'	v-show='!item.children || item.children.length === 0 || item._show'>
 						<td v-if='item.children && item.children.length > 0' :colspan="columns.length">
-							<vb-table :pagination='false' :init-front-page-data='item.children' :columns='columns' :title='item.title'></vb-table>
+							<vb-table :pagination='false' :init-front-page-data='item.children' :columns='columns' :title='item.title' 
+								:striped='false' :subTable='true'></vb-table>
 						</td>
-						<td v-if='!item.children || item.children.length === 0' v-for="(el,colIndex) in columns" :style='{width : el.width + "px"}' :title="showColumnTitle ? el.title : ''" :class="{'vb-table-checkbox' : el.checkbox}" @click="clickTd(item,$event,rowIndex,colIndex)">
+						<td v-if='!item.children || item.children.length === 0' v-for="(el,colIndex) in columns" :style='{width : el.width + "px"}' 
+							:title="showColumnTitle ? el.title : ''" :class="{'vb-table-checkbox' : el.checkbox}" @click="clickTd(item,$event,rowIndex,colIndex)">
 							<label v-if='el.checkbox'>
 								<input type='checkbox' v-model="item._selected">
 							</label>
 							<div v-else-if='item._parent && colIndex === 0' class='vb-table-ch-head'>
-								<i class='glyphicon' :class="['glyphicon-chevron-' + (rows[rowIndex + 1]._show ? 'down' : 'right')]"></i>
-								<span>{{item[el.field]}}</span>
+								<i :class="['bi-chevron-' + (rows[rowIndex + 1]._show ? 'down' : 'right')]"></i>
+								<span class='ms-1'>{{item[el.field]}}</span>
 							</div>
 							<div v-else v-html="dealValue(item,el,rowIndex)" :style='el.style'></div>
 						</td>

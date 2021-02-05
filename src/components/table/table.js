@@ -196,7 +196,8 @@ export default defineComponent({
 		onLoadSuccess : {type : Function,default : function(){}},
 		onLoadError : {type : Function,default : function(){}},
 		onSelect : {type : Function,default : function(){}},
-		onClickTdBtn : {type : Function,default : function(){}}
+		onClickTdBtn : {type : Function,default : function(){}},
+		subTable : {type : Boolean,default : false}
 	},
 	data : function(){
 		return {
@@ -243,11 +244,14 @@ export default defineComponent({
 			}
 		},
 		toggleSelect : function(item,e,index){
+			if(this.subTable){
+				e.stopPropagation();
+			}
 			var target = e.target;
-			//findParentByCls
 			var me = this;
 			var el = DomUtil.findTargetParent(target,'vb-table-checkbox');
 			if(el){
+				//点击的是含checkbox的单元格
 				if(item._selected){
 					this.onSelect(item);
 				}
@@ -281,12 +285,6 @@ export default defineComponent({
 				return "";
 			}
 			return value;
-		},
-		hoverTh : function(e,action){
-			e.target.classList[action]("vb-table-th-hover");
-		},
-		hoverRow : function(e,action){
-			e.target.classList[action]("vb-table-tr-hover");
 		},
 		toPage : function(e,p){
 			if(e.currentTarget.disabled) return;
