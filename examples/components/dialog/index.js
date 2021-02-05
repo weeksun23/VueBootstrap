@@ -109,14 +109,11 @@ const data = [{
     }
   }
 }];
-/*
-<h2>props</h2>
-<vb-table :columns="propColumns" :pagination='false' :init-front-page-data="propData"></vb-table>
-<h2>methods</h2>
-<vb-table :columns="methodsColumns" :pagination='false' :init-front-page-data="methodsData"></vb-table>
-*/
 export default defineComponent({
-  ...Util.getDemoOptions(data,demos),
+  ...Util.getDemoOptions(data,demos,`<h2>props</h2>
+    <vb-table :columns="propColumns" :pagination='false' :init-front-page-data="propData"></vb-table>
+    <h2>methods</h2>
+    <vb-table :columns="methodsColumns" :pagination='false' :init-front-page-data="methodsData"></vb-table>`),
   data(){
     return {
       data,

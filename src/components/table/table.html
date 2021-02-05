@@ -1,8 +1,7 @@
-<div class='panel panel-default vb-table'>
-	<div class="panel-heading" v-if='title'>
-		<h3 class="panel-title" v-html="title"></h3>
+<div class='card vb-table'>
+	<div class="card-header" v-if='title' v-html="title">
 	</div>
-	<div class="panel-body">
+	<div class="card-body">
 		<div class='table-responsive' :class='{"vb-table-nowrap" : nowrap}'>
 			<table class="table" :class='{"table-striped" : striped,"table-bordered" : border}'>
 				<thead>

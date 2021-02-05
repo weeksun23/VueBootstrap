@@ -60,28 +60,11 @@
 	  	initContent : {type : String,default : ''},
 	  	onBeforeClose : {type : Function,default : function(){}},
 	  	onClose : {type : Function,default : function(){}},
-	  	onBeforeOpen : {
-	  		type : Function,
-	  		default : function(){}
-	  	},
-	  	onOpen : {
-	  		type : Function,
-	  		default : function(){}
-	  	},
-	  	buttons : {
-	  		type : Array,
-	  		default : function(){
-	  			return [];
-	  		}
-	  	},
-	  	bodyStyle : {
-	  		type : String,
-	  		default : ''
-	  	},
-	  	btnAlign : {
-	  		type : String,
-	  		default : ''
-			},
+	  	onBeforeOpen : {type : Function,default : function(){}},
+	  	onOpen : {type : Function,default : function(){}},
+	  	buttons : {type : Array,default : function(){return []}},
+	  	bodyStyle : {type : String,default : ''},
+	  	btnAlign : {type : String,default : ''},
 			static : {type : Boolean,default : false},
 			scrollable : {type : Boolean,default : false},
 			centered : {type : Boolean,default : false},
