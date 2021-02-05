@@ -2,10 +2,11 @@ export default{
 	//组件共享的ajax加载方法
 	ajaxLoad : null,
 	noop : function(){},
-	setObjDefaultAttrs(comp,target,defaultObj){
+	setObjDefaultAttrs(target,defaultObj){
 		for(var j in defaultObj){
 	    if(target[j] === undefined){
-	      comp.$set(target,j,defaultObj[j]);
+				target[j] = defaultObj[j];
+	      // comp.$set(target,j,defaultObj[j]);
 	    }
 	  }
 	},

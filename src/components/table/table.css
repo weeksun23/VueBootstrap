@@ -1,12 +1,12 @@
-.vb-table.panel{
+.vb-table.card{
 	border: 0;position: relative;
 	box-shadow:none;margin-bottom: 0;
 	-moz-box-shadow: none;
 	-webkit-box-shadow:none;
 }
 .vb-table .table td{vertical-align: middle;}
-.vb-table.panel .panel-heading{border-width:1px 1px 0 1px;border-style: solid;}
-.vb-table .panel-body{padding:0;}
+.vb-table.card .card-heading{border-width:1px 1px 0 1px;border-style: solid;}
+.vb-table .card-body{padding:0;}
 .vb-table .table{margin-bottom:0}
 .vb-table .thead{background-color: #fff;}
 .vb-table .table-responsive{margin-bottom: 0;position: relative;}

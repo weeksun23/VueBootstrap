@@ -1,5 +1,5 @@
 <template>
-	<div>VueBootstrap,基于Bootstrap的Vue Ui框架</div>
+	<div>VueBootstrap,基于Bootstrap5 Vue3的Ui组件库</div>
 </template>
 <script>
 import {defineComponent} from 'vue';
