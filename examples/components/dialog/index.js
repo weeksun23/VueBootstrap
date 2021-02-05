@@ -1,75 +1,122 @@
 import Util from '../../util';
-import demoHtmls from './demos.html';
+import demos from './demos.html';
 import {defineComponent} from 'vue';
-let templates = demoHtmls.split("SPLIT");
-function getMixin1(){
-  return {
-    data(){
-      return {
-        buttons1 : [{text : 'ok',close : true}]
-      }
-    },
-    methods : {
-      showDialog1 : function(){
-        this.$refs.dialog1.open();
-      }
-    }
-  };
-}
-function getMixin2(){
-  return {
-    data(){
-      return {
-        buttons2 : [{text : 'ok',close : true}],
-      }
-    },
-    methods : {
-      showDialog2 : function(){
-        this.$refs.dialog2.open();
-      },
-      showDialog3 : function(){
-        this.$refs.dialog3.open();
-      }
-    }
-  }
-}
-function getMixin3(){
-  return {
-    data(){
-      return {
-        buttons3 : [{text : 'ok',close : true}],
-      }
-    },
-    methods : {
-      showDialog4: function(){
-        this.$refs.dialog4.open();
-      }
-    }
-  }
-}
 const data = [{
-  title : '初始化',htmlCode : templates[0],
-  jsCode : getMixin1.toString()
+  title : '初始化',
+  jsCode(){
+    return {
+      data(){
+        return {
+          buttons1 : [{text : 'ok',close : true}]
+        }
+      },
+      methods : {
+        showDialog1 : function(){
+          this.$refs.dialog1.open();
+        }
+      }
+    };
+  }
 },{
-  title : '嵌套dialog',htmlCode : templates[1],
-  jsCode : getMixin2.toString()
+  title : '嵌套dialog',
+  jsCode(){
+    return {
+      data(){
+        return {
+          buttons2 : [{text : 'ok',close : true}],
+        }
+      },
+      methods : {
+        showDialog2 : function(){
+          this.$refs.dialog2.open();
+        },
+        showDialog3 : function(){
+          this.$refs.dialog3.open();
+        }
+      }
+    }
+  }
 },{
-  title : '静态dialog',htmlCode : templates[2],
-  jsCode : getMixin3.toString()
+  title : '静态dialog',
+  jsCode(){
+    return {
+      data(){
+        return {
+          buttons3 : [{text : 'ok',close : true}],
+        }
+      },
+      methods : {
+        showDialog4: function(){
+          this.$refs.dialog4.open();
+        }
+      }
+    }
+  }
+},{
+  title : '长内容dialog',
+  jsCode(){
+    return {
+      data(){
+        return {}
+      },
+      methods : {
+        showDialog5: function(){
+          this.$refs.dialog5.open();
+        }
+      }
+    }
+  }
+},{
+  title : '长内容dialog(scroll body)',
+  jsCode(){
+    return {
+      data(){
+        return {}
+      },
+      methods : {
+        showDialog6: function(){
+          this.$refs.dialog6.open();
+        }
+      }
+    }
+  }
+},{
+  title : '垂直居中',
+  jsCode(){
+    return {
+      data(){
+        return {}
+      },
+      methods : {
+        showDialog7: function(){
+          this.$refs.dialog7.open();
+        }
+      }
+    }
+  }
+},{
+  title : '尺寸',
+  jsCode(){
+    return {
+      data(){
+        return {}
+      },
+      methods : {
+        showSizeDialog: function(size){
+          this.$refs[size + 'Dialog'].open();
+        }
+      }
+    }
+  }
 }];
 /*
+<h2>props</h2>
 <vb-table :columns="propColumns" :pagination='false' :init-front-page-data="propData"></vb-table>
+<h2>methods</h2>
 <vb-table :columns="methodsColumns" :pagination='false' :init-front-page-data="methodsData"></vb-table>
 */
 export default defineComponent({
-  template : `<div class='doc'>
-    <demo :title='data[0].title' :html-code="data[0].htmlCode" :js-code="data[0].jsCode">${templates[0]}</demo>
-    <demo :title='data[1].title' :html-code="data[1].htmlCode" :js-code="data[1].jsCode">${templates[1]}</demo>
-    <demo :title='data[2].title' :html-code="data[2].htmlCode" :js-code="data[2].jsCode">${templates[2]}</demo>
-    <h2>props</h2>
-		<h2>methods</h2>
-  </div>`,
-  mixins : [getMixin1(),getMixin2(),getMixin3(),Util.getColumnsMixin()],
+  ...Util.getDemoOptions(data,demos),
   data(){
     return {
       data,

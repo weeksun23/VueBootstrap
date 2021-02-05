@@ -20,10 +20,10 @@ import VueBootstrap from '../src/index';
 //beautify
 let {js,html} = require('js-beautify');
 window.JS = (code) => {
-	return js(code,{indent_size : 2});
+	return js(code,{indent_size : 2,preserve_newlines : false});
 };
 window.HTML = (code) => {
-	return html(code,{indent_size : 2});
+	return html(code,{indent_size : 2,preserve_newlines : false});
 };
 const routes = [
 	{name : 'about',path : "/component/about",component : About},

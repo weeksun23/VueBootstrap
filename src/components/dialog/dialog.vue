@@ -1,10 +1,11 @@
 <template>
 	<teleport to="body">
 		<transition enter-active-class='fade' enter-to-class='show' leave-from-class='show' leave-active-class='fade'
-			@after-enter="afterEnter" @after-leave="afterLeave" :duration="300">
+			@before-enter="beforeEnter" @after-enter="afterEnter" @after-leave="afterLeave" :duration="300">
 			<div class='vb-dialog modal' v-show="show" :class="{'fade' : preShowStatic,'show' : preShowStatic,'modal-static' : showStatic}"
 				:style="{zIndex : zIndex}" @click='close'>
-				<div class="modal-dialog" @transitionend="transitionend">
+				<div class="modal-dialog" @transitionend="transitionend"
+					:class="[scrollable && 'modal-dialog-scrollable',centered && 'modal-dialog-centered',size && ('modal-' + size)]">
 					<div class="modal-content">
 						<div class="modal-header" v-if='title'>
 							<h5 class="modal-title">{{title}}</h5>
@@ -81,7 +82,10 @@
 	  		type : String,
 	  		default : ''
 			},
-			static : {type : Boolean,default : false}
+			static : {type : Boolean,default : false},
+			scrollable : {type : Boolean,default : false},
+			centered : {type : Boolean,default : false},
+			size : {type : String,default : null}
 		},
 		beforeCreate(){
 			Modal.init();
@@ -102,12 +106,17 @@
 				bottom : 0,
 				width : 'auto',
 				preShowStatic : false,
-				showStatic : false
+				showStatic : false,
+				isShowing : false//是否在打开动画过程中
 			};
 	  },
 	  methods : {
+			beforeEnter(){
+				this.isShowing = true;
+			},
 			afterEnter(){
 				this.onOpen();
+				this.isShowing = false;
 			},
 			afterLeave(){
 				this.$isClosing = false;
@@ -125,8 +134,11 @@
 				}
 				if(this.onBeforeClose() === false || this.$isClosing) return;
 				if(this.static && e){
-					this.preShowStatic = true;
-					this.showStatic = true;
+					//打开动画还没结束 不能开始静态动画效果
+					if(!this.isShowing){
+						this.preShowStatic = true;
+						this.showStatic = true;
+					}
 					return;
 				}
 				this.show = false;

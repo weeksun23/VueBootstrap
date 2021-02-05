@@ -23,6 +23,7 @@ const Modal = {
       last.zIndex = 1000;
     }
     items.push(item);
+    console.log('modal push',items.length);
   },
   push(item){
     this._check();
