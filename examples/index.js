@@ -15,6 +15,10 @@ window.hljs = hljs;
 import Demo from './components/demo';
 import About from './components/about';
 import Dialog from './components/dialog';
+import Select from './components/select';
+import Table from './components/table';
+import Tooltip from './components/tooltip';
+import Tree from './components/tree';
 //VueBootstrap
 import VueBootstrap from '../src/index';
 // Vue.use(hljs.vuePlugin);
@@ -28,7 +32,11 @@ window.HTML = (code) => {
 };
 const routes = [
 	{name : 'about',path : "/component/about",component : About},
-	{name : 'dialog',path : "/component/dialog",component : Dialog}
+	{name : 'dialog',path : "/component/dialog",component : Dialog},
+	{name : 'select',path : '/component/select',component : Select},
+	{name : 'table',path : '/component/table',component : Table},
+	{name : 'tooltip',path : '/component/tooltip',component : Tooltip},
+	{name : 'tree',path : "/component/tree",component : Tree}
 ];
 const router = createRouter({
 	history: createWebHashHistory(),

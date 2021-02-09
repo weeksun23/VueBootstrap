@@ -32,8 +32,10 @@ export default{
 		const mixins = [getColumnsMixin()];
 		data.forEach((item,i) => {
 			item.htmlCode = templates[i];
-			mixins.push(item.jsCode());
-			item.jsCode = item.jsCode.toString();
+			if(item.jsCode){
+				mixins.push(item.jsCode());
+				item.jsCode = item.jsCode.toString();
+			}
 			demoHtmlTemplate.push(`<demo :title='data[${i}].title' :html-code="data[${i}].htmlCode" :js-code="data[${i}].jsCode">${templates[i]}</demo>`);
 		});
 		return {

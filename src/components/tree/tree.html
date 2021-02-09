@@ -1,23 +1,21 @@
 <ul :class='{"vb-tree" : isRoot}'>
   <li v-for='(el,index) in nodeList' :key="index" class='vb-tree-node'>
-    <i @click='toggleOpenExpand(el)' class='glyphicon vb-tree-toggle'
-      :class="{'glyphicon-menu-right':el.state === 'closed',
-      'glyphicon-menu-down':el.state === 'open' || !el.state,'vb-tree-hidden':!el.state}">
-    </i>
-    <i @click='toggleCheck(el)' v-if='checkbox' class='glyphicon glyphicon-ok-circle vb-tree-checkbox' 
-      :class="['vb-tree-checkbox' + el.checked]"></i>
-    <span @click='clickContent(el)' class='vb-tree-node-content' :class="{'vb-tree-node-select':el.selected}">
-      <i v-if='icon && el.iconCls !== false' class='glyphicon' :class="[
+    <i @click='toggleOpenExpand(el)' class='vb-tree-toggle'
+      :class="{'bi-chevron-right':el.state === 'closed',
+      'bi-chevron-down':el.state === 'open' || !el.state,'vb-tree-hidden':!el.state}">
+    </i><i @click='toggleCheck(el)' v-if='checkbox' class='bi-check-circle-fill vb-tree-checkbox' 
+      :class="['vb-tree-checkbox' + el.checked]"></i><span @click='clickContent(el)' class='vb-tree-node-content' 
+      :class="{'vb-tree-node-select':el.selected}">
+      <i v-if='icon && el.iconCls !== false' :class="[
         (el.iconCls && (!el.state || el.state === 'closed' || (el.state === 'open' && !el.openIconCls))) ? el.iconCls : '',
         (el.openIconCls && el.state === 'open') ? el.openIconCls : '',
         {
-          'glyphicon-folder-close':!el.loading && !el.iconCls && el.state==='closed',
-          'glyphicon-folder-open':!el.loading && !el.iconCls && el.state==='open',
-          'glyphicon-th-list':(!el.state && !el.iconCls) || el.iconCls === 'glyphicon-th-list',
-          'glyphicon-refresh':el.loading
+          'bi-folder2':!el.loading && !el.iconCls && el.state==='closed',
+          'bi-folder2-open':!el.loading && !el.iconCls && el.state==='open',
+          'bi-file-earmark-text':(!el.state && !el.iconCls) || el.iconCls === 'bi-file-earmark-text',
+          'bi-arrow-repeat':el.loading
         }]">
-      </i>
-      <span class='vb-tree-title' :style="{marginLeft : icon && el.iconCls !== false ? '3px' : 0}">{{el.text}}</span>
+      </i><span :style="{marginLeft : icon && el.iconCls !== false ? '.125rem' : 0}">{{el.text}}</span>
     </span>
     <vb-tree v-if='el.chLoaded && el.children && el.children.length' v-show="el.state === 'open'" 
       :node-list='el.children' :is-root='false' REPLACE></vb-tree>

@@ -41,25 +41,25 @@
 		<h2 v-show='!rows || total === 0 || rows.length === 0' class="text-muted text-center">暂无数据</h2>
 	</div>
 	<div v-if='pagination' class='vb-pagination clearfix'>
-		<div class='pull-left' onselectstart='return false'>
-			<button class='btn btn-default vb-pagination-first' type='button' :disabled="curPage <= 1" @click="toPage($event,'first')">
-				<i class='glyphicon glyphicon-backward'></i>
+		<div class='float-start' onselectstart='return false'>
+			<button class='btn btn-sm btn-outline-secondary vb-pagination-first' type='button' :disabled="curPage <= 1" @click="toPage($event,'first')">
+				<i class='bi-chevron-double-left'></i>
 			</button>
-			<button class='btn btn-default' type='button' :disabled="curPage <= 1" @click='toPage($event,-1)'>
-				<i class='glyphicon glyphicon-chevron-left'></i>
+			<button class='btn btn-sm btn-outline-secondary ms-1' type='button' :disabled="curPage <= 1" @click='toPage($event,-1)'>
+				<i class='bi-chevron-left'></i>
 			</button>
-			<input class='form-control page' placeholder='页数' v-model.number='changeCurPage' @keydown.enter='toThePage'>
-			<span>共{{sumPage}}页</span>
-			<button class='btn btn-default' type='button' :disabled="curPage >= sumPage" @click='toPage($event,1)'>
-				<i class='glyphicon glyphicon-chevron-right'></i>
+			<input class='form-control form-control-sm page ms-1' placeholder='页数' v-model.number='changeCurPage' @keydown.enter='toThePage'>
+			<span class='ms-1'>共{{sumPage}}页</span>
+			<button class='btn btn-sm btn-outline-secondary ms-1' type='button' :disabled="curPage >= sumPage" @click='toPage($event,1)'>
+				<i class='bi-chevron-right'></i>
 			</button>
-			<button class='btn btn-default vb-pagination-last' type='button' :disabled="curPage >= sumPage" @click="toPage($event,'last')">
-				<i class='glyphicon glyphicon-forward'></i>
+			<button class='btn btn-sm btn-outline-secondary vb-pagination-last ms-1' type='button' :disabled="curPage >= sumPage" @click="toPage($event,'last')">
+				<i class='bi-chevron-double-right'></i>
 			</button>
 		</div>
-		<div class='pull-right'>
+		<div class='float-end'>
 			<span>当前第{{curPage}}页,{{start}}~{{end}}条,共{{total}}条</span>
-			<select class='form-control' v-model='pageSize'>
+			<select class='form-select form-select-sm d-inline-block w-auto' v-model='pageSize'>
 				<option v-for='el in pageSizeArr' :value='el'>{{el}}</option>
 			</select>
 		</div>

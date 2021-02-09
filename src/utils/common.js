@@ -1,4 +1,7 @@
 export default{
+	log(){
+		console.log.apply(console,arguments);
+	},
 	//组件共享的ajax加载方法
 	ajaxLoad : null,
 	noop : function(){},

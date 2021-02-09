@@ -1,14 +1,22 @@
 //全局唯一模态层
 import ModalConstructor from './modal';
-import { h, render,nextTick,createApp} from 'vue'
+import { h, render,nextTick} from 'vue'
 const Modal = {
+  container : null,
   items : [],
   vm : null,
   init : function(){
     if(this.vm) return;
+    this.container = document.createElement('div');
     const vnode = h(ModalConstructor);
-    render(vnode, document.body);
+    render(vnode, this.container);
+    document.body.appendChild(this.container.firstElementChild);
     this.vm = vnode.component;
+  },
+  destroy(){
+    render(null,this.container);
+    this.container = null;
+    this.vm = null;
   },
   _check(){
     if(!this.vm){
@@ -31,15 +39,9 @@ const Modal = {
     let len = items.length;
     if(len === 0){
       document.body.classList.add("modal-open");
-      this.vm.proxy.visible = true;
-      nextTick(() => {
-        this.vm.vnode.el.offsetWidth;
-        this.vm.proxy.show = true;
-        this._push(item);
-      });
-    }else{
-      this._push(item);
+      this.vm.proxy.show = true;
     }
+    this._push(item);
   },
   pop(){
     this._check();

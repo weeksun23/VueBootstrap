@@ -345,7 +345,6 @@ export default defineComponent({
     if(!this.url){
 			var data = this.frontPageData;
 			if(data){
-				console.log(this);
 				initRowsData(this,data);
 				this.total = data.length;
 				dealFrontPageData(this,1);

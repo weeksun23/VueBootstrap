@@ -9,7 +9,7 @@
     </div>
     <div class='demo-code' v-show='showCode'>
       <pre><code class='html' ref='html'>{{formatHtmlCode}}</code></pre>
-      <pre><code class='javascript' ref='javascript'>{{formatJsCode}}</code></pre>
+      <pre v-if="formatJsCode"><code class='javascript' ref='javascript'>{{formatJsCode}}</code></pre>
     </div>
 	</div>
 </template>
@@ -32,6 +32,7 @@ export default defineComponent({
       return HTML(this.htmlCode);
     },
     formatJsCode(){
+      if(!this.jsCode) return null;
       let arr = this.jsCode.split("return");
       if(arr.length > 1){
         arr.shift();
@@ -41,7 +42,7 @@ export default defineComponent({
   },
   mounted(){
     hljs.highlightBlock(this.$refs.html);
-    hljs.highlightBlock(this.$refs.javascript);
+    this.$refs.javascript && hljs.highlightBlock(this.$refs.javascript);
   }
 })
 </script>

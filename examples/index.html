@@ -27,10 +27,26 @@
 								<a :href="href" class='nav-link' :class="[isActive && 'active']" @click="navigate">Dialog 对话框</a>
 							</li>
 						</router-link>
-						<!-- <li class="nav-item" :class="{active : curPage === 'table'}"><router-link to="/component/table">Table 表格</router-link></li>
-						<li :class="{active : curPage === 'select'}"><router-link to="/component/select">Select 下拉选择</router-link></li>
-						<li :class="{active : curPage === 'tree'}"><router-link to="/component/tree">Tree 树组件</router-link></li>
-						<li :class="{active : curPage === 'tooltip'}"><router-link to="/component/tooltip">Tooltip 工具提示</router-link></li> -->
+						<router-link to="/component/select" custom v-slot="{ href, route, navigate, isActive, isExactActive }">
+							<li class='nav-item'>
+								<a :href="href" class='nav-link' :class="[isActive && 'active']" @click="navigate">下拉选择</a>
+							</li>
+						</router-link>
+						<router-link to="/component/table" custom v-slot="{ href, route, navigate, isActive, isExactActive }">
+							<li class='nav-item'>
+								<a :href="href" class='nav-link' :class="[isActive && 'active']" @click="navigate">Table 表格</a>
+							</li>
+						</router-link>
+						<router-link to="/component/tooltip" custom v-slot="{ href, route, navigate, isActive, isExactActive }">
+							<li class='nav-item'>
+								<a :href="href" class='nav-link' :class="[isActive && 'active']" @click="navigate">Tooltip 工具提示</a>
+							</li>
+						</router-link>
+						<router-link to="/component/tree" custom v-slot="{ href, route, navigate, isActive, isExactActive }">
+							<li class='nav-item'>
+								<a :href="href" class='nav-link' :class="[isActive && 'active']" @click="navigate">Tree 树组件</a>
+							</li>
+						</router-link>
 					</ul>
 				</div>
 				<div class='col-md-9'>

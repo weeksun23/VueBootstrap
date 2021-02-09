@@ -1,4 +1,6 @@
-<span v-tooltip="'hello world'">test,hover me!</span>
-<span v-tooltip:left="'hello world'" class='text-muted'>test,hover me!</span>
-<span v-tooltip:bottom="'hello world'" class='text-success'>test,hover me!</span>
-<span v-tooltip:right="'hello world'" class='text-danger'>test,hover me!</span>
+<span v-tooltip="'hello world'">top tooltip</span>
+<span v-tooltip:start="'hello world'" class='text-muted ms-3'>start tooltip</span>
+<span v-tooltip:bottom="'hello world'" class='text-success ms-3'>bottom tooltip</span>
+<span v-tooltip:end="'hello world'" class='text-danger ms-3'>end tooltip</span>
+SPLIT
+<span v-tooltip="'<h2>hhhhhhhhh</h2>'">html content tooltip</span>

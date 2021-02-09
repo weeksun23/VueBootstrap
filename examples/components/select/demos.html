@@ -1,11 +1,11 @@
 <form class="form-horizontal">
   <vb-select ref='select1' :data="data1" :editable='true' label-text="可写" col-cls='sm' 
     :value='value1'></vb-select>
-  <div class='form-group'>
-    <div class='col-sm-offset-2 col-sm-10'>
+  <div class='row mt-3'>
+    <div class='offset-sm-2 col-sm-10'>
       <button @click='setValue1(4)' class='btn btn-primary'>setValue</button>
-      <button @click='setValue1(6)' class='btn btn-primary'>setValue</button>
-      <button @click='setValue1(null)' class='btn btn-primary'>clear</button>
+      <button @click='setValue1(6)' class='btn btn-primary ms-2'>setValue</button>
+      <button @click='setValue1(null)' class='btn btn-primary ms-2'>clear</button>
     </div>
   </div>
 </form>
