@@ -1,11 +1,9 @@
 .vb-tree{white-space: nowrap;}
-.vb-tree [class^="bi-"]::before,.vb-tree [class*=" bi-"]::before,.vb-tree span,.vb-tree i{vertical-align: middle;}
+.vb-tree [class^="bi-"]::before,.vb-tree [class*=" bi-"]::before,.vb-tree span,.vb-tree i{vertical-align: middle;line-height: inherit;}
 .vb-tree,.vb-tree ul{margin:0;padding:0;list-style: none;}
-.vb-tree ul>li{padding-left:1.25rem;}
+.vb-tree ul>li{padding-left:1rem;}
 .vb-tree-hidden{visibility: hidden;}
-.vb-tree-node{}
-.vb-tree-node i,.vb-tree-title{}
-.vb-tree-node-content{display: inline-block;cursor: pointer;}
+.vb-tree-node-content{display: inline-block;cursor: pointer;padding:0 .25rem;}
 .vb-tree-node-content:hover{background-color: #e2e2e2;}
 .vb-tree-node-select{background-color: #3385FF;color: #fff;}
 .vb-tree-node-select:hover{background-color: #3385FF;}

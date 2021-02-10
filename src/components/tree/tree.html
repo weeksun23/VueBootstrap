@@ -12,10 +12,10 @@
         {
           'bi-folder2':!el.loading && !el.iconCls && el.state==='closed',
           'bi-folder2-open':!el.loading && !el.iconCls && el.state==='open',
-          'bi-file-earmark-text':(!el.state && !el.iconCls) || el.iconCls === 'bi-file-earmark-text',
+          'bi-file-earmark-text':!el.state && !el.iconCls,
           'bi-arrow-repeat':el.loading
         }]">
-      </i><span :style="{marginLeft : icon && el.iconCls !== false ? '.125rem' : 0}">{{el.text}}</span>
+      </i><span>{{el.text}}</span>
     </span>
     <vb-tree v-if='el.chLoaded && el.children && el.children.length' v-show="el.state === 'open'" 
       :node-list='el.children' :is-root='false' REPLACE></vb-tree>
