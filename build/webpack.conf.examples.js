@@ -100,6 +100,10 @@ module.exports = {
         use: ['babel-loader']
       },
       {
+        test : /\.ts$/,
+        use: ['awesome-typescript-loader']
+      },
+      {
         test: /\.vue$/,
         use: ['vue-loader']
       },
