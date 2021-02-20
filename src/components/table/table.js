@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import {defineComponent} from 'vue';
 import {DomUtil,CommonUtil,DateUtil} from 'vue-bootstrap/src/utils';
 import Setting from 'vue-bootstrap/src/setting';
 var tpl = require("./table.html");
@@ -23,7 +23,7 @@ function initColumns(columns){
 	for(var j=0,column;column=columns[j++];){
 		for(var i in defaultColumnObj){
 			if(column[i] === undefined){
-				Vue.set(column,i,defaultColumnObj[j]);
+				column[i] = defaultColumnObj[i];
 			}else{
 				if(i === 'formatter'){
 					if(column.formatter === 'datetime'){
@@ -41,7 +41,7 @@ function initColumns(columns){
 	}
 }
 //初始化每一行数据
-function initRowsData(data){
+function initRowsData(vmodel,data){
 	var obj = {
 		_selected : false,
 		_parent : false
@@ -138,7 +138,7 @@ function ajaxLoad(vmodel,page,obj){
 				return;
 			}
 			var rowsData = resp[vmodel.rowsKey];
-			initRowsData(rowsData);
+			initRowsData(vmodel,rowsData);
 			vmodel.rows = rowsData;
 			vmodel.total = resp[vmodel.totalKey];
 			vmodel.changeCurPage = vmodel.curPage = page;
@@ -169,7 +169,7 @@ function updatePagination(vmodel){
 		}
 	}
 }
-export default {
+export default defineComponent({
 	name : 'VbTable',
 	template : tpl,
 	$lastSelect : null,
@@ -196,7 +196,8 @@ export default {
 		onLoadSuccess : {type : Function,default : function(){}},
 		onLoadError : {type : Function,default : function(){}},
 		onSelect : {type : Function,default : function(){}},
-		onClickTdBtn : {type : Function,default : function(){}}
+		onClickTdBtn : {type : Function,default : function(){}},
+		subTable : {type : Boolean,default : false}
 	},
 	data : function(){
 		return {
@@ -243,11 +244,14 @@ export default {
 			}
 		},
 		toggleSelect : function(item,e,index){
+			if(this.subTable){
+				e.stopPropagation();
+			}
 			var target = e.target;
-			//findParentByCls
 			var me = this;
 			var el = DomUtil.findTargetParent(target,'vb-table-checkbox');
 			if(el){
+				//点击的是含checkbox的单元格
 				if(item._selected){
 					this.onSelect(item);
 				}
@@ -281,12 +285,6 @@ export default {
 				return "";
 			}
 			return value;
-		},
-		hoverTh : function(e,action){
-			e.target.classList[action]("vb-table-th-hover");
-		},
-		hoverRow : function(e,action){
-			e.target.classList[action]("vb-table-tr-hover");
 		},
 		toPage : function(e,p){
 			if(e.currentTarget.disabled) return;
@@ -334,7 +332,7 @@ export default {
 			}
 			this.frontPageData = data;
 			this.total = data.length;
-			initRowsData(data);
+			initRowsData(this,data);
 			dealFrontPageData(this,1);
 		}
 	},
@@ -343,23 +341,20 @@ export default {
 			loadDataByPage(this,1);
 		}
 	},
-	beforeCreate : function(){
-		var propsData = this.$options.propsData;
-		var columns = propsData.columns;
-    if(columns && columns.length > 0){
-      initColumns(columns);
-    }
-    if(!propsData.url){
-    	var data = propsData.initFrontPageData;
-    	data && initRowsData(data);
-    }
-	},
 	created : function(){
     if(!this.url){
-    	this.total = this.frontPageData.length;
-			dealFrontPageData(this,1);
+			var data = this.frontPageData;
+			if(data){
+				initRowsData(this,data);
+				this.total = data.length;
+				dealFrontPageData(this,1);
+			}
+		}
+		var columns = this.columns;
+		if(columns && columns.length > 0){
+      initColumns(columns);
     }
-    for(var j=0,column;column=this.columns[j++];){
+    for(var j=0,column;column=columns[j++];){
     	if(column.checkbox){
     		this.singleSelect = false;
     		break;
@@ -371,4 +366,4 @@ export default {
   		loadDataByPage(this,1);
   	}
   }
-}
+})

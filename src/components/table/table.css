@@ -1,12 +1,12 @@
-.vb-table.panel{
+.vb-table.card{
 	border: 0;position: relative;
 	box-shadow:none;margin-bottom: 0;
 	-moz-box-shadow: none;
 	-webkit-box-shadow:none;
 }
 .vb-table .table td{vertical-align: middle;}
-.vb-table.panel .panel-heading{border-width:1px 1px 0 1px;border-style: solid;}
-.vb-table .panel-body{padding:0;}
+.vb-table .card-header{border-width:1px 1px 0 1px;border-style: solid;border-color: rgba(0, 0, 0, 0.125);}
+.vb-table .card-body{padding:0;}
 .vb-table .table{margin-bottom:0}
 .vb-table .thead{background-color: #fff;}
 .vb-table .table-responsive{margin-bottom: 0;position: relative;}
@@ -14,9 +14,9 @@
 .vb-table .table-responsive th>div{padding: 8px;position: relative;}
 .vb-table .table-responsive.vb-table-nowrap{white-space: nowrap;}
 .vb-table h2{margin:0;padding:20px 0;border:1px solid #ddd;border-top:0}
-.vb-table .table-responsive .vb-table-tr-hover{background-color: #eee}
-.vb-table .table-responsive .vb-table-th-hover{background-color: #e2e2e2}
-.vb-table .table-responsive .vb-table-tr-selected{background-color: #FAF5B4}
+.vb-table-tr:hover{background-color: #eee}
+.vb-table-th:hover{background-color: #e2e2e2}
+.vb-table .vb-table-tr-selected{background-color: #FAF5B4}
 .vb-table-checkbox{width: 50px;text-align: center;}
 .vb-table-checkbox label{
 	display: block;
@@ -27,7 +27,7 @@
 .vb-table-tr-parent > td:first-child{
 	cursor: pointer;
 }
-.vb-table-ch-head>i,.vb-table-ch-head>span{
+.vb-table-ch-head>i,.vb-table-ch-head>span,.vb-table-ch-head>i::before{
 	vertical-align: middle;
 }
 .vb-pagination{margin-top: 5px;}

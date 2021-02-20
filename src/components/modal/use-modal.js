@@ -1,27 +1,22 @@
 //全局唯一模态层
-import {DomUtil} from 'vue-bootstrap/src/utils';
-import Vue from 'vue';
+import ModalConstructor from './modal';
+import { h, render,nextTick} from 'vue'
 const Modal = {
+  container : null,
   items : [],
   vm : null,
-  init(){
+  init : function(){
     if(this.vm) return;
-    DomUtil.appendHTML(document.body,`<div id='vbModalBackDrop' class='modal-backdrop fade' 
-      v-bind:class='{in : isIn}' v-on:transitionend='transitionend' v-show='visible'></div>`);
-    this.vm = new Vue({
-      el: '#vbModalBackDrop',
-      data: {
-        isIn : false,
-        visible : false
-      },
-      methods : {
-        transitionend : function(){
-          if(!this.isIn){
-            this.visible = false;
-          }
-        }
-      }
-    });
+    this.container = document.createElement('div');
+    const vnode = h(ModalConstructor);
+    render(vnode, this.container);
+    document.body.appendChild(this.container.firstElementChild);
+    this.vm = vnode.component;
+  },
+  destroy(){
+    render(null,this.container);
+    this.container = null;
+    this.vm = null;
   },
   _check(){
     if(!this.vm){
@@ -36,6 +31,7 @@ const Modal = {
       last.zIndex = 1000;
     }
     items.push(item);
+    console.log('modal push',items.length);
   },
   push(item){
     this._check();
@@ -43,15 +39,9 @@ const Modal = {
     let len = items.length;
     if(len === 0){
       document.body.classList.add("modal-open");
-      this.vm.visible = true;
-      this.vm.$nextTick(() => {
-        this.vm.$el.offsetWidth;
-        this.vm.isIn = true;
-        this._push(item);
-      });
-    }else{
-      this._push(item);
+      this.vm.proxy.show = true;
     }
+    this._push(item);
   },
   pop(){
     this._check();
@@ -64,7 +54,7 @@ const Modal = {
       items[len - 1].zIndex = 1050;
     }else{
       document.body.classList.remove('modal-open');
-      this.vm.isIn = false;
+      this.vm.proxy.show = false;
     }
   },
   //当vm destroy的时候，必须调用该方法移除相应vm

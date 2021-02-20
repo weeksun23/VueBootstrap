@@ -1,7 +1,8 @@
 # VueBootstrap
-基于vue2.X和Bootstrap3的组件库
+基于vue3和Bootstrap5的组件库
 目前拥有如下组件
-- dialog
+- dialog 
+- select
 - table
 - select
 - tree

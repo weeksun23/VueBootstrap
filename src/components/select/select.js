@@ -1,10 +1,11 @@
 import Listgroup from 'vue-bootstrap/src/components/listgroup';
 import {DomUtil} from 'vue-bootstrap/src/utils';
 import template from './select.html';
+import {defineComponent} from 'vue';
 import './select.css';
 let tplArr = template.split("SPLIT");
 const targetTpl = tplArr[1].replace(/INPUT/g,tplArr[0]);
-export default {
+export default defineComponent({
   name : "VbSelect",
   template : targetTpl,
   data(){
@@ -13,7 +14,10 @@ export default {
       canBlur : true,
       showItems : false,
       canShowItemsWhileTextChange : false,
-      value : this.initValue
+      value : this.initValue,
+      //
+      selectVm : null,
+      bodyClickHandler : null
     }
   },
   //绑定的列表项组vm
@@ -39,20 +43,22 @@ export default {
   },
   mounted(){
     let listgroupVm = Listgroup.init(this.data,this.$el.querySelector('div.vb-select-input'));
-    listgroupVm.$options.selectVm = this;
-    this.$options.listgroupVm = listgroupVm;
+    listgroupVm.selectVm = this;
+    this.listgroupVm = listgroupVm;
     if(this.value){
       this.setValue(this.value);
     }
   },
-  beforeDestroy(){
+  beforeUnmount(){
+    console.log("select destroy");
     this.removeBodyClick();
-    this.$options.listgroupVm.destroy();
+    this.listgroupVm.$emit('destroy');
+    this.listgroupVm = null;
   },
   watch : {
     text(val){
       if(!this.editable) return;
-      let listgroupVm = this.$options.listgroupVm;
+      let listgroupVm = this.listgroupVm;
       if(!val){
         listgroupVm.setData(this.data);
         return;
@@ -72,7 +78,7 @@ export default {
       listgroupVm.setData(newData);
     },
     showItems(val){
-      let listgroupVm = this.$options.listgroupVm;
+      let listgroupVm = this.listgroupVm;
       listgroupVm.show = val;
     },
     value(val){
@@ -81,7 +87,7 @@ export default {
   },
   methods : {
     setValue(val){
-      let listgroupVm = this.$options.listgroupVm;
+      let listgroupVm = this.listgroupVm;
       if(this.editable){
         //可写下 group可能只有部分数据，要先设置所有数据
         listgroupVm.setData(this.data);
@@ -95,9 +101,9 @@ export default {
       return this.$el.querySelector("input");
     },
     removeBodyClick(){
-      if(this.$options.bodyClickHandler){
-        document.body.removeEventListener('click',this.$options.bodyClickHandler);
-        this.$options.bodyClickHandler = null;
+      if(this.bodyClickHandler){
+        document.body.removeEventListener('click',this.bodyClickHandler);
+        this.bodyClickHandler = null;
       }
     },
     doFocus(){
@@ -108,7 +114,7 @@ export default {
       if(this.data.length === 0) return;
       this.showItems = true;
       this.removeBodyClick();
-      this.$options.bodyClickHandler = (e) => {
+      this.bodyClickHandler = (e) => {
         let inputAreaEl = this.$el.querySelector("div.vb-select-input");
         let result = DomUtil.findTargetParent(e.target,(node) => {
           return node === inputAreaEl;
@@ -118,16 +124,16 @@ export default {
           this.removeBodyClick();
         }
       };
-      document.body.addEventListener('click',this.$options.bodyClickHandler);
+      document.body.addEventListener('click',this.bodyClickHandler);
     },
     blur(){
       if(!this.canBlur) return;
-      let listgroupVm = this.$options.listgroupVm;
+      let listgroupVm = this.listgroupVm;
       if(this.text === ''){
         listgroupVm.clearSelect();
         return;
       }
-      let item = listgroupVm.$options.lastSelectItem;
+      let item = listgroupVm.lastSelectItem;
       if(item && this.text !== item.text){
         this.text = item.text;
       }else if(!item){
@@ -136,7 +142,7 @@ export default {
     },
     keydown(e){
       if(!this.editable) return;
-      let listgroupVm = this.$options.listgroupVm;
+      let listgroupVm = this.listgroupVm;
       switch(e.keyCode){
         case DomUtil.keyCode.up:
           listgroupVm.preSelect(-1);
@@ -150,4 +156,4 @@ export default {
       }
     }
   }
-}
+})

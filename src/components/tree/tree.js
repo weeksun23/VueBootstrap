@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import {defineComponent} from 'vue';
 import template from './tree.html';
 import './tree.css';
 import {CommonUtil} from 'vue-bootstrap/src/utils';
@@ -69,17 +69,21 @@ var nodeAttr = {
 //初始化节点属性
 function initNodeAttr(item){
 	if(!item.children){
-		Vue.set(item,'children',[]);
+		item.children = [];
+		// Vue.set(item,'children',[]);
 	}
 	//是否已加载子节点标志
-	Vue.set(item,'chLoaded',item.state === 'open');
+	// Vue.set(item,'chLoaded',item.state === 'open');
+	item.chLoaded = item.state === 'open';
 	if(item.children.length){
 		if(item.state !== 'open'){
-			Vue.set(item,'state','closed');
+			item.state = 'closed';
+			// Vue.set(item,'state','closed');
 		}
 	}else{
 		if(item.state !== 'closed'){
-			Vue.set(item,'state','');
+			item.state = '';
+			// Vue.set(item,'state','');
 		}
 	}
 	CommonUtil.setObjDefaultAttrs(item,nodeAttr);
@@ -194,13 +198,15 @@ function ajaxLoad(el,vmodel,func){
 			}else{
 				eachNode(data);
 			}
-			Vue.set(el,'children',data);
+			// Vue.set(el,'children',data);
+			el.children = data;
 			if(!el.chLoaded){
 				el.chLoaded = true;
 			}
 		}else{
 			eachNode(data);
-			Vue.set(vmodel,'nodeList',data);
+			// Vue.set(vmodel,'nodeList',data);
+			vmodel.nodeList = data;
 			func && func();
 		}
 		vmodel.onLoadSuccess(data,callBackEl);
@@ -310,23 +316,12 @@ function selectNode(el,vmodel){
 	el.selected = true;
 	root.onSelect(root.$options.curSelEl = el);
 }
-export default {
+export default defineComponent({
   template : tpl,
   loadHandler : null,
   name : 'VbTree',
-  beforeCreate : function(){
-		var propsData = this.$options.propsData;
-		// if(propsData.isRoot === false){
-		// 	var parent = this.$parent;
-		// 	var parentProps = parent.$options.propsData;
-		// 	for(var i in parentProps){
-		// 		if(i === 'nodeList') continue;
-		// 		propsData[i] = parentProps[i];
-		// 	}
-		// }
-		// console.log(propsData);
-		var nodeList = propsData.nodeList;
-    eachNode(nodeList);
+  created : function(){
+    eachNode(this.nodeList);
 	},
 	props : props,
 	data : function(){
@@ -366,7 +361,8 @@ export default {
 		},
 		loadData : function(data){
 			eachNode(data);
-			Vue.set(this,'nodeList',data);
+			this.nodeList = data;
+			// Vue.set(this,'nodeList',data);
 		},
 		getNode : function(target){
 			var result = null;
@@ -472,4 +468,4 @@ export default {
 			}
 		}
 	}
-};
+});

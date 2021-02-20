@@ -1,69 +1,63 @@
 import Util from '../../util';
-import demoHtmls from './demos.html';
-let templates = demoHtmls.split("SPLIT");
-function getMixin1(){
-  return {
-    data(){
-      return {
-        columns : [{
-					title : "a1",field : "a1"
-				},{
-					title : "a2",field : "a2"
-				},{
-					title : "a3",field : "a3"
-				},{
-					title : "oper",field : "oper",formatter : function(v,r,i){
-						return "<button class='btn btn-primary' data-method='add' data-field='a4'>添加</button>" + 
-						"<button class='btn btn-primary' data-method='edit' data-field='a4'>编辑</button>";
-					}
-				}],
-				pageSizeArr : [5,10,20],
-				pageSize : 5,
-				frontPageData : (function(){
-					var re = [{
-						a1 : "children属性演示",
-						a2 : "--",
-						a3 : '--',
-						children_title : 'children列表',
-						children : [{
-							a1 : 'ch1',a2 : 'ch1',a3 : 'ch1'
-						},{
-							a1 : 'ch2',a2 : 'ch2',a3 : 'ch2'
-						}]
-					}];
-					for(var i=0;i<100;i++){
-						re.push({
-							a1 : i,
-							a2 : parseInt(Math.random() * 10000),
-							a3 : parseInt(Math.random() * 100)
-						});
-					}
-					return re;
-				})(),
-      }
-    },
-    methods : {
-      onClickTdBtn : function(method,v,r,i){
-				console.log(method,v,r,i);
-			}
-    }
-  };
-}
+import demos from './demos.html';
 const data = [{
-  title : '初始化',htmlCode : templates[0],
-  jsCode : getMixin1.toString()
+  title : '初始化',
+  jsCode(){
+    return {
+      data(){
+        return {
+          columns : [{
+            title : "a1",field : "a1"
+          },{
+            title : "a2",field : "a2"
+          },{
+            title : "a3",field : "a3"
+          },{
+            title : "oper",field : "oper",formatter : function(v,r,i){
+              return "<button class='btn btn-primary' data-method='add' data-field='a4'>添加</button>" + 
+              "<button class='btn btn-primary' data-method='edit' data-field='a4'>编辑</button>";
+            }
+          }],
+          pageSizeArr : [5,10,20],
+          pageSize : 5,
+          frontPageData : (function(){
+            var re = [{
+              a1 : "children属性演示",
+              a2 : "--",
+              a3 : '--',
+              children_title : 'children列表',
+              children : [{
+                a1 : 'ch1',a2 : 'ch1',a3 : 'ch1'
+              },{
+                a1 : 'ch2',a2 : 'ch2',a3 : 'ch2'
+              }]
+            }];
+            for(var i=0;i<100;i++){
+              re.push({
+                a1 : i,
+                a2 : parseInt(Math.random() * 10000),
+                a3 : parseInt(Math.random() * 100)
+              });
+            }
+            return re;
+          })(),
+        }
+      },
+      methods : {
+        onClickTdBtn : function(method,v,r,i){
+          console.log(method,v,r,i);
+        }
+      }
+    };
+  }
 }];
 export default{
-  template : `<div class='doc'>
-    <demo :title='data[0].title' :html-code="data[0].htmlCode" :js-code="data[0].jsCode">${templates[0]}</demo>
-    <h2>props</h2>
-		<vb-table :columns="propColumns" :pagination='false' :init-front-page-data="propData"></vb-table>
-		<h2>methods</h2>
-		<vb-table :columns="methodsColumns" :pagination='false' :init-front-page-data="methodsData"></vb-table>
-		<h2>data</h2>
-		<vb-table :columns="propColumns" :pagination='false' :init-front-page-data="dataAttr"></vb-table>
-  </div>`,
-  mixins : [getMixin1(),Util.getColumnsMixin()],
+  ...Util.getDemoOptions(data,demos,`<h2>props</h2>
+    <vb-table :columns="propColumns" :pagination='false' :init-front-page-data="propData" :striped='false'></vb-table>
+    <h2 class='mt-3'>methods</h2>
+    <vb-table :columns="methodsColumns" :pagination='false' :init-front-page-data="methodsData" :striped='false'></vb-table>
+    <h2 class='mt-3'>data</h2>
+		<vb-table :columns="propColumns" :pagination='false' :init-front-page-data="dataAttr" :striped='false'></vb-table>`),
   data(){
     return {
       data,

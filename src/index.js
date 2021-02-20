@@ -5,23 +5,21 @@ import Tree from './components/tree';
 import Tooltip from './components/tooltip';
 import Setting from './setting';
 const components = [
-  Dialog,Table,Select,Tree,Tooltip
+  Dialog,Table,Select,Tooltip,Tree
 ];
-const install = function(Vue) {
+const install = function(app) {
   components.forEach(component => {
-    component.install(Vue);
+    app.use(component);
   });
+  return app;
 };
-if (typeof window !== 'undefined' && window.Vue) {
-  install(window.Vue);
-}
 export default {
-  version : '1.0.0',
+  version : '2.0.0',
   install,
   Dialog,
   Table,
   Select,
-  Tree,
   Tooltip,
+  Tree,
   Setting
 }
