@@ -7,9 +7,6 @@ let template = `<div class="tooltip fade" :class="[position,isIn ? 'in' : '']"
     {{message}}
   </div>
 </div>`;
-function create(){
-  
-}
 const arrowSize = 5;
 const Tooltip = {
   install(){
