@@ -1,13 +1,22 @@
 {
   "compilerOptions": {
-    "outDir": "./dist/",
+    "module": "ESNext",
+    "declaration": true,
+    "noImplicitAny": false,
+    "removeComments": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "jsx": "preserve",
+    "noLib": false,
+    "target": "es6",
     "sourceMap": true,
-    "noImplicitAny": true,
-    "module": "commonjs",
-    "target": "es5",
-    "jsx": "react"
+    "lib": [
+      "ESNext", "DOM"
+    ],
+    "allowSyntheticDefaultImports": true
   },
-  "include": [
-    "./src/**/*"
+  "exclude": [
+    "node_modules"
   ]
-}
+ }
+ 

@@ -5,7 +5,7 @@ export default{
 	//组件共享的ajax加载方法
 	ajaxLoad : null,
 	noop : function(){},
-	setObjDefaultAttrs(target,defaultObj){
+	setObjDefaultAttrs(target:any,defaultObj:any){
 		for(var j in defaultObj){
 	    if(target[j] === undefined){
 				target[j] = defaultObj[j];
@@ -13,7 +13,7 @@ export default{
 	    }
 	  }
 	},
-	paddingZero(str,len){
+	paddingZero(str:any,len:any){
 		len = len || 8;
   	str = str + "";
   	var strLen = str.length;
